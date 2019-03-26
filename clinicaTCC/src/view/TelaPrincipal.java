@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import ModeloConexao.ConexaoBD;
 import controle.ConectTeste;
-import controle.ConexaoBD;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;

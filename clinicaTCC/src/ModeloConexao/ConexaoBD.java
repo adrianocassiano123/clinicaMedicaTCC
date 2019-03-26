@@ -1,4 +1,4 @@
-package controle;
+package ModeloConexao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,22 +23,33 @@ public class ConexaoBD {
 		try {
 			System.setProperty("jdbc.Drivers", driver);
 			conex = DriverManager.getConnection(caminho, usuario, senha);
-			JOptionPane.showMessageDialog(null, "Conectado ao BD com sucesso");
+			//JOptionPane.showMessageDialog(null, "Conectado ao BD com sucesso");
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao conectar com DB: \n" + e.getMessage());
 
 		}
 
 	}
-
+	public void executarSQL(String sql) {
+		try {
+			stm = conex.createStatement(rs.TYPE_SCROLL_INSENSITIVE,rs.CONCUR_READ_ONLY);
+			rs = stm.executeQuery(sql);
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erro ao executarSQL \n" + e.getMessage());
+		}
+	}
 	public void desconectar() {
 		try {
 			conex.close();
-			JOptionPane.showMessageDialog(null, "BD Desconectado");
+			//JOptionPane.showMessageDialog(null, "BD Desconectado");
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao DESCONECTAR com DB: \n" + e.getMessage());
 		}
 
 	}
+	
+	
+	
 
 }
