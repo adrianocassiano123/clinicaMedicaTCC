@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dclaracao" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1131b6aa-4b56-4a29-91e0-439045eb82c6">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[dGFibWVkaWNvIEFTICw3MDQsNzksNzBiZTJiMGYtMmQ0Yy00NTA3LThiMTgtMGNhZGUxZWRiMzYx
+O3RhYl9wYWNpZW50ZSBBUyAsMTc5LDExMiwzYWY1ODAzZS04NTdmLTQ4NmQtYWQ2MS05YjliN2E5
+ZTc3MDY7dGFiX2RlY2xhcmFjYW8gQVMgLDYwOSw0MDMsZDk4MWNkMDQtZmE0Mi00Y2QzLTljODgt
+NzJiMjYwNjI3ZmIxO3RhYl9tYXJjYWNhbyBBUyAsNDAxLDE1Miw4OTUyNTY3NC1jYzkyLTQyZmEt
+YTFlZS0yMmI5NWRjOTVhYzg7]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="300"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="688"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgreSQL"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="751"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="235"/>
+	<parameter name="CODMARCACAO" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT tab_declaracao.id_declaracao,
+	tab_marcacao.id_marcacao,
+	tab_paciente.id_paciente,
+	tab_paciente.nome_paciente,
+	tab_paciente.nasc_paciente,
+	tabmedico.crmmedico,
+	tabmedico.nomemedico,
+	tab_declaracao.descricao_declaracao
+FROM tab_marcacao, tab_paciente, tabmedico, tab_declaracao
+where 
+	 tab_declaracao.id_pacientefk = tab_paciente.id_paciente  
+	 AND tab_declaracao.id_medicofk = tabmedico.idmedico
+	 and  tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente 
+	 and tab_marcacao.id_marcacao =  $P{CODMARCACAO}]]>
+	</queryString>
+	<field name="descricao_declaracao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descricao_declaracao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tab_declaracao"/>
+	</field>
+	<field name="nomemedico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nomemedico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tabmedico"/>
+	</field>
+	<field name="crmmedico" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="crmmedico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tabmedico"/>
+	</field>
+	<field name="nome_paciente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nome_paciente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tab_paciente"/>
+	</field>
+	<field name="nasc_paciente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nasc_paciente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tab_paciente"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="120" y="15" width="325" height="30" uuid="ac924da6-36e5-44b6-8150-08afba7ad115"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DECLARAÇÃO]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="0" width="120" height="60" uuid="18523b6b-f382-46e3-80cc-ac1cc60d7067"/>
+				<imageExpression><![CDATA["bin/imagem/ClinicalMeds.svg.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="442" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="a2c4b55c-d235-4387-8112-c79c35aa7a82">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fa5128cf-aed5-45ed-a0c4-bd628010eb38"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paciente :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="110" height="30" uuid="2e13c61d-4071-430a-8730-251c15f8592b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fa5128cf-aed5-45ed-a0c4-bd628010eb38"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nascimento :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="0" width="210" height="30" uuid="6904d6e7-f370-4214-a003-bebb3c116b38"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome_paciente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="0" width="130" height="30" uuid="fc3962bd-0c74-416a-9486-94a7db875948"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nasc_paciente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="313" y="334" width="90" height="30" uuid="f3e009ca-ff22-4349-a0c6-e65bd5e9fe47"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dr. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="360" width="50" height="30" uuid="1edd0d2e-728b-4d48-a82d-a16295c4663a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CRM :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="403" y="334" width="150" height="30" uuid="4dfe00d8-e38a-464b-b816-7439cc966e44"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomemedico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="360" width="100" height="30" uuid="c7c1bd5e-0818-4210-8634-e767dd97f6cc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{crmmedico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="50" width="550" height="200" uuid="3b194f10-8fde-4a4e-a16c-13b235890491"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descricao_declaracao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM, yyyy">
+				<reportElement x="450" y="270" width="100" height="30" uuid="64aa0b29-7cd4-4edb-9a8a-9d18a3de2684"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<columnFooter>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="550" height="60" uuid="25537615-bef1-43d4-b4fc-86450571db30">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fa5128cf-aed5-45ed-a0c4-bd628010eb38"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Clinical MEDS
+Rua das Graças 00001, Graças, Recife- PE]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

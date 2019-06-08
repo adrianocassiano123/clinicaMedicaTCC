@@ -2,19 +2,25 @@ package modelo;
 
 public class BeanEndereco {
 	
-	private String enderec;
+	private String logradouro;
+	private int numero;
 	private String cidade;
-	private int cep;
 	private String bairro;
 	private String estado;
 	
 	
 	
-	public String getEnderec() {
-		return enderec;
+	public String getLogradouro() {
+		return logradouro;
 	}
-	public void setEnderec(String enderec) {
-		this.enderec = enderec;
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+	public int getNumero() {
+		return numero;
+	}
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
 	public String getCidade() {
 		return cidade;
@@ -22,12 +28,7 @@ public class BeanEndereco {
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
-	public int getCep() {
-		return cep;
-	}
-	public void setCep(int cep) {
-		this.cep = cep;
-	}
+	
 	public String getBairro() {
 		return bairro;
 	}

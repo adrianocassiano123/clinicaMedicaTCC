@@ -17,6 +17,7 @@ public class ConexaoBD {
 	private String usuario = "postgres";
 	private String senha = "admin";
 	public Connection conex; // Realiza conexão com o DB
+	
 
 	public void conexao() {
 
@@ -47,6 +48,17 @@ public class ConexaoBD {
 			JOptionPane.showMessageDialog(null, "Erro ao DESCONECTAR com DB: \n" + e.getMessage());
 		}
 
+	}
+	
+	public static Connection getConnection() {
+		Connection con = null;
+		
+		try {
+			con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/clinica", "postgres", "admin");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return con;
 	}
 	
 	

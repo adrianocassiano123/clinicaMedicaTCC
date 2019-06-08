@@ -3,14 +3,21 @@ package modelo;
 public class BeanPessoa {
 
 	private String nome;
-	private BeanEndereco endereco;
 	private String sexo;
+	private String nascimento;
 	private String email;
 	private int telefone;
 	private int rg;
 	private int cpf;
+	private BeanEndereco endereco;
 	
 	
+	public String getNascimento() {
+		return nascimento;
+	}
+	public void setNascimento(String nascimento) {
+		this.nascimento = nascimento;
+	}
 	public String getNome() {
 		return nome;
 	}
@@ -53,6 +60,8 @@ public class BeanPessoa {
 	public void setCpf(int cpf) {
 		this.cpf = cpf;
 	}
+	
+	
 	
 	
 

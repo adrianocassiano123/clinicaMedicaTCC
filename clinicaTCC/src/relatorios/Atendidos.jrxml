@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Atendidos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="774a963d-6609-4202-85b4-973f72f1fffb">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgreSQL"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT tab_marcacao.id_marcacao,
+	tab_paciente.nome_paciente,
+	tabmedico.nomemedico,
+	tab_marcacao.status_marcacao,
+	tab_marcacao.data_marcacao
+FROM tab_marcacao
+			,tab_paciente
+			,tabmedico
+WHERE 
+	 tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente  
+AND tab_marcacao.cod_medico_marcacao = tabmedico.idmedico
+AND status_marcacao='Finalizado']]>
+	</queryString>
+	<field name="id_marcacao" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_marcacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tab_marcacao"/>
+	</field>
+	<field name="nome_paciente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nome_paciente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tab_paciente"/>
+	</field>
+	<field name="nomemedico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nomemedico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tabmedico"/>
+	</field>
+	<field name="status_marcacao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="status_marcacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tab_marcacao"/>
+	</field>
+	<field name="data_marcacao" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="data_marcacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tab_marcacao"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<image>
+				<reportElement x="10" y="0" width="120" height="60" uuid="a566d75f-057b-4fd2-8116-5e833bb400b9"/>
+				<imageExpression><![CDATA["bin/imagem/ClinicalMeds.svg.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="100" y="30" width="424" height="30" uuid="e7868865-74c3-443f-9be0-ee2bca30f446"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE CONSULTAS REALIZADAS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="350" y="40" width="100" height="20" uuid="06221e19-b070-4be4-ab64-b994299955cd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="008c0de6-eac1-4211-b0d4-ffa88edbf5ce"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STATUS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="40" width="140" height="20" uuid="db4f37df-1de5-4df6-a335-a58bc20808e2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ab2b6b70-c33e-447a-8fa3-906fb9a01215"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PACIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="40" width="170" height="20" uuid="bb63dea6-b7f7-4c45-bb90-b984d6e39cd9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9ae79b8-6c78-404e-82d0-d8a870e918dc"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MÉDICO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="40" height="20" uuid="a00771cd-9638-478b-84b9-2af77c6f4a83">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bc1de74f-182d-44b0-b32a-0b15fae6f6e2"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="40" width="100" height="20" uuid="20d4da5f-3b60-4c33-8d93-fee357109fdf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3c2c42fe-165d-4f79-a254-9df5aed8ac5e"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="450" y="0" width="100" height="20" uuid="65e3217d-a534-4df4-88bc-b23155a38431">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="23f96213-7d79-41a4-8c44-35a7f3ca5d59"/>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{data_marcacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="170" height="20" uuid="658bc6c0-b7c5-480c-87d4-7bc7a8e002c8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8ffbfc4-1741-465f-b80b-07b8099e545f"/>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nomemedico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="40" height="20" uuid="34c4aca4-f2b1-4a90-8365-d4f784866e41">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f6e6a38-5ebc-4ae2-beff-c0f51cf74891"/>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_marcacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="0" width="140" height="20" uuid="3edc795a-e906-43b1-9b17-be1e4f958c56">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b2597a30-e507-4d90-907a-75618bc9624f"/>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nome_paciente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="0" width="100" height="20" uuid="3d1d54bc-1d41-4d5c-b239-7fbbeca44daf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7aae8c52-d8e5-421e-affe-91a36745aa1f"/>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{status_marcacao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="70" splitType="Stretch">
+			<textField>
+				<reportElement x="450" y="40" width="100" height="30" uuid="9a877098-d20e-49e3-8e87-c22f6ea526f0"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

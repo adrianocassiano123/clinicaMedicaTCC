@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="164dd97d-7b53-41c9-a883-103d2e64d82d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgreSQL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cod_medico" class="java.lang.Integer"/>
+	<parameter name="LogoClinica" class="java.lang.Object"/>
+	<queryString>
+		<![CDATA[SELECT nomemedico,especialidademedico,crmmedico,idmedico 
+FROM tabmedico]]>
+	</queryString>
+	<field name="nomemedico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nomemedico"/>
+	</field>
+	<field name="especialidademedico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="especialidademedico"/>
+	</field>
+	<field name="crmmedico" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="crmmedico"/>
+	</field>
+	<field name="idmedico" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idmedico"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="96" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="550" height="47" uuid="44ab1515-10b3-41ad-be47-c88f42890d99"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26"/>
+				</textElement>
+				<text><![CDATA[Médicos]]></text>
+			</staticText>
+			<image>
+				<reportElement x="50" y="0" width="130" height="90" uuid="f0f66b48-e1ae-4033-8ea3-7fe3576189c1"/>
+				<imageExpression><![CDATA["bin/imagem/ClinicalMeds.svg.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="492" y="46" width="50" height="50" uuid="eb301465-53a0-4a8d-bb88-1706c631b438"/>
+				<imageExpression><![CDATA[$P{LogoClinica}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="50" height="30" uuid="5e120dcc-66d6-4dd0-b955-0702d44a8a0a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="2" width="170" height="30" uuid="741f8c7c-8d22-4794-8e0d-edacff374acd"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="2" width="170" height="30" uuid="5d91a3e3-cce7-421e-9b4b-1c6f9e2e6098"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Especialidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="2" width="160" height="30" uuid="2caccb9a-6274-4a61-b547-e9c320f55a1f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CRM]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="50" height="30" uuid="d20f107c-cda0-4697-afe2-8ce31fb0c72f"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{idmedico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="170" height="30" uuid="46be43c7-d1e3-4702-8dba-7140ebb8c766"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nomemedico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="0" width="170" height="30" uuid="183de970-8ee3-4856-8feb-260b5e4c9772"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{especialidademedico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="0" width="160" height="30" uuid="703307cd-1883-4c16-b3e5-c92790bc62ee"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{crmmedico}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

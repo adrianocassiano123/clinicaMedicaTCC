@@ -10,7 +10,7 @@ public class ConectTeste {
 
 		conect.conexao();
 
-		conect.desconectar();
+		//conect.desconectar();
 
 	}
 
