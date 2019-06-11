@@ -1,22 +1,23 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import java.awt.SystemColor;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.Font;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class Pagamento extends JFrame {
 
 	private JPanel contentPane;
@@ -31,8 +32,8 @@ public class Pagamento extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Pagamento frame = new Pagamento();
-					frame.setVisible(true);
+//					Pagamento frame = new Pagamento();
+//					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -43,13 +44,15 @@ public class Pagamento extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Pagamento() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	//public Pagamento() {}
+	
+	public Pagamento(String valor) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 242);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.activeCaption);
 		
@@ -62,20 +65,53 @@ public class Pagamento extends JFrame {
 		textFieldValorConsulta.setColumns(10);
 		
 		textFieldDesconto = new JTextField();
-		textFieldDesconto.setEnabled(false);
 		textFieldDesconto.setColumns(10);
 		
 		textFieldValorTotal = new JTextField();
+		textFieldValorTotal.setFont(new Font("Tahoma", Font.BOLD, 14));
 		textFieldValorTotal.setEnabled(false);
 		textFieldValorTotal.setColumns(10);
+		
+		
+//		try {
+//			javax.swing.text.MaskFormatter desconto = new javax.swing.text.MaskFormatter("##,##"); // Mascara data
+//			textFieldDesconto = new javax.swing.JFormattedTextField(desconto);
+//			textFieldDesconto.setEnabled(true);
+//		} catch (Exception e) {
+//		}
+//		
+//		try {
+//			javax.swing.text.MaskFormatter total = new javax.swing.text.MaskFormatter("##,##"); // Mascara data
+//			textFieldValorTotal = new javax.swing.JFormattedTextField(total);
+//			textFieldValorTotal.setEnabled(true);
+//		} catch (Exception e) {
+//		}
 		
 		JButton btnDescontar = new JButton("Dar Desconto");
 		btnDescontar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textFieldDesconto.setEnabled(true);
 				
+				BigDecimal valor = new BigDecimal(textFieldValorConsulta.getText());
+				BigDecimal desconto = new BigDecimal(textFieldDesconto.getText());
+			//	BigDecimal total = new BigDecimal(textFieldValorTotal.getText());
+				textFieldValorTotal.setText(valor.subtract(desconto).toString());
+			//	System.out.println();
+				
 			}
 		});
+		
+		
+		
+		System.out.println(valor);
+		
+		textFieldValorConsulta.setText(valor);
+		textFieldValorTotal.setText(valor);
+		
+		//textFieldValorConsulta.setText("VALOR");
+		
+		
+		
 		btnDescontar.setFont(new Font("Tahoma", Font.BOLD, 10));
 		
 		JLabel lblNewLabel = new JLabel("Desconto:");
@@ -83,13 +119,21 @@ public class Pagamento extends JFrame {
 		JLabel lblValorTotal = new JLabel("Valor Total:");
 		
 		JButton btnConfirmar = new JButton("Confirmar");
+		btnConfirmar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				
+				dispose();
+			}
+		});
 		btnConfirmar.setFont(new Font("Tahoma", Font.BOLD, 10));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_contentPane.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
 						.addGroup(gl_contentPane.createSequentialGroup()
@@ -104,8 +148,8 @@ public class Pagamento extends JFrame {
 									.addGap(18)
 									.addComponent(btnDescontar, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE))
 								.addComponent(lblNewLabel)
-								.addComponent(textFieldValorConsulta, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblValorTotal, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(lblValorTotal, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldValorConsulta, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -132,4 +176,8 @@ public class Pagamento extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 	}
+
+//	public Pagamento() {
+//		// TODO Auto-generated constructor stub
+//	}
 }
