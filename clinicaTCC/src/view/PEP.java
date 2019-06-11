@@ -48,6 +48,11 @@ public class PEP extends JFrame {
 	BeanMarcConsulta status = new BeanMarcConsulta();
 	ConexaoBD conexao = new ConexaoBD();
 	BeanMarcConsulta consulta = new BeanMarcConsulta();
+	JButton buttonExame = new JButton("Exame");
+	JButton buttonRetorno = new JButton("Retorno");
+	JButton buttonAtestado = new JButton("Atestado");
+	JButton btnDeclaracao = new JButton("Declara\u00E7\u00E3o");
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -66,7 +71,7 @@ public class PEP extends JFrame {
 		if (codigoAtendimento.isEmpty()) {
 			return;
 		}
-
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 884, 730);
 		contentPane = new JPanel();
@@ -227,12 +232,16 @@ public class PEP extends JFrame {
 				status.setIdMarcConsulta(Integer.parseInt(textFieldIdMarcacao.getText()));
 				daoPEP.alterar(status);
 				daoPEP.finalizarConsulta(beanPEP);
+				dispose();
+				
+				
+							
 
 			}
 		});
 		buttonFinalizar.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		JButton buttonRetorno = new JButton("Retorno");
+		
 		buttonRetorno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -249,7 +258,7 @@ public class PEP extends JFrame {
 		});
 		buttonRetorno.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		JButton buttonExame = new JButton("Exame");
+		
 		buttonExame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -266,7 +275,7 @@ public class PEP extends JFrame {
 		});
 		buttonExame.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		JButton buttonAtestado = new JButton("Atestado");
+		
 		buttonAtestado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -278,22 +287,23 @@ public class PEP extends JFrame {
 			}
 		});
 		buttonAtestado.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		JButton btnTest = new JButton("test");
 		textFieldIdPEP = new JTextField();
 		textFieldIdPEP.setEnabled(false);
+		textFieldIdPEP.setVisible(false);
+		
 
 		JLabel lblMdico = new JLabel("M\u00E9dico :");
 		lblMdico.setFont(new Font("Tahoma", Font.BOLD, 18));
 
 		textFieldIdMarcacao = new JTextField();
 		textFieldIdMarcacao.setEnabled(false);
+		textFieldIdMarcacao.setVisible(false);
 
 		JLabel lblPep = new JLabel("PEP");
 
 		JLabel lblMarcacao = new JLabel("Marcacao");
 
-		JButton btnDeclaracao = new JButton("Declara\u00E7\u00E3o");
+		
 		btnDeclaracao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -305,83 +315,72 @@ public class PEP extends JFrame {
 		btnDeclaracao.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane
-				.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_contentPane.createSequentialGroup().addContainerGap().addGroup(gl_contentPane
-								.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane
-										.createSequentialGroup().addGroup(gl_contentPane
-												.createParallelGroup(Alignment.LEADING, false)
-												.addComponent(panel, GroupLayout.PREFERRED_SIZE, 827,
-														GroupLayout.PREFERRED_SIZE)
-												.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 827,
-														GroupLayout.PREFERRED_SIZE)
-												.addComponent(
-														panel_2, GroupLayout.PREFERRED_SIZE, 827,
-														GroupLayout.PREFERRED_SIZE)
-												.addGroup(gl_contentPane.createSequentialGroup()
-														.addComponent(buttonFinalizar, GroupLayout.PREFERRED_SIZE, 119,
-																GroupLayout.PREFERRED_SIZE)
-														.addGap(47)
-														.addComponent(buttonRetorno, GroupLayout.PREFERRED_SIZE, 128,
-																GroupLayout.PREFERRED_SIZE)
-														.addGap(75)
-														.addComponent(buttonExame, GroupLayout.PREFERRED_SIZE, 123,
-																GroupLayout.PREFERRED_SIZE)
-														.addGap(61)
-														.addComponent(buttonAtestado, GroupLayout.PREFERRED_SIZE, 123,
-																GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.RELATED,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(
-																btnDeclaracao, GroupLayout.PREFERRED_SIZE, 123,
-																GroupLayout.PREFERRED_SIZE)))
-										.addContainerGap(31, Short.MAX_VALUE))
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane.createSequentialGroup()
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_contentPane.createSequentialGroup().addGap(10)
-														.addComponent(textFieldIdPEP, GroupLayout.PREFERRED_SIZE, 95,
-																GroupLayout.PREFERRED_SIZE))
-												.addGroup(gl_contentPane
-														.createSequentialGroup().addGap(20).addComponent(lblPep)))
-										.addGap(18)
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, 95,
-														GroupLayout.PREFERRED_SIZE)
-												.addComponent(lblMarcacao))
-										.addGap(53).addComponent(btnTest)
-										.addPreferredGap(ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
-										.addComponent(lblMdico).addGap(26).addComponent(textFieldMedico,
-												GroupLayout.PREFERRED_SIZE, 230, GroupLayout.PREFERRED_SIZE)
-										.addGap(64)))));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup().addComponent(panel, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-				.addGap(14)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addGap(10)
+									.addComponent(textFieldIdPEP, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(20)
+									.addComponent(lblPep)))
+							.addGap(18)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblMarcacao))
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(lblMdico)
+							.addGap(18)
+							.addComponent(textFieldMedico, GroupLayout.PREFERRED_SIZE, 230, GroupLayout.PREFERRED_SIZE))
+						.addComponent(panel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 827, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 827, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 827, GroupLayout.PREFERRED_SIZE)
+						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+							.addComponent(buttonFinalizar, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
+							.addGap(47)
+							.addComponent(buttonRetorno, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+							.addGap(75)
+							.addComponent(buttonExame, GroupLayout.PREFERRED_SIZE, 123, GroupLayout.PREFERRED_SIZE)
+							.addGap(61)
+							.addComponent(buttonAtestado, GroupLayout.PREFERRED_SIZE, 123, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnDeclaracao, GroupLayout.PREFERRED_SIZE, 123, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(31, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+					.addGap(14)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(btnTest)
-										.addComponent(lblPep).addComponent(lblMarcacao))
-								.addGap(36))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblPep)
+								.addComponent(lblMarcacao))
+							.addGap(36))
 						.addGroup(gl_contentPane.createSequentialGroup()
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-										.addComponent(textFieldIdPEP, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(textFieldMedico, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblMdico).addComponent(textFieldIdMarcacao,
-												GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))
-								.addGap(18)))
-				.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textFieldIdPEP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldMedico, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblMdico))
+							.addGap(18)))
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(buttonFinalizar, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(buttonRetorno, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(buttonExame, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(buttonAtestado, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnDeclaracao, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-				.addGap(38)));
+					.addGap(38))
+		);
 		contentPane.setLayout(gl_contentPane);
 		setLocationRelativeTo(null);
 		setResizable(false);

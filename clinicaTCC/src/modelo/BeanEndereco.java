@@ -7,6 +7,7 @@ public class BeanEndereco {
 	private String cidade;
 	private String bairro;
 	private String estado;
+	private String cep;
 	
 	
 	
@@ -41,8 +42,13 @@ public class BeanEndereco {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+	public String getCep() {
+		return cep;
+	}
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
 
-	
-	
+		
 	
 }

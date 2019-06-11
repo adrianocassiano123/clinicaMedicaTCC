@@ -18,10 +18,10 @@ public class DaoMedico {
 		try {
 
 			PreparedStatement pst = conexao.conex.prepareStatement(
-					"insert into tabmedico (nomemedico,especialidademedico,crmmedico)" + " values (?,?,?)");
+					"insert into tabmedico (nomemedico,crmmedico,especialidadefk)" + " values (?,?,?)");
 			pst.setString(1, modelo.getNome());
-			pst.setString(2, modelo.getEspecialidade());
-			pst.setInt(3, modelo.getCrm());
+			pst.setInt(2, modelo.getCrm());
+			pst.setInt(3, modelo.getEspecialidade());
 			pst.execute();
 			JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!!");
 		} catch (SQLException e) {
@@ -42,7 +42,7 @@ public class DaoMedico {
 			model.setCodigo(conexao.rs.getInt("idmedico"));
 			model.setNome(conexao.rs.getString("nomemedico"));
 			model.setCrm(conexao.rs.getInt("crmmedico"));
-			model.setEspecialidade(conexao.rs.getString("especialidademedico"));
+			model.setEspecialidade(conexao.rs.getInt("especialidadefk"));
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Médico Não Encontrado");
@@ -59,7 +59,7 @@ public class DaoMedico {
 			PreparedStatement pst = conexao.conex.prepareStatement(
 					"update tabmedico set nomemedico=? ,especialidademedico=?,crmmedico=? where idmedico=?");
 			pst.setString(1, mod.getNome());
-			pst.setString(2, mod.getEspecialidade());
+			pst.setInt(2, mod.getEspecialidade());
 			pst.setInt(3, mod.getCrm());
 			pst.setInt(4, mod.getCodigo());
 			pst.execute();
@@ -102,7 +102,8 @@ public class DaoMedico {
 				pst.execute();
 				JOptionPane.showMessageDialog(null, "Excluido com Sucesso!!!");
 			} catch (SQLException e) {
-				JOptionPane.showConfirmDialog(null, "Erro ao excluir"+e);
+				JOptionPane.showConfirmDialog(null, "Você não pode excluir este médico");
+				System.out.println(e);
 				//e.printStackTrace();
 			}
 			

@@ -56,7 +56,7 @@ public class TelaPrincipal extends JFrame {
 	}
 
 	public TelaPrincipal(String usuario) {
-
+		setExtendedState(MAXIMIZED_BOTH);
 		labelUsuario.setText(usuario);
 
 		setTitle("Home");
@@ -511,7 +511,7 @@ public class TelaPrincipal extends JFrame {
 				try {
 					conecta.rs.first();
 					if (conecta.rs.getString("tipo_usuario").equals("Médico")
-							|| conecta.rs.getString("tipo_usuario").equals("MÉDICO")) {
+							|| conecta.rs.getString("tipo_usuario").equals("Administrador")) {
 
 						FormConsultas pep = new FormConsultas();
 						pep.setVisible(true);

@@ -31,7 +31,7 @@ import modelo.ModeloTabela;
 import modeloDao.DaoMarcConsulta;
 import relatorios.Relatorio;
 
-public class FormReimprimirExame extends JFrame {
+public class FormReimprimirAtestado extends JFrame {
 
 	private JPanel contentPane;
 	
@@ -44,7 +44,7 @@ public class FormReimprimirExame extends JFrame {
 	JButton btnCancelar = new JButton("Cancelar");
 	private JLabel lblCodigo;
 	private JTextField textFieldIdMarcacao;
-	private JTable tableReimprimirExame = new JTable();
+	private JTable tableReimprimirAtestado = new JTable();
 	JScrollPane scrollPane = new JScrollPane();
 	BeanMarcConsulta marcacao = new BeanMarcConsulta();
 	Relatorio relatorio = new Relatorio();
@@ -77,16 +77,16 @@ public class FormReimprimirExame extends JFrame {
 
 		ModeloTabela modeloTabela = new ModeloTabela(dados, colunas);
 		contentPane.add(scrollPane);
-		tableReimprimirExame.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		tableReimprimirExame.addMouseListener(new MouseAdapter() {
+		tableReimprimirAtestado.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		tableReimprimirAtestado.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
 				
-				String exame = "" + tableReimprimirExame.getValueAt(tableReimprimirExame.getSelectedRow(), 1);
+				String atestado = "" + tableReimprimirAtestado.getValueAt(tableReimprimirAtestado.getSelectedRow(), 1);
 				
-				System.out.println(exame);
+				System.out.println(atestado);
 				
 				
 				conexao.conexao();
@@ -103,16 +103,16 @@ public class FormReimprimirExame extends JFrame {
 								"	AND tab_marcacao.cod_medico_marcacao = tabmedico.idmedico " + 
 								"	AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente"+
 								"	AND tab_marcacao.status_marcacao LIKE 'Finalizado'"+
-								"	AND nome_paciente like'%" + exame + "%'");
+								"	AND nome_paciente like'%" + atestado + "%'");
 				
 				try {
 					conexao.rs.first();
 					textFieldIdMarcacao.setText(String.valueOf(conexao.rs.getInt("id")));
 					
-					relatorio.SolicitarExame(Integer.parseInt(textFieldIdMarcacao.getText()));
+					relatorio.SolicitarAtestado(Integer.parseInt(textFieldIdMarcacao.getText()));
 					
 				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Não existe Solicitação de Exame para esse Paciente");
+					JOptionPane.showMessageDialog(null, "Não existe Solicitação de Atestado para esse Paciente");
 					System.out.println(e);
 				}
 
@@ -127,19 +127,19 @@ public class FormReimprimirExame extends JFrame {
 			}
 		});
 
-		tableReimprimirExame.setModel(modeloTabela);
-		tableReimprimirExame.getColumnModel().getColumn(0).setPreferredWidth(30); // Zero é o primeiro registro
-		tableReimprimirExame.getColumnModel().getColumn(0).setResizable(false); // Não permite esticar a tabela com o mouse
-		tableReimprimirExame.getColumnModel().getColumn(1).setPreferredWidth(180);
-		tableReimprimirExame.getColumnModel().getColumn(1).setResizable(false);
-		tableReimprimirExame.getColumnModel().getColumn(2).setPreferredWidth(80);
-		tableReimprimirExame.getColumnModel().getColumn(2).setResizable(false);
-		tableReimprimirExame.getColumnModel().getColumn(3).setPreferredWidth(80);
-		tableReimprimirExame.getColumnModel().getColumn(3).setResizable(false);
+		tableReimprimirAtestado.setModel(modeloTabela);
+		tableReimprimirAtestado.getColumnModel().getColumn(0).setPreferredWidth(30); // Zero é o primeiro registro
+		tableReimprimirAtestado.getColumnModel().getColumn(0).setResizable(false); // Não permite esticar a tabela com o mouse
+		tableReimprimirAtestado.getColumnModel().getColumn(1).setPreferredWidth(180);
+		tableReimprimirAtestado.getColumnModel().getColumn(1).setResizable(false);
+		tableReimprimirAtestado.getColumnModel().getColumn(2).setPreferredWidth(80);
+		tableReimprimirAtestado.getColumnModel().getColumn(2).setResizable(false);
+		tableReimprimirAtestado.getColumnModel().getColumn(3).setPreferredWidth(80);
+		tableReimprimirAtestado.getColumnModel().getColumn(3).setResizable(false);
 		
 
-		tableReimprimirExame.getTableHeader().setReorderingAllowed(false); // Não permite reordenar o cabeçalho
-		tableReimprimirExame.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Permite selecionar apenas um dado
+		tableReimprimirAtestado.getTableHeader().setReorderingAllowed(false); // Não permite reordenar o cabeçalho
+		tableReimprimirAtestado.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Permite selecionar apenas um dado
 																					// por
 
 		conexao.desconectar();
@@ -150,7 +150,7 @@ public class FormReimprimirExame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FormReimprimirExame frame = new FormReimprimirExame();
+					FormReimprimirAtestado frame = new FormReimprimirAtestado();
 					frame.setVisible(true);
 
 				} catch (Exception e) {
@@ -160,7 +160,7 @@ public class FormReimprimirExame extends JFrame {
 		});
 	}
 
-	public FormReimprimirExame() {
+	public FormReimprimirAtestado() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 688, 436);
 		contentPane = new JPanel();
@@ -205,21 +205,6 @@ public class FormReimprimirExame extends JFrame {
 
 		btnPesquisar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				paciente.setPesquisa(textFieldPesquisa.getText());
-//				BeanMarcConsulta model = dao.pesquisarReimpressao(paciente);
-//				textFieldIdMarcacao.setText(String.valueOf(model.getIdMarcConsulta()));
-//								
-//				textFieldPesquisa.setText("");
-//				preencherTabela("select *from tab_paciente where nome_nome like'%" + especialidade.getPesquisa() + "%'"); // Mostra
-//																													// todos
-//																													// os
-//																													// médicos
-//																													// de
-//																													// acordo
-//																													// com
-//																													// a
-//																													// letra
-//																													// pesquisada
 
 			}
 		});
@@ -236,7 +221,7 @@ public class FormReimprimirExame extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.activeCaption);
 
-		JLabel lblCadastrarEspecialidade = new JLabel("Reimprimir Exame");
+		JLabel lblCadastrarEspecialidade = new JLabel("Reimprimir Atestado");
 		lblCadastrarEspecialidade.setFont(new Font("Tahoma", Font.BOLD, 21));
 		panel.add(lblCadastrarEspecialidade);
 
@@ -281,7 +266,7 @@ public class FormReimprimirExame extends JFrame {
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(96, Short.MAX_VALUE))
 		);
-		scrollPane.setViewportView(tableReimprimirExame);
+		scrollPane.setViewportView(tableReimprimirAtestado);
 		contentPane.setLayout(gl_contentPane);
 
 	}

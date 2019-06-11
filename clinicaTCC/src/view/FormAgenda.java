@@ -227,6 +227,7 @@ public class FormAgenda extends JFrame {
 		textFieldIdMarcacao = new JTextField();
 		textFieldIdMarcacao.setEnabled(false);
 		textFieldIdMarcacao.setColumns(10);
+		textFieldIdMarcacao.setVisible(false);
 
 		buttonRemarcar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

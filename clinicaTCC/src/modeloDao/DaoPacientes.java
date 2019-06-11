@@ -20,8 +20,7 @@ public class DaoPacientes {
 
 			PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO public.tab_paciente(nome_paciente, sexo_paciente, logradouro_paciente, cidade_paciente, estado_paciente, bairro_paciente, email_paciente, convenio_paciente, nasc_paciente, num_resid_paciente, rg_paciente, cpf_paciente, cep_paciente, telefone_paciente)"+
 					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-//					"insert into tab_paciente (nome_paciente,sexo_paciente,logradouro_paciente,cidade_paciente,estado_paciente,bairro_paciente,email_paciente, convenio_paciente,nasc_paciente,num_resid_paciente,rg_paciente,cep_paciente,telefone_paciente)"
-//							+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			
 			pst.setString(1, modelo.getNome());
 			pst.setString(2, modelo.getSexo());
 			pst.setString(3, modelo.getLogradouro());
@@ -124,8 +123,9 @@ public class DaoPacientes {
 			pst.execute();
 			JOptionPane.showMessageDialog(null, "Excluido com Sucesso!!!");
 		} catch (SQLException e) {
-			JOptionPane.showConfirmDialog(null, "Erro ao excluir" + e);
-			// e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Erro ao excluir");
+			System.out.println(e);
+			
 		}
 
 		conexao.desconectar();

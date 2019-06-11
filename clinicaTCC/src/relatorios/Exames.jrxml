@@ -126,13 +126,6 @@ WHERE
 				</textElement>
 				<text><![CDATA[Paciente :]]></text>
 			</staticText>
-			<textField pattern="dd MMMMM, yyyy">
-				<reportElement x="450" y="270" width="100" height="30" uuid="843e4934-9736-450f-9a60-91fc67f8af1c"/>
-				<textElement>
-					<font size="14" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="420" y="0" width="130" height="30" uuid="5597c5dd-2458-481e-abea-ffc4837cfe22"/>
 				<box>

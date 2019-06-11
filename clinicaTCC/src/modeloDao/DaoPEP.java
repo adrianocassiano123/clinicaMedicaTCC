@@ -90,7 +90,7 @@ public class DaoPEP {
 			pst.setString(1, marcacao.getStatus());
 			pst.setInt(2, marcacao.getIdMarcConsulta());
 			pst.execute();
-			JOptionPane.showMessageDialog(null, "Confirmada Presença");
+			//JOptionPane.showMessageDialog(null, "Confirmada Presença");
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao confirmar \n Erro: " + e);

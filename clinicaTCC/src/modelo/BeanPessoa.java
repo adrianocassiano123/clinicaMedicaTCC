@@ -6,9 +6,9 @@ public class BeanPessoa {
 	private String sexo;
 	private String nascimento;
 	private String email;
-	private int telefone;
-	private int rg;
-	private int cpf;
+	private String telefone;
+	private String rg;
+	private String cpf;
 	private BeanEndereco endereco;
 	
 	
@@ -42,24 +42,25 @@ public class BeanPessoa {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getTelefone() {
+	public String getTelefone() {
 		return telefone;
 	}
-	public void setTelefone(int telefone) {
+	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	public int getRg() {
+	public String getRg() {
 		return rg;
 	}
-	public void setRg(int rg) {
+	public void setRg(String rg) {
 		this.rg = rg;
 	}
-	public int getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
-	public void setCpf(int cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+	
 	
 	
 	

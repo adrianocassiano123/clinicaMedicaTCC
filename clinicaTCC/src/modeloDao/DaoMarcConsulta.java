@@ -23,12 +23,9 @@ public class DaoMarcConsulta {
 		pesquisarMedico(marcar.getNomeMedico());
 		pesquisarPaciente(marcar.getNomePaciente());
 		conexao.conexao();
-		
-		
+
 		Date data = marcar.getData();
 		String novaData = novaData(data);
-		
-		
 
 		try {
 			PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO tab_marcacao("
@@ -51,12 +48,12 @@ public class DaoMarcConsulta {
 		conexao.desconectar();
 
 	}
-	
+
 	public String novaData(Date data) {
-		
+
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		String dataFormatada = formato.format(data);
-	
+
 		return dataFormatada;
 	}
 
@@ -76,13 +73,13 @@ public class DaoMarcConsulta {
 
 	public int pesquisarIdMedico(String nomeMedico) {
 		conexaoMedico.conexao();
-		conexaoMedico.executarSQL("select *from tabmedico where nomemedico ='" + nomeMedico + "'");
+		conexaoMedico.executarSQL("select *from tabmedico where nomemedico LIKE '%" + nomeMedico + "%'");
 
 		try {
 			conexaoMedico.rs.first();
 			idMedico = conexaoMedico.rs.getInt("idmedico");
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Erro ao encontrar Médico" + e);
+			//JOptionPane.showMessageDialog(null, "Erro ao encontrar Médico" + e);
 
 		}
 
@@ -148,7 +145,7 @@ public class DaoMarcConsulta {
 		conexao.desconectar();
 
 	}
-	
+
 	public void cancelarConsulta(BeanMarcConsulta marcacao) {
 
 		conexao.conexao();
@@ -164,48 +161,44 @@ public class DaoMarcConsulta {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao Cancelar");
 			System.out.println(e);
-			
+
 		}
 
 		conexao.desconectar();
 
 	}
-	
+
 	public void remarcarConsulta(BeanMarcConsulta marcar) {
 
-			pesquisarMedico(marcar.getNomeMedico());
-			pesquisarPaciente(marcar.getNomePaciente());
-			conexao.conexao();
-			
-			
-			Date data = marcar.getData();
-			String novaData = novaData(data);
-			
-			
+		pesquisarMedico(marcar.getNomeMedico());
+		pesquisarPaciente(marcar.getNomePaciente());
+		conexao.conexao();
 
-			try {
-				PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO tab_marcacao("
-						+ "	cod_paciente_marcacao, turno_marcacao, cod_medico_marcacao, data_marcacao, motivo_marcacao, status_marcacao)"
-						+ "	VALUES ( ?, ?, ?, to_date(?, 'dd/MM/yyyy'), ?, ?);");
+		Date data = marcar.getData();
+		String novaData = novaData(data);
 
-				pst.setInt(1, idPaciente);
-				pst.setString(2, marcar.getTurno());
-				pst.setInt(3, idMedico);
-				pst.setString(4, novaData);
-				pst.setString(5, marcar.getMotivo());
-				pst.setString(6, marcar.getStatus());
-				pst.execute();
-				JOptionPane.showMessageDialog(null, "Consulta Remarcada");
+		try {
+			PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO tab_marcacao("
+					+ "	cod_paciente_marcacao, turno_marcacao, cod_medico_marcacao, data_marcacao, motivo_marcacao, status_marcacao)"
+					+ "	VALUES ( ?, ?, ?, to_date(?, 'dd/MM/yyyy'), ?, ?);");
 
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Erro ao Salvar" + e);
-			}
+			pst.setInt(1, idPaciente);
+			pst.setString(2, marcar.getTurno());
+			pst.setInt(3, idMedico);
+			pst.setString(4, novaData);
+			pst.setString(5, marcar.getMotivo());
+			pst.setString(6, marcar.getStatus());
+			pst.execute();
+			JOptionPane.showMessageDialog(null, "Consulta Remarcada");
 
-			conexao.desconectar();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erro ao Salvar" + e);
+		}
 
-		
+		conexao.desconectar();
+
 	}
-	
+
 	public void cancelarConsulAnterior(BeanMarcConsulta marcacao) {
 
 		conexao.conexao();
@@ -216,18 +209,17 @@ public class DaoMarcConsulta {
 			pst.setString(1, marcacao.getStatus());
 			pst.setInt(2, marcacao.getIdMarcConsulta());
 			pst.execute();
-			//JOptionPane.showMessageDialog(null, "Cancelada com Sucesso!");
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao Cancelar");
 			System.out.println(e);
-			
+
 		}
 
 		conexao.desconectar();
 
 	}
-	
+
 	public void retorno(BeanMarcConsulta marcacao) {
 
 		conexao.conexao();
@@ -243,15 +235,38 @@ public class DaoMarcConsulta {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao Cancelar");
 			System.out.println(e);
-			
+
 		}
 
 		conexao.desconectar();
 
 	}
-	
-	
-	
-	
-	
+
+	public BeanMarcConsulta pesquisarReimpressao(BeanMarcConsulta marcacao) {
+
+		conexao.conexao();
+		conexao.executarSQL("SELECT tab_marcacao.id_marcacao as id,"
+				+ "			tab_paciente.nome_paciente as paciente," + "			tabmedico.nomemedico as medico,"
+				+ "			tab_marcacao.data_marcacao as data" + "FROM   tab_marcacao," + "		tab_paciente,"
+				+ "		tabmedico" + "WHERE tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente "
+				+ "		AND tab_marcacao.cod_medico_marcacao = tabmedico.idmedico"
+				+ "		AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente"
+				+ "		AND nome_paciente like'%" + marcacao.getPesquisa() + "%'");
+		try {
+			conexao.rs.first();
+
+			marcConsulta.setIdMarcConsulta(conexao.rs.getInt("id"));
+			marcConsulta.setNomePaciente(conexao.rs.getString("paciente"));
+			marcConsulta.setNomeMedico(conexao.rs.getString("medico"));
+			marcConsulta.setData(conexao.rs.getDate("data"));
+
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Paciente Não Encontrado");
+
+		}
+		conexao.desconectar();
+		return marcacao;
+
+	}
+
 }

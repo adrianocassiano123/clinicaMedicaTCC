@@ -11,8 +11,16 @@ public class BeanMarcConsulta {
 	private String motivo;
 	private String turno;
 	private String nascimento;
+	private String pesquisa;
 	
+		
 	
+	public String getPesquisa() {
+		return pesquisa;
+	}
+	public void setPesquisa(String pesquisa) {
+		this.pesquisa = pesquisa;
+	}
 	public int getIdMarcConsulta() {
 		return idMarcConsulta;
 	}

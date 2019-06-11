@@ -216,7 +216,7 @@ public class FormConsultas extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				int id = dao.pesquisarIdMedico(textFieldMedico.getText());
+				int id = dao.pesquisarIdMedico(textFieldMedico.getText().toUpperCase());
 				String idi = String.valueOf(id); // convert o id que é inteiro em String
 				preencherTabela(
 						"SELECT 	*FROM tab_marcacao INNER JOIN tab_paciente ON cod_paciente_marcacao=id_paciente INNER JOIN tabmedico ON cod_medico_marcacao=idmedico WHERE cod_medico_marcacao='"

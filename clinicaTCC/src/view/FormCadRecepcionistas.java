@@ -1,54 +1,219 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
+
+import ModeloConexao.ConexaoBD;
+import modelo.BeanEndereco;
+import modelo.BeanPaciente;
+import modelo.BeanRecepcionista;
+import modelo.ModeloTabela;
+import modeloDao.DaoRecepcionista;
 
 public class FormCadRecepcionistas extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textFieldCodigoRecep;
 	private JTextField textFieldNomeRecep;
-	private JTextField textFieldRgRecep;
-	private JTextField textFieldCpfPaciente;
-	private JTextField textFieldLogradouroRecep;
-	private JTextField textFieldCidadeRecep;
-	private JTextField textFieldEstadoRecep;
-	private JTextField textFieldCepRecep;
-	private JTextField textFieldBairroRecep;
-	private JTextField textFieldTelefoneRecep;
-	private JTextField textFieldEmailRecep;
-	private JTextField textFieldPesquisarRecep;
-	private JTable tableRecep;
-	private JTextField textFieldNumeroRecep;
+	private JComboBox<?> comboBoxSexoRecep;
+	int flag = 0; // Define se o usuário vai salvar ou alterar
 
-	/**
-	 * Launch the application.
-	 */
+	BeanRecepcionista modRecepcionista = new BeanRecepcionista();
+	DaoRecepcionista daoRecepcionista = new DaoRecepcionista();
+	BeanEndereco endereco = new BeanEndereco(); 
+	ConexaoBD conexao = new ConexaoBD();
+	
+	private JTextField textFieldPesquisa;
+	JButton btnPesquisar = new JButton("Pesquisar");
+	JButton btnSalvar = new JButton("Salvar");
+	JButton btnCancelar = new JButton("Cancelar");
+	JButton btnNovo = new JButton("Novo");
+	JButton btnExcluir = new JButton("Excluir ");
+	JButton btnEditar = new JButton("Editar");
+	private JTable tableRecepcionistas = new JTable();
+	JScrollPane scrollPane = new JScrollPane();
+	private final JTextField textFieldIdRecep = new JTextField();
+	JButton buttonExcluirMouClick = new JButton("Excluir ");
+	private JTextField textFieldRgRecep;
+	private JTextField textFieldNascimentPaciente = new JTextField();
+	private JTextField textFieldNascimentRecep;
+	private final JLabel lblNascimento = new JLabel("Nascimento :");
+	private final JPanel panel = new JPanel();
+	private final JPanel panel_1 = new JPanel();
+	private final JPanel panel_2 = new JPanel();
+	private final JLabel lblLogradouro = new JLabel("Logradouro :");
+	private final JTextField textFieldLogradouroRecep = new JTextField();
+	private final JLabel lblNmero = new JLabel("N\u00FAmero :");
+	private final JTextField textFieldNumeroRecep = new JTextField();
+	private final JLabel lblCpf = new JLabel("CPF :");
+	private final JLabel lblCidade = new JLabel("Cidade :");
+	private final JTextField textFieldCidadeRecep = new JTextField();
+	private final JLabel labelUFPaciente = new JLabel("UF :");
+	private final JTextField textFieldEstadoRecep = new JTextField();
+	private final JLabel lblBairro = new JLabel("Bairro :");
+	private final JTextField textFieldBairroRecep = new JTextField();
+	private final JLabel label = new JLabel("Bairro :");
+	private final JTextField textField = new JTextField();
+	private final JLabel lblCep = new JLabel("CEP :");
+	private JTextField textFieldCepPaciente = new JTextField();
+	private JTextField textFieldCepRecep;
+	private final JLabel lblDadosPessoais = new JLabel("Dados Pessoais:");
+	private final JLabel lblEndereo = new JLabel("Endere\u00E7o :");
+	private JTextField textFieldEmailRecep;
+	private JTextField textFieldMatricula;
+	private final JLabel lblTelefone = new JLabel("Telefone :");
+	private final JTextField textFieldTelefoneRecep = new JTextField();
+	private JTextField textFieldCpfPaciente = new JTextField();
+	private JTextField textFieldCpfRecep;;
+
+	public void preencherTabela(String Sql) {
+
+		ArrayList<Object[]> dados = new ArrayList<Object[]>();
+		String[] colunas = new String[] { "ID", "NOME", "SEXO", "LOGRADOURO", "CIDADE", "ESTADO", "BAIRRO", "EMAIL",
+				"MATRICULA", "NASCIMENTO", "NUMERO", "RG", "CPF", "CEP", "TELEFONE" };
+		conexao.conexao();
+		conexao.executarSQL(Sql);
+
+		try {
+			conexao.rs.first(); // Seta o primeiro registro
+
+			do {
+				dados.add(new Object[] { conexao.rs.getInt("id_recep"), conexao.rs.getString("nome_recep"),
+						conexao.rs.getString("sexo_recep"), conexao.rs.getString("logradouro_recep"),
+						conexao.rs.getString("cidade_recep"), conexao.rs.getString("estado_recep"),
+						conexao.rs.getString("bairro_recep"), conexao.rs.getString("email_recep"),
+						conexao.rs.getString("matricula_recep"), conexao.rs.getString("nasc_recep"),
+						conexao.rs.getInt("num_resid_recep"), conexao.rs.getString("rg_recep"),
+						conexao.rs.getString("cpf_recep"), conexao.rs.getString("cep_recep"),
+						conexao.rs.getString("telefone_recep") });
+
+			} while (conexao.rs.next());
+
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(rootPane, "Faça outra Pesquisa");
+		}
+
+		ModeloTabela modeloTabela = new ModeloTabela(dados, colunas);
+		tableRecepcionistas.setBackground(SystemColor.controlHighlight);
+		tableRecepcionistas.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		tableRecepcionistas.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+
+				String nomePaciente = "" + tableRecepcionistas.getValueAt(tableRecepcionistas.getSelectedRow(), 1);
+				conexao.conexao();
+				conexao.executarSQL("select *from tab_recepcionista where nome_recep= '" + nomePaciente + "'");
+
+				try {
+
+					conexao.rs.first();
+
+					textFieldIdRecep.setText(String.valueOf(conexao.rs.getInt("id_recep")));
+					textFieldNomeRecep.setText(conexao.rs.getString("nome_recep"));
+					comboBoxSexoRecep.setEditable(true);
+					comboBoxSexoRecep.setSelectedItem(conexao.rs.getString("sexo_recep"));
+					comboBoxSexoRecep.setEditable(false);
+					textFieldLogradouroRecep.setText(conexao.rs.getString("logradouro_recep"));
+					textFieldCidadeRecep.setText(conexao.rs.getString("cidade_recep"));
+					textFieldEstadoRecep.setText(conexao.rs.getString("estado_recep"));
+					textFieldBairroRecep.setText(conexao.rs.getString("bairro_recep"));
+					textFieldEmailRecep.setText(conexao.rs.getString("email_recep"));
+					textFieldMatricula.setText(conexao.rs.getString("matricula_recep"));
+					textFieldNascimentPaciente.setText(conexao.rs.getString("nasc_recep"));
+					textFieldNumeroRecep.setText(conexao.rs.getString("num_resid_recep"));
+					textFieldRgRecep.setText(conexao.rs.getString("rg_recep"));
+					textFieldCpfPaciente.setText(conexao.rs.getString("cpf_recep"));
+					textFieldCepPaciente.setText(conexao.rs.getString("cep_recep"));
+					textFieldTelefoneRecep.setText(conexao.rs.getString("telefone_recep"));
+
+					btnEditar.setEnabled(true);
+					btnNovo.setEnabled(false);
+					btnCancelar.setEnabled(true);
+					btnExcluir.setVisible(false);
+					buttonExcluirMouClick.setVisible(true);
+
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Erro ao acessar dados" + e);
+				}
+
+				conexao.desconectar();
+
+			}
+		});
+
+		tableRecepcionistas.setModel(modeloTabela);
+		tableRecepcionistas.getColumnModel().getColumn(0).setPreferredWidth(30); // Zero é o primeiro registro
+		tableRecepcionistas.getColumnModel().getColumn(0).setResizable(false); // Não permite esticar a tabela com o mouse
+		tableRecepcionistas.getColumnModel().getColumn(1).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(1).setResizable(true);
+		tableRecepcionistas.getColumnModel().getColumn(2).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(2).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(3).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(3).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(4).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(4).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(5).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(5).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(6).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(6).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(7).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(7).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(8).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(8).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(9).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(9).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(10).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(10).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(11).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(11).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(12).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(12).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(13).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(13).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(14).setPreferredWidth(200);
+		tableRecepcionistas.getColumnModel().getColumn(14).setResizable(false);
+
+
+		tableRecepcionistas.getTableHeader().setReorderingAllowed(false); // Não permite reordenar o cabeçalho
+		tableRecepcionistas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Permite selecionar apenas um dado por
+
+		conexao.desconectar();
+
+	}
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					FormCadRecepcionistas frame = new FormCadRecepcionistas();
 					frame.setVisible(true);
-					frame.setLocationRelativeTo(null);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -56,276 +221,786 @@ public class FormCadRecepcionistas extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public FormCadRecepcionistas() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 885, 730);
+		preencherTabela("select *from tab_paciente order by nome_paciente");
+		textFieldTelefoneRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldTelefoneRecep.setEnabled(false);
+		textFieldTelefoneRecep.setColumns(10);
+		lblTelefone.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblEndereo.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDadosPessoais.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textFieldCepPaciente.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldCepPaciente.setEnabled(false);
+		textFieldCepPaciente.setColumns(10);
+		lblCep.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField.setEnabled(false);
+		textField.setColumns(10);
+		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldBairroRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldBairroRecep.setEnabled(false);
+		textFieldBairroRecep.setColumns(10);
+		lblBairro.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldEstadoRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldEstadoRecep.setEnabled(false);
+		textFieldEstadoRecep.setColumns(10);
+		labelUFPaciente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldCidadeRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldCidadeRecep.setEnabled(false);
+		textFieldCidadeRecep.setColumns(10);
+		lblCidade.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCpf.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldNumeroRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldNumeroRecep.setEnabled(false);
+		textFieldNumeroRecep.setColumns(10);
+		lblNmero.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldLogradouroRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldLogradouroRecep.setEnabled(false);
+		textFieldLogradouroRecep.setColumns(10);
+		lblLogradouro.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		panel_2.setBackground(SystemColor.activeCaption);
+		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) SystemColor.activeCaption));
+		btnNovo.setFont(new Font("Tahoma", Font.BOLD, 14));
+		buttonExcluirMouClick.setVisible(false);
+		btnExcluir.setEnabled(false);
+		textFieldCepPaciente.setEnabled(false);
+		textFieldCpfPaciente.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldCpfPaciente.setColumns(10);
+		textFieldCpfPaciente.setEnabled(false);
+
+		btnNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				flag = 1;
+				textFieldNomeRecep.setEnabled(true);
+				comboBoxSexoRecep.setEnabled(true);
+				textFieldLogradouroRecep.setEnabled(true);
+				textFieldCidadeRecep.setEnabled(true);
+				textFieldEstadoRecep.setEnabled(true);
+				textFieldBairroRecep.setEnabled(true);
+				textFieldEmailRecep.setEnabled(true);
+				textFieldMatricula.setEnabled(true);
+				textFieldNascimentRecep.setEnabled(true);
+				textFieldNumeroRecep.setEnabled(true);
+				textFieldRgRecep.setEnabled(true);
+				textFieldCpfRecep.setEnabled(true);
+				textFieldCepRecep.setEnabled(true);
+				textFieldTelefoneRecep.setEnabled(true);
+				
+
+				btnNovo.setEnabled(false);
+				btnCancelar.setEnabled(true);
+				btnSalvar.setEnabled(true);
+				btnExcluir.setEnabled(false);
+
+			}
+		});
+
+		try {
+			javax.swing.text.MaskFormatter cpf = new javax.swing.text.MaskFormatter("###.###.###-##"); // Mascara data
+			textFieldCpfRecep = new javax.swing.JFormattedTextField(cpf);
+			textFieldCpfRecep.setEnabled(false);
+		} catch (Exception e) {
+		}
+
+		try {
+			javax.swing.text.MaskFormatter nascimento = new javax.swing.text.MaskFormatter("##/##/####"); // Mascara
+																											// data
+			textFieldNascimentRecep = new javax.swing.JFormattedTextField(nascimento);
+		} catch (Exception e) {
+		}
+
+		try {
+			javax.swing.text.MaskFormatter cep = new javax.swing.text.MaskFormatter("##.###-###"); // Mascara CEP
+			textFieldCepRecep = new javax.swing.JFormattedTextField(cep);
+			textFieldCepRecep.setEnabled(false);
+		} catch (Exception e) {
+		}
+
+		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 14));
+
+		btnSalvar.setEnabled(false);
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				if (textFieldNomeRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite o Nome ");
+
+				} else if (textFieldLogradouroRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite O Logradouro ");
+
+				} else if (textFieldCidadeRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite a Cidade ");
+
+				} else if (textFieldEstadoRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite a UF ");
+
+				} else if (textFieldBairroRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite o Bairro ");
+
+				} else if (textFieldEmailRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite o E-mail ");
+				} else if (textFieldMatricula.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite a Matricula ");
+				} else if (textFieldNascimentRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite o Nascimento ");
+				} else if (textFieldNumeroRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite o Número ");
+				} else if (textFieldRgRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite o RG ");
+				} else if (textFieldCepRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite o CEP ");
+				} else if (textFieldTelefoneRecep.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Digite o Telefone ");
+
+				}
+
+				else {
+
+					if (flag == 1) {
+
+						modRecepcionista.setNome(textFieldNomeRecep.getText());
+						modRecepcionista.setSexo(comboBoxSexoRecep.getSelectedItem().toString());
+						endereco.setLogradouro(textFieldLogradouroRecep.getText());
+						endereco.setCidade(textFieldCidadeRecep.getText());
+						endereco.setEstado(textFieldEstadoRecep.getText());
+						endereco.setBairro(textFieldBairroRecep.getText());
+						modRecepcionista.setEmail(textFieldEmailRecep.getText());
+						modRecepcionista.setMatricula(textFieldMatricula.getText());
+						modRecepcionista.setNascimento(textFieldNascimentRecep.getText());
+						endereco.setNumero(Integer.parseInt(textFieldNumeroRecep.getText()));
+						modRecepcionista.setRg(textFieldRgRecep.getText());
+						modRecepcionista.setCpf(textFieldCpfRecep.getText());
+						endereco.setCep(textFieldCepRecep.getText());
+						modRecepcionista.setTelefone(textFieldTelefoneRecep.getText());
+
+						daoRecepcionista.salvar(modRecepcionista,endereco);
+
+						textFieldNomeRecep.setText("");
+						textFieldLogradouroRecep.setText("");
+						textFieldCidadeRecep.setText("");
+						textFieldEstadoRecep.setText("");
+						textFieldBairroRecep.setText("");
+						textFieldEmailRecep.setText("");
+						textFieldMatricula.setText("");
+						textFieldNascimentRecep.setText("");
+						textFieldRgRecep.setText("");
+						textFieldCpfRecep.setText("");
+						textFieldCepRecep.setText("");
+						textFieldTelefoneRecep.setText("");
+
+						textFieldNomeRecep.setEnabled(false);
+						comboBoxSexoRecep.setEnabled(false);
+						textFieldLogradouroRecep.setEnabled(false);
+						textFieldCidadeRecep.setEnabled(false);
+						textFieldEstadoRecep.setEnabled(false);
+						textFieldBairroRecep.setEnabled(false);
+						textFieldEmailRecep.setEnabled(false);
+						textFieldMatricula.setEnabled(false);
+						textFieldNascimentRecep.setEnabled(false);
+						textFieldNumeroRecep.setEnabled(false);
+						textFieldRgRecep.setEnabled(false);
+						textFieldCpfRecep.setEnabled(false);
+						textFieldCepRecep.setEnabled(false);
+						textFieldTelefoneRecep.setEnabled(false);
+						
+						btnNovo.setEnabled(true);
+						btnCancelar.setEnabled(false);
+						btnSalvar.setEnabled(false);
+						comboBoxSexoRecep.setEnabled(false);
+
+						//preencherTabela("select *from tab_paciente order by nome_paciente");
+
+					} else {
+						modRecepcionista.setIdRecep(Integer.parseInt(textFieldIdRecep.getText()));
+						modRecepcionista.setNome(textFieldNomeRecep.getText());
+						modRecepcionista.setSexo(comboBoxSexoRecep.getSelectedItem().toString());
+						endereco.setLogradouro(textFieldLogradouroRecep.getText());
+						endereco.setCidade(textFieldCidadeRecep.getText());
+						endereco.setEstado(textFieldEstadoRecep.getText());
+						endereco.setBairro(textFieldBairroRecep.getText());
+						modRecepcionista.setEmail(textFieldEmailRecep.getText());
+						modRecepcionista.setMatricula(textFieldMatricula.getText());
+						modRecepcionista.setNascimento(textFieldNascimentPaciente.getText());
+						endereco.setNumero(Integer.parseInt(textFieldNumeroRecep.getText()));
+						modRecepcionista.setRg(textFieldRgRecep.getText());
+						modRecepcionista.setCpf(textFieldCpfPaciente.getText());
+						endereco.setCep(textFieldCepPaciente.getText());
+						modRecepcionista.setTelefone(textFieldTelefoneRecep.getText());
+
+						daoRecepcionista.editarRecepcionista(modRecepcionista,endereco); // Faz alteração
+
+						textFieldNomeRecep.setText("");
+						textFieldLogradouroRecep.setText("");
+						textFieldCidadeRecep.setText("");
+						textFieldEstadoRecep.setText("");
+						textFieldBairroRecep.setText("");
+						textFieldEmailRecep.setText("");
+						textFieldMatricula.setText("");
+						textFieldNascimentPaciente.setText("");
+						textFieldRgRecep.setText("");
+						textFieldCpfPaciente.setText("");
+						textFieldCepPaciente.setText("");
+						textFieldTelefoneRecep.setText("");
+
+						textFieldNomeRecep.setEnabled(false);
+						comboBoxSexoRecep.setEnabled(false);
+						textFieldLogradouroRecep.setEnabled(false);
+						textFieldCidadeRecep.setEnabled(false);
+						textFieldEstadoRecep.setEnabled(false);
+						textFieldBairroRecep.setEnabled(false);
+						textFieldEmailRecep.setEnabled(false);
+						textFieldMatricula.setEnabled(false);
+						textFieldNascimentPaciente.setEnabled(false);
+						textFieldNumeroRecep.setEnabled(false);
+						textFieldRgRecep.setEnabled(false);
+						textFieldCpfPaciente.setEnabled(false);
+						textFieldCepPaciente.setEnabled(false);
+						textFieldTelefoneRecep.setEnabled(false);
+
+						btnCancelar.setEnabled(false);
+						btnSalvar.setEnabled(false);
+						comboBoxSexoRecep.setEnabled(false);
+
+					//	preencherTabela("select *from tab_paciente order by nome_paciente");
+
+					}
+				}
+			}
+		});
+		btnEditar.setFont(new Font("Tahoma", Font.BOLD, 14));
+
+		btnEditar.setEnabled(false);
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				flag = 2;
+
+				textFieldNomeRecep.setEnabled(true);
+				comboBoxSexoRecep.setEnabled(true);
+				textFieldLogradouroRecep.setEnabled(true);
+				textFieldCidadeRecep.setEnabled(true);
+				textFieldEstadoRecep.setEnabled(true);
+				textFieldBairroRecep.setEnabled(true);
+				textFieldEmailRecep.setEnabled(true);
+				textFieldMatricula.setEnabled(true);
+				textFieldNascimentPaciente.setEnabled(true);
+				textFieldNumeroRecep.setEnabled(true);
+				textFieldRgRecep.setEnabled(true);
+				textFieldCpfPaciente.setEnabled(true);
+				textFieldCepPaciente.setEnabled(true);
+				textFieldTelefoneRecep.setEnabled(true);
+
+				btnCancelar.setEnabled(true);
+				btnSalvar.setEnabled(true);
+				btnEditar.setEnabled(false);
+				btnNovo.setEnabled(true);
+				btnExcluir.setEnabled(false);
+
+			}
+		});
+
+		buttonExcluirMouClick.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				int resposta = 0;
+				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
+				if (resposta == JOptionPane.YES_NO_OPTION) {
+
+			//		daoRecepcionista.excluir(Integer.parseInt(textFieldIdRecep.getText()));
+					textFieldNomeRecep.setText("");
+					textFieldLogradouroRecep.setText("");
+					textFieldCidadeRecep.setText("");
+					textFieldEstadoRecep.setText("");
+					textFieldBairroRecep.setText("");
+					textFieldEmailRecep.setText("");
+					textFieldMatricula.setText("");
+					textFieldNascimentPaciente.setText("");
+					textFieldRgRecep.setText("");
+					textFieldCpfPaciente.setText("");
+					textFieldCepPaciente.setText("");
+					textFieldTelefoneRecep.setText("");
+					
+					
+					textFieldNomeRecep.setEnabled(false);
+					comboBoxSexoRecep.setEnabled(false);
+					textFieldLogradouroRecep.setEnabled(false);
+					textFieldCidadeRecep.setEnabled(false);
+					textFieldEstadoRecep.setEnabled(false);
+					textFieldBairroRecep.setEnabled(false);
+					textFieldEmailRecep.setEnabled(false);
+					textFieldMatricula.setEnabled(false);
+					textFieldNascimentPaciente.setEnabled(false);
+					textFieldNumeroRecep.setEnabled(false);
+					textFieldRgRecep.setEnabled(false);
+					textFieldCpfPaciente.setEnabled(false);
+					textFieldCepPaciente.setEnabled(false);
+					textFieldTelefoneRecep.setEnabled(false);
+
+									
+					btnEditar.setEnabled(false);
+					btnNovo.setEnabled(true);
+					buttonExcluirMouClick.setEnabled(false);
+					preencherTabela("select *from tab_paciente order by nome_paciente");
+
+				}
+			}
+		});
+		buttonExcluirMouClick.setFont(new Font("Tahoma", Font.BOLD, 14));
+		buttonExcluirMouClick.setVisible(false);
+		btnExcluir.setFont(new Font("Tahoma", Font.BOLD, 14));
+
+		btnExcluir.setEnabled(false);
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int resposta = 0;
+				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
+				if (resposta == JOptionPane.YES_NO_OPTION) {
+					textFieldIdRecep.setText(String.valueOf(modRecepcionista.getIdRecep()));
+					
+					daoRecepcionista.excluir(modRecepcionista);
+
+					textFieldNomeRecep.setText("");
+					textFieldLogradouroRecep.setText("");
+					textFieldCidadeRecep.setText("");
+					textFieldEstadoRecep.setText("");
+					textFieldBairroRecep.setText("");
+					textFieldEmailRecep.setText("");
+					textFieldMatricula.setText("");
+					textFieldNascimentPaciente.setText("");
+					textFieldRgRecep.setText("");
+					textFieldCpfPaciente.setText("");
+					textFieldCepPaciente.setText("");
+					textFieldTelefoneRecep.setText("");
+
+					btnEditar.setEnabled(false);
+					btnExcluir.setEnabled(false);
+					btnNovo.setEnabled(true);
+					preencherTabela("select *from tab_paciente order by nome_paciente");
+				}
+
+			}
+
+		}
+
+		);
+		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 14));
+
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				textFieldNomeRecep.setText("");
+				textFieldLogradouroRecep.setText("");
+				textFieldCidadeRecep.setText("");
+				textFieldEstadoRecep.setText("");
+				textFieldBairroRecep.setText("");
+				textFieldEmailRecep.setText("");
+				textFieldMatricula.setText("");
+				textFieldNascimentPaciente.setText("");
+				textFieldNumeroRecep.setText("");
+				textFieldRgRecep.setText("");
+				textFieldCpfPaciente.setText("");
+				textFieldCepPaciente.setText("");
+				textFieldTelefoneRecep.setText("");
+				textFieldNomeRecep.setEnabled(false);
+				comboBoxSexoRecep.setEnabled(false);
+				textFieldLogradouroRecep.setEnabled(false);
+				textFieldCidadeRecep.setEnabled(false);
+				textFieldEstadoRecep.setEnabled(false);
+				textFieldBairroRecep.setEnabled(false);
+				textFieldEmailRecep.setEnabled(false);
+				textFieldMatricula.setEnabled(false);
+				textFieldNascimentPaciente.setEnabled(false);
+				textFieldNumeroRecep.setEnabled(false);
+				textFieldRgRecep.setEnabled(false);
+				textFieldCpfPaciente.setEnabled(false);
+				textFieldCepPaciente.setEnabled(false);
+				textFieldTelefoneRecep.setEnabled(false);
+				
+				btnEditar.setEnabled(false);
+				btnSalvar.setEnabled(false);
+				btnExcluir.setEnabled(false);
+				btnNovo.setEnabled(true);
+				
+				preencherTabela("select *from tab_paciente order by nome_paciente");
+
+			}
+		});
+
+		textFieldPesquisa = new JTextField();
+		textFieldPesquisa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldPesquisa.setColumns(10);
+		btnPesquisar.setFont(new Font("Tahoma", Font.BOLD, 14));
+
+		btnPesquisar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				modRecepcionista.setPesquisaRecep(textFieldPesquisa.getText());
+				BeanRecepcionista model = daoRecepcionista.pesquisarRecepcionista(modRecepcionista);
+				textFieldIdRecep.setText(String.valueOf(model.getCodPaciente()));
+				textFieldNomeRecep.setText(model.getNome());
+				comboBoxSexoRecep.setEditable(true);/////////////////////////////// Editar combobox
+				comboBoxSexoRecep.setSelectedItem(model.getSexo());
+
+				textFieldLogradouroRecep.setText(model.getLogradouro());
+				textFieldCidadeRecep.setText(model.getCidade());
+				textFieldEstadoPaciente.setText(model.getEstado());
+				textFieldBairroRecep.setText(model.getBairro());
+				textFieldEmailRecep.setText(model.getEmail());
+				textFieldMatricula.setText(model.getConvenioPaciente());
+				textFieldNascimentPaciente.setText(model.getNascimento());
+				textFieldNumeroRecep.setText(String.valueOf(model.getNumero()));
+				textFieldRgRecep.setText(model.getRg());
+				textFieldCpfPaciente.setText(model.getCpf());
+				textFieldCepPaciente.setText(model.getCep());
+				textFieldTelefoneRecep.setText(model.getTelefone());
+
+				btnExcluir.setEnabled(true);
+				comboBoxSexoRecep.setEditable(false);
+				btnEditar.setEnabled(true);
+				btnNovo.setEnabled(false);
+				btnCancelar.setEnabled(true);
+				textFieldPesquisa.setText("");
+				preencherTabela("select *from tab_paciente where nome_paciente like'%"
+						+ modRecepcionista.getPesquisaRecep() + "%'");
+
+			}
+		});
+		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_1
+				.createSequentialGroup()
+				.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE).addGap(37)
+				.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE).addGap(43)
+				.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE).addGap(54)
+				.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+				.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap())
+				.addGroup(gl_panel_1.createSequentialGroup()
+						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, 658,
+								GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(btnPesquisar, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
+						.addGap(2)));
+//		buttonExcluirMouClick.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//			}
+//		});
+
+		textFieldIdRecep.setColumns(10);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 884, 730);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		setResizable(false);
-		setResizable(false);
 		setLocationRelativeTo(null);
+		setResizable(false);
 		
-		
-		
-		JLabel lblCadastroDePacientes = new JLabel("Cadastro de Recepcionistas");
-		lblCadastroDePacientes.setFont(new Font("Tahoma", Font.BOLD, 20));
-		
-		JLabel lblCdigo = new JLabel("C\u00F3digo");
-		
-		textFieldCodigoRecep = new JTextField();
-		textFieldCodigoRecep.setColumns(10);
-		
-		JButton btnNovoRecep = new JButton("Novo");
-		btnNovoRecep.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		
-		JLabel lblNome = new JLabel("Nome:");
-		
-		textFieldNomeRecep = new JTextField();
-		textFieldNomeRecep.setColumns(10);
-		
-		JLabel lblRg = new JLabel("RG: ");
-		
-		textFieldRgRecep = new JTextField();
-		textFieldRgRecep.setColumns(10);
-		
-		JLabel lblCpf = new JLabel("CPF: ");
-		
-		textFieldCpfPaciente = new JTextField();
-		textFieldCpfPaciente.setColumns(10);
-		
-		JLabel lblSexo = new JLabel("Sexo: ");
-		
-		JLabel lblLogradouro = new JLabel("Logradouro");
-		
-		textFieldLogradouroRecep = new JTextField();
-		textFieldLogradouroRecep.setColumns(10);
-		
-		JLabel lblCidade = new JLabel("Cidade:");
-		
-		textFieldCidadeRecep = new JTextField();
-		textFieldCidadeRecep.setColumns(10);
-		
-		JLabel lblEstado = new JLabel("Estado: ");
-		
-		textFieldEstadoRecep = new JTextField();
-		textFieldEstadoRecep.setColumns(10);
-		
-		JLabel lblCep = new JLabel("CEP: ");
-		
-		textFieldCepRecep = new JTextField();
-		textFieldCepRecep.setColumns(10);
-		
-		JLabel lblBairro = new JLabel("Bairro: ");
-		
-		textFieldBairroRecep = new JTextField();
-		textFieldBairroRecep.setColumns(10);
-		
-		JLabel lblTelefone = new JLabel("Telefone: ");
-		
-		textFieldTelefoneRecep = new JTextField();
-		textFieldTelefoneRecep.setColumns(10);
-		
-		JLabel lblEmail = new JLabel("E-mail: ");
-		
-		textFieldEmailRecep = new JTextField();
-		textFieldEmailRecep.setColumns(10);
-		
-		JButton btnAlterarRecep = new JButton("Alterar");
-		
-		textFieldPesquisarRecep = new JTextField();
-		textFieldPesquisarRecep.setColumns(10);
-		
-		JButton btnPesquisarRecep = new JButton("Pesquisar");
-		
-		JButton butnSalvarRecep = new JButton("Salvar");
-		
-		JButton btnExcluirRecep = new JButton("Excluir");
-		
-		JButton btnCancelarRecep = new JButton("Cancelar");
-		
-		JLabel lblNmero = new JLabel("N\u00FAmero: ");
-		
-		textFieldNumeroRecep = new JTextField();
-		textFieldNumeroRecep.setColumns(10);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Masculino", "Feminino"}));
+		//textFieldIdPaciente.setEditable(false);
+		textFieldIdRecep.setVisible(false);
+
+		String tipoUsu[] = { "Masculino", "Feminino" };
+
+		scrollPane = new JScrollPane();
+
+		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
+				gl_panel_1.createSequentialGroup().addContainerGap(14, Short.MAX_VALUE).addGroup(gl_panel_1
+						.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+						.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+						.addGap(18)
+						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnPesquisar, GroupLayout.PREFERRED_SIZE, 27,
+										GroupLayout.PREFERRED_SIZE))
+						.addContainerGap()));
+		panel_1.setLayout(gl_panel_1);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new LineBorder(SystemColor.activeCaption));
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 850, GroupLayout.PREFERRED_SIZE)
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 805, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())
 						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(lblCdigo)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(textFieldCodigoRecep, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(lblNome)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(textFieldNomeRecep, GroupLayout.PREFERRED_SIZE, 340, GroupLayout.PREFERRED_SIZE)
-										.addGap(18)
-										.addComponent(lblRg)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(textFieldRgRecep, GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE))
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(lblCpf)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(textFieldCpfPaciente, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
-										.addComponent(lblSexo)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 268, GroupLayout.PREFERRED_SIZE))
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(lblLogradouro)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(textFieldLogradouroRecep, GroupLayout.PREFERRED_SIZE, 490, GroupLayout.PREFERRED_SIZE)
-										.addGap(26)
-										.addComponent(lblNmero)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(textFieldNumeroRecep, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE))
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-											.addGroup(gl_contentPane.createSequentialGroup()
-												.addComponent(lblCidade)
-												.addPreferredGap(ComponentPlacement.UNRELATED)
-												.addComponent(textFieldCidadeRecep, GroupLayout.PREFERRED_SIZE, 298, GroupLayout.PREFERRED_SIZE))
-											.addGroup(gl_contentPane.createSequentialGroup()
-												.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-													.addComponent(lblBairro)
-													.addComponent(lblEmail))
-												.addGap(18)
-												.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-													.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-														.addGroup(gl_contentPane.createSequentialGroup()
-															.addPreferredGap(ComponentPlacement.RELATED)
-															.addComponent(btnNovoRecep, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
-															.addPreferredGap(ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-															.addComponent(btnAlterarRecep, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-															.addGap(66))
-														.addGroup(gl_contentPane.createSequentialGroup()
-															.addComponent(textFieldEmailRecep, GroupLayout.PREFERRED_SIZE, 316, GroupLayout.PREFERRED_SIZE)
-															.addPreferredGap(ComponentPlacement.RELATED)))
-													.addComponent(textFieldBairroRecep, GroupLayout.PREFERRED_SIZE, 264, GroupLayout.PREFERRED_SIZE))))
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-											.addGroup(gl_contentPane.createSequentialGroup()
-												.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-													.addComponent(lblTelefone)
-													.addGroup(gl_contentPane.createSequentialGroup()
-														.addComponent(lblEstado)
-														.addGap(18)
-														.addComponent(textFieldEstadoRecep, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)))
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-													.addComponent(textFieldTelefoneRecep, GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-													.addGroup(gl_contentPane.createSequentialGroup()
-														.addComponent(lblCep)
-														.addGap(18)
-														.addComponent(textFieldCepRecep, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE))))
-											.addGroup(gl_contentPane.createSequentialGroup()
-												.addGap(28)
-												.addComponent(butnSalvarRecep, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-												.addGap(96)
-												.addComponent(btnExcluirRecep, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-												.addComponent(btnCancelarRecep, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)))))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addComponent(textFieldIdRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addContainerGap())
-							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-								.addComponent(textFieldPesquisarRecep, GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
-								.addGap(18)
-								.addComponent(btnPesquisarRecep)
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 804, GroupLayout.PREFERRED_SIZE)
 								.addContainerGap())
-							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-								.addComponent(lblCadastroDePacientes)
-								.addGap(306)))))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE)
+									.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 805, GroupLayout.PREFERRED_SIZE)
+									.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 807, GroupLayout.PREFERRED_SIZE))
+								.addGap(100)))))
 		);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(lblCadastroDePacientes)
-					.addGap(29)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCdigo)
-						.addComponent(textFieldCodigoRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(28)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNome)
-						.addComponent(textFieldNomeRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblRg)
-						.addComponent(textFieldRgRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(textFieldIdRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCpf)
-						.addComponent(textFieldCpfPaciente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblSexo)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblLogradouro)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(textFieldLogradouroRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblNmero)
-							.addComponent(textFieldNumeroRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCidade)
-						.addComponent(textFieldCidadeRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textFieldCepRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblCep)
-						.addComponent(textFieldEstadoRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblEstado))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldTelefoneRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblBairro)
-						.addComponent(textFieldBairroRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTelefone))
-					.addGap(39)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblEmail)
-						.addComponent(textFieldEmailRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(butnSalvarRecep, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnExcluirRecep, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnCancelarRecep, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnNovoRecep, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnAlterarRecep, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldPesquisarRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnPesquisarRecep))
-					.addGap(18)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-					.addContainerGap())
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
+					.addGap(12)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 222, GroupLayout.PREFERRED_SIZE)
+					.addGap(11))
 		);
-		
-		tableRecep = new JTable();
-		tableRecep.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-			}
-		));
-		scrollPane.setViewportView(tableRecep);
+		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
+		gl_panel_3.setHorizontalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_3.createSequentialGroup().addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_panel_3.createSequentialGroup()
+								.addComponent(lblLogradouro, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(textFieldLogradouroRecep, GroupLayout.PREFERRED_SIZE, 486,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(18).addComponent(lblNmero, GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.RELATED).addComponent(textFieldNumeroRecep,
+										GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
+						.addGroup(Alignment.TRAILING,
+								gl_panel_3.createSequentialGroup()
+										.addComponent(label, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+										.addGap(4).addComponent(textField, GroupLayout.PREFERRED_SIZE, 222,
+												GroupLayout.PREFERRED_SIZE))
+						.addGroup(Alignment.TRAILING,
+								gl_panel_3.createSequentialGroup()
+										.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_panel_3.createSequentialGroup().addContainerGap()
+														.addComponent(lblCep, GroupLayout.PREFERRED_SIZE, 41,
+																GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.UNRELATED)
+														.addComponent(textFieldCepRecep, GroupLayout.PREFERRED_SIZE,
+																227, GroupLayout.PREFERRED_SIZE))
+												.addGroup(gl_panel_3
+														.createSequentialGroup()
+														.addComponent(
+																lblCidade, GroupLayout.PREFERRED_SIZE, 58,
+																GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(textFieldCidadeRecep, GroupLayout.DEFAULT_SIZE,
+																312, Short.MAX_VALUE)))
+										.addGap(18)
+										.addGroup(gl_panel_3.createParallelGroup(Alignment.TRAILING).addGroup(gl_panel_3
+												.createSequentialGroup()
+												.addComponent(labelUFPaciente, GroupLayout.PREFERRED_SIZE, 33,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(textFieldEstadoRecep, GroupLayout.PREFERRED_SIZE, 73,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.UNRELATED)
+												.addComponent(lblBairro, GroupLayout.PREFERRED_SIZE, 57,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(textFieldBairroRecep, GroupLayout.PREFERRED_SIZE, 222,
+														GroupLayout.PREFERRED_SIZE))
+												.addGroup(gl_panel_3.createSequentialGroup()
+														.addComponent(lblTelefone, GroupLayout.PREFERRED_SIZE, 68,
+																GroupLayout.PREFERRED_SIZE)
+														.addGap(18).addComponent(textFieldTelefoneRecep,
+																GroupLayout.PREFERRED_SIZE, 222,
+																GroupLayout.PREFERRED_SIZE))))
+						.addComponent(lblEndereo, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+						.addContainerGap()));
+		gl_panel_3.setVerticalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_3
+				.createSequentialGroup().addComponent(lblEndereo).addGap(8)
+				.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+						.addComponent(textFieldNumeroRecep, GroupLayout.PREFERRED_SIZE, 22,
+								GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblLogradouro, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldLogradouroRecep, GroupLayout.PREFERRED_SIZE, 22,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNmero, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)))
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_3.createSequentialGroup().addGap(13)
+								.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 17,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(
+												textFieldCidadeRecep, GroupLayout.PREFERRED_SIZE, 22,
+												GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_panel_3.createSequentialGroup().addGap(11).addGroup(gl_panel_3
+								.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textFieldBairroRecep, GroupLayout.PREFERRED_SIZE, 22,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblBairro, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldEstadoRecep, GroupLayout.PREFERRED_SIZE, 22,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(labelUFPaciente, GroupLayout.PREFERRED_SIZE, 17,
+										GroupLayout.PREFERRED_SIZE))))
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_3.createSequentialGroup()
+						.addGap(11).addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textFieldCepRecep, GroupLayout.PREFERRED_SIZE, 22,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblCep, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
+						.addGap(64).addComponent(label, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_3.createSequentialGroup().addGap(9)
+								.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
+										.addComponent(textFieldTelefoneRecep, GroupLayout.PREFERRED_SIZE, 22,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblTelefone, GroupLayout.PREFERRED_SIZE, 17,
+												GroupLayout.PREFERRED_SIZE))
+								.addGap(59)
+								.addComponent(textField, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)))
+				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		panel_3.setLayout(gl_panel_3);
+
+		JLabel lblCadastroDePacientes = new JLabel("Cadastro de Recepcionistas");
+		panel_2.add(lblCadastroDePacientes);
+		lblCadastroDePacientes.setFont(new Font("Tahoma", Font.BOLD, 21));
+		panel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) SystemColor.activeCaption));
+
+		JLabel lblNome = new JLabel("Nome :");
+		lblNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		textFieldNomeRecep = new JTextField();
+		textFieldNomeRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldNomeRecep.setEnabled(false);
+		textFieldNomeRecep.setColumns(10);
+
+		JLabel lblSexoPaciente = new JLabel("Sexo :");
+		lblSexoPaciente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		comboBoxSexoRecep = new JComboBox<Object>(tipoUsu);
+		comboBoxSexoRecep.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		comboBoxSexoRecep.setEnabled(false);
+
+		JLabel lblRg = new JLabel("RG :");
+		lblRg.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		textFieldRgRecep = new JTextField();
+		textFieldRgRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldRgRecep.setEnabled(false);
+		textFieldRgRecep.setColumns(10);
+		lblNascimento.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldNascimentRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldNascimentRecep.setEnabled(false);
+		textFieldNascimentRecep.setColumns(10);
+
+		JLabel lblEmail = new JLabel("E-mail :");
+		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		textFieldEmailRecep = new JTextField();
+		textFieldEmailRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldEmailRecep.setEnabled(false);
+		textFieldEmailRecep.setColumns(10);
+
+		JLabel lblConvnio = new JLabel("Matricula :");
+		lblConvnio.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		textFieldMatricula = new JTextField();
+		textFieldMatricula.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldMatricula.setEnabled(false);
+		textFieldMatricula.setColumns(10);
+
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+						.addGroup(gl_panel
+								.createParallelGroup(Alignment.LEADING).addComponent(lblDadosPessoais).addGroup(gl_panel
+										.createSequentialGroup().addContainerGap().addGroup(gl_panel
+												.createParallelGroup(Alignment.LEADING).addGroup(gl_panel
+														.createSequentialGroup().addGroup(gl_panel
+																.createParallelGroup(Alignment.LEADING, false)
+																.addGroup(gl_panel.createSequentialGroup().addComponent(
+																		lblNome)
+																		.addPreferredGap(ComponentPlacement.RELATED)
+																		.addComponent(
+																				textFieldNomeRecep,
+																				GroupLayout.PREFERRED_SIZE, 458,
+																				GroupLayout.PREFERRED_SIZE)
+																		.addGap(18).addComponent(lblSexoPaciente))
+																.addGroup(gl_panel
+																		.createSequentialGroup().addComponent(lblRg)
+																		.addGap(24).addGroup(gl_panel
+																				.createParallelGroup(Alignment.LEADING)
+																				.addComponent(
+																						textFieldEmailRecep,
+																						GroupLayout.PREFERRED_SIZE, 396,
+																						GroupLayout.PREFERRED_SIZE)
+																				.addGroup(gl_panel
+																						.createSequentialGroup()
+																						.addComponent(
+																								textFieldRgRecep,
+																								GroupLayout.PREFERRED_SIZE,
+																								127,
+																								GroupLayout.PREFERRED_SIZE)
+																						.addPreferredGap(
+																								ComponentPlacement.RELATED)
+																						.addComponent(lblCpf)
+																						.addPreferredGap(
+																								ComponentPlacement.RELATED)
+																						.addComponent(
+																								textFieldCpfRecep,
+																								GroupLayout.PREFERRED_SIZE,
+																								197,
+																								GroupLayout.PREFERRED_SIZE)
+																						.addGap(18)
+																						.addComponent(lblNascimento)))))
+														.addPreferredGap(ComponentPlacement.RELATED, 138,
+																Short.MAX_VALUE))
+												.addGroup(gl_panel.createSequentialGroup()
+														.addComponent(lblEmail, GroupLayout.PREFERRED_SIZE, 58,
+																GroupLayout.PREFERRED_SIZE)
+														.addGap(418)
+														.addComponent(lblConvnio, GroupLayout.PREFERRED_SIZE, 81,
+																GroupLayout.PREFERRED_SIZE)))
+										.addGap(18)
+										.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+												.addComponent(textFieldNascimentRecep, GroupLayout.PREFERRED_SIZE,
+														190, GroupLayout.PREFERRED_SIZE)
+												.addComponent(comboBoxSexoRecep, GroupLayout.PREFERRED_SIZE, 190,
+														GroupLayout.PREFERRED_SIZE)
+												.addComponent(textFieldMatricula, GroupLayout.PREFERRED_SIZE, 190,
+														GroupLayout.PREFERRED_SIZE))))
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel
+				.createSequentialGroup().addComponent(lblDadosPessoais).addGap(7)
+				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(lblNome)
+						.addComponent(textFieldNomeRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSexoPaciente).addComponent(comboBoxSexoRecep, GroupLayout.PREFERRED_SIZE,
+								GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(lblRg)
+						.addComponent(textFieldNascimentRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textFieldRgRecep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(textFieldCpfRecep, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNascimento))
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblEmail, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblConvnio, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldEmailRecep, GroupLayout.PREFERRED_SIZE, 22,
+										GroupLayout.PREFERRED_SIZE))
+						.addComponent(textFieldMatricula, GroupLayout.PREFERRED_SIZE, 22,
+								GroupLayout.PREFERRED_SIZE))
+				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		panel.setLayout(gl_panel);
+		scrollPane.setViewportView(tableRecepcionistas);
 		contentPane.setLayout(gl_contentPane);
+
 	}
 }

@@ -91,14 +91,16 @@ public class Relatorio {
 		try {
 
 			jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
+			JasperViewer view = new JasperViewer(jasperPrint, false);
+			view.setVisible(true);
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel gerar relatório!" + e);
+			JOptionPane.showMessageDialog(null, "Não Existe Declaração para este Paciente");
+			System.out.println(e);
 
 		}
 
-		JasperViewer view = new JasperViewer(jasperPrint, false);
-		view.setVisible(true);
+		
 	}
 	
 	
@@ -117,14 +119,16 @@ public class Relatorio {
 		try {
 
 			jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
+			JasperViewer view = new JasperViewer(jasperPrint, false);
+			view.setVisible(true);
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel gerar Exame!" + e);
+			JOptionPane.showMessageDialog(null, "Não Existe Exame para esse paciente!");
+			System.out.println( e);
 
 		}
 
-		JasperViewer view = new JasperViewer(jasperPrint, false);
-		view.setVisible(true);
+		
 	}
 	
 	public void SolicitarAtestado(int codigoMarcacao) {
@@ -142,14 +146,16 @@ public class Relatorio {
 		try {
 
 			jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
+			JasperViewer view = new JasperViewer(jasperPrint, false);
+			view.setVisible(true);
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel gerar Exame!" + e);
+			JOptionPane.showMessageDialog(null, "Não Existe Atestado para esse Paciente!");
+			System.out.println(e);
 
 		}
 
-		JasperViewer view = new JasperViewer(jasperPrint, false);
-		view.setVisible(true);
+		
 	}
 
 }

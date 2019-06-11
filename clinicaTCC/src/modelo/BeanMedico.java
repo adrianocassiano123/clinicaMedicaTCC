@@ -5,7 +5,7 @@ public class BeanMedico extends BeanPessoa{
 	private int codigo;
 	private String nomeMedico;
 	private BeanEndereco endMedico;
-	private String especialidade;
+	private int especialidade;
 	private int crm;
 	private String pesquisa;
 	
@@ -36,10 +36,10 @@ public class BeanMedico extends BeanPessoa{
 	public void setNome(String nome) {
 		this.nomeMedico = nome;
 	}
-	public String getEspecialidade() {
+	public int getEspecialidade() {
 		return especialidade;
 	}
-	public void setEspecialidade(String especialidade) {
+	public void setEspecialidade(int especialidade) {
 		this.especialidade = especialidade;
 	}
 	public int getCrm() {

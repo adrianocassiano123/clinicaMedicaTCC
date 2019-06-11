@@ -61,7 +61,7 @@ public class FormEspecialidade extends JFrame {
 	public void preencherTabela(String Sql) {
 
 		ArrayList<Object[]> dados = new ArrayList<Object[]>();
-		String[] colunas = new String[] { "ID","ESPECIALIDADE", "VALOR" };
+		String[] colunas = new String[] { "ID","ESPECIALIDADE", "MOEDA" ,"VALOR" };
 		conexao.conexao();
 		conexao.executarSQL(Sql);
 
@@ -69,7 +69,7 @@ public class FormEspecialidade extends JFrame {
 			conexao.rs.first(); // Seta o primeiro registro
 
 			do {
-				dados.add(new Object[] { conexao.rs.getInt("id_especialidade"), conexao.rs.getString("tipo_especialidade"), conexao.rs.getBigDecimal("valor") });
+				dados.add(new Object[] { conexao.rs.getInt("id_especialidade"), conexao.rs.getString("tipo_especialidade"),"R$", conexao.rs.getBigDecimal("valor") });
 				
 			} while (conexao.rs.next());
 
@@ -93,9 +93,11 @@ public class FormEspecialidade extends JFrame {
 
 					conexao.rs.first();
 					textFieldCodEspecialidade.setText(String.valueOf(conexao.rs.getInt("id_especialidade")));
+					
 					textFieldValor.setText(conexao.rs.getString("valor"));
+										
+									
 					txtEspecialidade.setText(conexao.rs.getString("tipo_especialidade"));
-
 					btnNovaEspecialidade.setEnabled(false);
 					btnCancelar.setEnabled(true);
 					textFieldValor.setEnabled(true);
@@ -151,6 +153,14 @@ public class FormEspecialidade extends JFrame {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		preencherTabela("select *from tab_especialidade order by tipo_especialidade");
+		
+		
+		try {
+			javax.swing.text.MaskFormatter valor = new javax.swing.text.MaskFormatter("##.##"); // Mascara Monetário
+			textFieldValor = new javax.swing.JFormattedTextField(valor);
+			textFieldValor.setEnabled(false);
+		} catch (Exception e) {
+		}
 
 		btnSalvarEspecialidade.setEnabled(false);
 		btnSalvarEspecialidade.addActionListener(new ActionListener() {
@@ -224,9 +234,11 @@ public class FormEspecialidade extends JFrame {
 
 			}
 		});
+		
+		
 
 		textFieldValor = new JTextField();
-		textFieldValor.setEnabled(false);
+		
 		textFieldValor.setColumns(10);
 
 		JLabel lblEspecialidade = new JLabel("Especialidade: ");
