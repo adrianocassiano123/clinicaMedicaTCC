@@ -30,12 +30,12 @@ import javax.swing.border.MatteBorder;
 
 import ModeloConexao.ConexaoBD;
 import modelo.BeanEndereco;
-import modelo.BeanPaciente;
 import modelo.BeanRecepcionista;
 import modelo.ModeloTabela;
 import modeloDao.DaoRecepcionista;
+import modeloDao.TabelaRecep;
 
-public class FormCadRecepcionistas extends JFrame {
+public class FormCadRecepcionistas extends JFrame implements TabelaRecep{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -53,15 +53,13 @@ public class FormCadRecepcionistas extends JFrame {
 	JButton btnSalvar = new JButton("Salvar");
 	JButton btnCancelar = new JButton("Cancelar");
 	JButton btnNovo = new JButton("Novo");
-	JButton btnExcluir = new JButton("Excluir ");
 	JButton btnEditar = new JButton("Editar");
 	private JTable tableRecepcionistas = new JTable();
 	JScrollPane scrollPane = new JScrollPane();
 	private final JTextField textFieldIdRecep = new JTextField();
 	JButton buttonExcluirMouClick = new JButton("Excluir ");
 	private JTextField textFieldRgRecep;
-	private JTextField textFieldNascimentPaciente = new JTextField();
-	private JTextField textFieldNascimentRecep;
+	private JTextField textFieldNascimentRecep= new JTextField();
 	private final JLabel lblNascimento = new JLabel("Nascimento :");
 	private final JPanel panel = new JPanel();
 	private final JPanel panel_1 = new JPanel();
@@ -80,19 +78,20 @@ public class FormCadRecepcionistas extends JFrame {
 	private final JLabel label = new JLabel("Bairro :");
 	private final JTextField textField = new JTextField();
 	private final JLabel lblCep = new JLabel("CEP :");
-	private JTextField textFieldCepPaciente = new JTextField();
-	private JTextField textFieldCepRecep;
+	private JTextField textFieldCepRecep = new JTextField();
 	private final JLabel lblDadosPessoais = new JLabel("Dados Pessoais:");
 	private final JLabel lblEndereo = new JLabel("Endere\u00E7o :");
 	private JTextField textFieldEmailRecep;
 	private JTextField textFieldMatricula;
 	private final JLabel lblTelefone = new JLabel("Telefone :");
 	private final JTextField textFieldTelefoneRecep = new JTextField();
-	private JTextField textFieldCpfPaciente = new JTextField();
-	private JTextField textFieldCpfRecep;;
-
-	public void preencherTabela() {
-		String Sql ="select *from tab_recepcionista order by nome_recep";
+	private JTextField textFieldCpfRecep = new JTextField();
+	
+	
+	@Override
+	public void preencherTabela(String Sql) {
+		
+		
 		ArrayList<Object[]> dados = new ArrayList<Object[]>();
 		String[] colunas = new String[] { "ID", "NOME", "SEXO", "LOGRADOURO", "CIDADE", "ESTADO", "BAIRRO", "EMAIL",
 				"MATRICULA", "NASCIMENTO", "NUMERO", "RG", "CPF", "CEP", "TELEFONE" };
@@ -133,9 +132,9 @@ public class FormCadRecepcionistas extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 
-				String nomePaciente = "" + tableRecepcionistas.getValueAt(tableRecepcionistas.getSelectedRow(), 1);
+				String nomeRecep = "" + tableRecepcionistas.getValueAt(tableRecepcionistas.getSelectedRow(), 1);
 				conexao.conexao();
-				conexao.executarSQL("select *from tab_recepcionista where nome_recep= '" + nomePaciente + "'");
+				conexao.executarSQL("select *from tab_recepcionista where nome_recep= '" + nomeRecep + "'");
 
 				try {
 
@@ -152,18 +151,18 @@ public class FormCadRecepcionistas extends JFrame {
 					textFieldBairroRecep.setText(conexao.rs.getString("bairro_recep"));
 					textFieldEmailRecep.setText(conexao.rs.getString("email_recep"));
 					textFieldMatricula.setText(conexao.rs.getString("matricula_recep"));
-					textFieldNascimentPaciente.setText(conexao.rs.getString("nasc_recep"));
+					textFieldNascimentRecep.setText(conexao.rs.getString("nasc_recep"));
 					textFieldNumeroRecep.setText(conexao.rs.getString("num_resid_recep"));
 					textFieldRgRecep.setText(conexao.rs.getString("rg_recep"));
-					textFieldCpfPaciente.setText(conexao.rs.getString("cpf_recep"));
-					textFieldCepPaciente.setText(conexao.rs.getString("cep_recep"));
+					textFieldCpfRecep.setText(conexao.rs.getString("cpf_recep"));
+					textFieldCepRecep.setText(conexao.rs.getString("cep_recep"));
 					textFieldTelefoneRecep.setText(conexao.rs.getString("telefone_recep"));
 
 					btnEditar.setEnabled(true);
 					btnNovo.setEnabled(false);
 					btnCancelar.setEnabled(true);
-					btnExcluir.setVisible(false);
-					buttonExcluirMouClick.setVisible(true);
+					buttonExcluirMouClick.setEnabled(true);
+					
 
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, "Erro ao acessar dados" + e);
@@ -230,7 +229,7 @@ public class FormCadRecepcionistas extends JFrame {
 
 	public FormCadRecepcionistas() {
 		
-		preencherTabela();
+		preencherTabela("select *from tab_recepcionista order by nome_recep");
 		
 		textFieldTelefoneRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldTelefoneRecep.setEnabled(false);
@@ -238,9 +237,9 @@ public class FormCadRecepcionistas extends JFrame {
 		lblTelefone.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblEndereo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblDadosPessoais.setFont(new Font("Tahoma", Font.BOLD, 11));
-		textFieldCepPaciente.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textFieldCepPaciente.setEnabled(false);
-		textFieldCepPaciente.setColumns(10);
+		textFieldCepRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldCepRecep.setEnabled(false);
+		textFieldCepRecep.setColumns(10);
 		lblCep.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textField.setEnabled(false);
@@ -270,12 +269,10 @@ public class FormCadRecepcionistas extends JFrame {
 		panel_2.setBackground(SystemColor.activeCaption);
 		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) SystemColor.activeCaption));
 		btnNovo.setFont(new Font("Tahoma", Font.BOLD, 14));
-		buttonExcluirMouClick.setVisible(false);
-		btnExcluir.setEnabled(false);
-		textFieldCepPaciente.setEnabled(false);
-		textFieldCpfPaciente.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textFieldCpfPaciente.setColumns(10);
-		textFieldCpfPaciente.setEnabled(false);
+		textFieldCepRecep.setEnabled(false);
+		textFieldCpfRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldCpfRecep.setColumns(10);
+		textFieldCpfRecep.setEnabled(false);
 
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -299,8 +296,7 @@ public class FormCadRecepcionistas extends JFrame {
 				btnNovo.setEnabled(false);
 				btnCancelar.setEnabled(true);
 				btnSalvar.setEnabled(true);
-				btnExcluir.setEnabled(false);
-
+				
 			}
 		});
 
@@ -418,7 +414,7 @@ public class FormCadRecepcionistas extends JFrame {
 						btnSalvar.setEnabled(false);
 						comboBoxSexoRecep.setEnabled(false);
 
-						//preencherTabela("select *from tab_paciente order by nome_paciente");
+						preencherTabela("select *from tab_recepcionista order by nome_recep");
 
 					} else {
 						modRecepcionista.setIdRecep(Integer.parseInt(textFieldIdRecep.getText()));
@@ -430,11 +426,11 @@ public class FormCadRecepcionistas extends JFrame {
 						endereco.setBairro(textFieldBairroRecep.getText());
 						modRecepcionista.setEmail(textFieldEmailRecep.getText());
 						modRecepcionista.setMatricula(textFieldMatricula.getText());
-						modRecepcionista.setNascimento(textFieldNascimentPaciente.getText());
+						modRecepcionista.setNascimento(textFieldNascimentRecep.getText());
 						endereco.setNumero(Integer.parseInt(textFieldNumeroRecep.getText()));
 						modRecepcionista.setRg(textFieldRgRecep.getText());
-						modRecepcionista.setCpf(textFieldCpfPaciente.getText());
-						endereco.setCep(textFieldCepPaciente.getText());
+						modRecepcionista.setCpf(textFieldCpfRecep.getText());
+						endereco.setCep(textFieldCepRecep.getText());
 						modRecepcionista.setTelefone(textFieldTelefoneRecep.getText());
 
 						daoRecepcionista.editarRecepcionista(modRecepcionista,endereco); // Faz alteração
@@ -446,10 +442,10 @@ public class FormCadRecepcionistas extends JFrame {
 						textFieldBairroRecep.setText("");
 						textFieldEmailRecep.setText("");
 						textFieldMatricula.setText("");
-						textFieldNascimentPaciente.setText("");
+						textFieldNascimentRecep.setText("");
 						textFieldRgRecep.setText("");
-						textFieldCpfPaciente.setText("");
-						textFieldCepPaciente.setText("");
+						textFieldCpfRecep.setText("");
+						textFieldCepRecep.setText("");
 						textFieldTelefoneRecep.setText("");
 
 						textFieldNomeRecep.setEnabled(false);
@@ -460,18 +456,19 @@ public class FormCadRecepcionistas extends JFrame {
 						textFieldBairroRecep.setEnabled(false);
 						textFieldEmailRecep.setEnabled(false);
 						textFieldMatricula.setEnabled(false);
-						textFieldNascimentPaciente.setEnabled(false);
+						textFieldNascimentRecep.setEnabled(false);
 						textFieldNumeroRecep.setEnabled(false);
 						textFieldRgRecep.setEnabled(false);
-						textFieldCpfPaciente.setEnabled(false);
-						textFieldCepPaciente.setEnabled(false);
+						textFieldCpfRecep.setEnabled(false);
+						textFieldCepRecep.setEnabled(false);
 						textFieldTelefoneRecep.setEnabled(false);
 
 						btnCancelar.setEnabled(false);
 						btnSalvar.setEnabled(false);
 						comboBoxSexoRecep.setEnabled(false);
-
-					//	preencherTabela("select *from tab_paciente order by nome_paciente");
+						
+						preencherTabela("select *from tab_recepcionista order by nome_recep");
+					
 
 					}
 				}
@@ -492,21 +489,22 @@ public class FormCadRecepcionistas extends JFrame {
 				textFieldBairroRecep.setEnabled(true);
 				textFieldEmailRecep.setEnabled(true);
 				textFieldMatricula.setEnabled(true);
-				textFieldNascimentPaciente.setEnabled(true);
+				textFieldNascimentRecep.setEnabled(true);
 				textFieldNumeroRecep.setEnabled(true);
 				textFieldRgRecep.setEnabled(true);
-				textFieldCpfPaciente.setEnabled(true);
-				textFieldCepPaciente.setEnabled(true);
+				textFieldCpfRecep.setEnabled(true);
+				textFieldCepRecep.setEnabled(true);
 				textFieldTelefoneRecep.setEnabled(true);
 
 				btnCancelar.setEnabled(true);
 				btnSalvar.setEnabled(true);
 				btnEditar.setEnabled(false);
 				btnNovo.setEnabled(true);
-				btnExcluir.setEnabled(false);
+				
 
 			}
 		});
+		buttonExcluirMouClick.setEnabled(false);
 
 		buttonExcluirMouClick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -515,7 +513,7 @@ public class FormCadRecepcionistas extends JFrame {
 				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
 				if (resposta == JOptionPane.YES_NO_OPTION) {
 
-			//		daoRecepcionista.excluir(Integer.parseInt(textFieldIdRecep.getText()));
+					daoRecepcionista.excluir(Integer.parseInt(textFieldIdRecep.getText()));
 					textFieldNomeRecep.setText("");
 					textFieldLogradouroRecep.setText("");
 					textFieldCidadeRecep.setText("");
@@ -523,10 +521,10 @@ public class FormCadRecepcionistas extends JFrame {
 					textFieldBairroRecep.setText("");
 					textFieldEmailRecep.setText("");
 					textFieldMatricula.setText("");
-					textFieldNascimentPaciente.setText("");
+					textFieldNascimentRecep.setText("");
 					textFieldRgRecep.setText("");
-					textFieldCpfPaciente.setText("");
-					textFieldCepPaciente.setText("");
+					textFieldCpfRecep.setText("");
+					textFieldCepRecep.setText("");
 					textFieldTelefoneRecep.setText("");
 					
 					
@@ -538,60 +536,24 @@ public class FormCadRecepcionistas extends JFrame {
 					textFieldBairroRecep.setEnabled(false);
 					textFieldEmailRecep.setEnabled(false);
 					textFieldMatricula.setEnabled(false);
-					textFieldNascimentPaciente.setEnabled(false);
+					textFieldNascimentRecep.setEnabled(false);
 					textFieldNumeroRecep.setEnabled(false);
 					textFieldRgRecep.setEnabled(false);
-					textFieldCpfPaciente.setEnabled(false);
-					textFieldCepPaciente.setEnabled(false);
+					textFieldCpfRecep.setEnabled(false);
+					textFieldCepRecep.setEnabled(false);
 					textFieldTelefoneRecep.setEnabled(false);
 
 									
 					btnEditar.setEnabled(false);
 					btnNovo.setEnabled(true);
 					buttonExcluirMouClick.setEnabled(false);
-				//("select *from tab_paciente order by nome_paciente");
+					preencherTabela("select *from tab_recepcionista order by nome_recep");
 
 				}
 			}
 		});
 		buttonExcluirMouClick.setFont(new Font("Tahoma", Font.BOLD, 14));
-		buttonExcluirMouClick.setVisible(false);
-		btnExcluir.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		btnExcluir.setEnabled(false);
-		btnExcluir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int resposta = 0;
-				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
-				if (resposta == JOptionPane.YES_NO_OPTION) {
-					textFieldIdRecep.setText(String.valueOf(modRecepcionista.getIdRecep()));
-					
-					daoRecepcionista.excluir(modRecepcionista);
-
-					textFieldNomeRecep.setText("");
-					textFieldLogradouroRecep.setText("");
-					textFieldCidadeRecep.setText("");
-					textFieldEstadoRecep.setText("");
-					textFieldBairroRecep.setText("");
-					textFieldEmailRecep.setText("");
-					textFieldMatricula.setText("");
-					textFieldNascimentPaciente.setText("");
-					textFieldRgRecep.setText("");
-					textFieldCpfPaciente.setText("");
-					textFieldCepPaciente.setText("");
-					textFieldTelefoneRecep.setText("");
-
-					btnEditar.setEnabled(false);
-					btnExcluir.setEnabled(false);
-					btnNovo.setEnabled(true);
-			//		preencherTabela("select *from tab_paciente order by nome_paciente");
-				}
-
-			}
-
-		}
-
-		);
+		buttonExcluirMouClick.setVisible(true);
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		btnCancelar.addActionListener(new ActionListener() {
@@ -604,12 +566,13 @@ public class FormCadRecepcionistas extends JFrame {
 				textFieldBairroRecep.setText("");
 				textFieldEmailRecep.setText("");
 				textFieldMatricula.setText("");
-				textFieldNascimentPaciente.setText("");
+				textFieldNascimentRecep.setText("");
 				textFieldNumeroRecep.setText("");
 				textFieldRgRecep.setText("");
-				textFieldCpfPaciente.setText("");
-				textFieldCepPaciente.setText("");
+				textFieldCepRecep.setText("");
+				textFieldCepRecep.setText("");
 				textFieldTelefoneRecep.setText("");
+				textFieldCpfRecep.setText("");
 				textFieldNomeRecep.setEnabled(false);
 				comboBoxSexoRecep.setEnabled(false);
 				textFieldLogradouroRecep.setEnabled(false);
@@ -618,19 +581,20 @@ public class FormCadRecepcionistas extends JFrame {
 				textFieldBairroRecep.setEnabled(false);
 				textFieldEmailRecep.setEnabled(false);
 				textFieldMatricula.setEnabled(false);
-				textFieldNascimentPaciente.setEnabled(false);
+				textFieldNascimentRecep.setEnabled(false);
 				textFieldNumeroRecep.setEnabled(false);
 				textFieldRgRecep.setEnabled(false);
-				textFieldCpfPaciente.setEnabled(false);
-				textFieldCepPaciente.setEnabled(false);
+				textFieldCpfRecep.setEnabled(false);
+				textFieldCepRecep.setEnabled(false);
 				textFieldTelefoneRecep.setEnabled(false);
 				
 				btnEditar.setEnabled(false);
 				btnSalvar.setEnabled(false);
-				btnExcluir.setEnabled(false);
 				btnNovo.setEnabled(true);
 				
-		//		preencherTabela("select *from tab_paciente order by nome_paciente");
+				
+				
+				preencherTabela("select *from tab_recepcionista order by nome_recep");
 
 			}
 		});
@@ -642,59 +606,63 @@ public class FormCadRecepcionistas extends JFrame {
 
 		btnPesquisar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				modRecepcionista.setPesquisaRecep(textFieldPesquisa.getText());
-//				BeanRecepcionista model = daoRecepcionista.pesquisarRecepcionista(modRecepcionista);
-//				textFieldIdRecep.setText(String.valueOf(model.getIdRecep()));
-//				textFieldNomeRecep.setText(model.getNome());
-//				comboBoxSexoRecep.setEditable(true);/////////////////////////////// Editar combobox
-//				comboBoxSexoRecep.setSelectedItem(model.getSexo());
+				modRecepcionista.setPesquisaRecep(textFieldPesquisa.getText());
+				BeanRecepcionista model = daoRecepcionista.pesquisarRecepcionista(modRecepcionista);
+				textFieldIdRecep.setText(String.valueOf(model.getIdRecep()));
+				
+				
 
-//				textFieldLogradouroRecep.setText(model.getLogradouro());
-//				textFieldCidadeRecep.setText(model.getCidade());
-//				textFieldEstadoPaciente.setText(model.getEstado());
-//				textFieldBairroRecep.setText(model.getBairro());
-//				textFieldEmailRecep.setText(model.getEmail());
-//				textFieldMatricula.setText(model.getConvenioPaciente());
-//				textFieldNascimentPaciente.setText(model.getNascimento());
-//				textFieldNumeroRecep.setText(String.valueOf(model.getNumero()));
-//				textFieldRgRecep.setText(model.getRg());
-//				textFieldCpfPaciente.setText(model.getCpf());
-//				textFieldCepPaciente.setText(model.getCep());
-//				textFieldTelefoneRecep.setText(model.getTelefone());
-
-				btnExcluir.setEnabled(true);
 				comboBoxSexoRecep.setEditable(false);
 				btnEditar.setEnabled(true);
 				btnNovo.setEnabled(false);
 				btnCancelar.setEnabled(true);
 				textFieldPesquisa.setText("");
-	//			preencherTabela("select *from tab_paciente where nome_paciente like'%"
-			//			+ modRecepcionista.getPesquisaRecep() + "%'");
+				preencherTabela("select *from tab_Recepcionista where nome_recep like'%"
+						+ modRecepcionista.getPesquisaRecep() + "%'");
 
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_1
-				.createSequentialGroup()
-				.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE).addGap(37)
-				.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE).addGap(43)
-				.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE).addGap(54)
-				.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-				.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap())
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, 658,
-								GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(btnPesquisar, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
-						.addGap(2)));
-//		buttonExcluirMouClick.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//			}
-//		});
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, 658, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+							.addGap(37)
+							.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
+							.addGap(46)
+							.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
+							.addGap(49)
+							.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(btnCancelar, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(btnPesquisar, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
+							.addGap(2))))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+						.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnPesquisar, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+
+
 
 		textFieldIdRecep.setColumns(10);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -711,23 +679,6 @@ public class FormCadRecepcionistas extends JFrame {
 		String tipoUsu[] = { "Masculino", "Feminino" };
 
 		scrollPane = new JScrollPane();
-
-		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
-				gl_panel_1.createSequentialGroup().addContainerGap(14, Short.MAX_VALUE).addGroup(gl_panel_1
-						.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-						.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnPesquisar, GroupLayout.PREFERRED_SIZE, 27,
-										GroupLayout.PREFERRED_SIZE))
-						.addContainerGap()));
 		panel_1.setLayout(gl_panel_1);
 
 		JPanel panel_3 = new JPanel();

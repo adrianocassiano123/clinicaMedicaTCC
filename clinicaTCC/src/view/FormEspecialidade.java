@@ -2,6 +2,7 @@ package view;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,12 +27,8 @@ import javax.swing.border.EmptyBorder;
 
 import ModeloConexao.ConexaoBD;
 import modelo.BeanEspecialidade;
-import modelo.BeanMedico;
 import modelo.ModeloTabela;
 import modeloDao.DAOEspecialidade;
-import modeloDao.DaoMedico;
-import relatorios.Relatorio;
-import java.awt.SystemColor;
 
 public class FormEspecialidade extends JFrame {
 

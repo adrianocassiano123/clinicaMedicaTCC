@@ -312,6 +312,30 @@ public class TelaPrincipal extends JFrame {
 		JMenuItem mntmAtestado = new JMenuItem("Atestado");
 		mnImpresses.add(mntmAtestado);
 		
+		mntmAtestado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				conecta.executarSQL("select * from tab_usuarios where nome_usuario='" + labelUsuario.getText() + "'");
+				try {
+					conecta.rs.first();
+					if (conecta.rs.getString("tipo_usuario").equals("Administrador")
+							|| conecta.rs.getString("tipo_usuario").equals("Recepcionista")
+							||conecta.rs.getString("tipo_usuario").equals("Médico")) {
+
+						FormReimprimirAtestado reimpAtestado = new FormReimprimirAtestado();
+						reimpAtestado.setVisible(true);
+						
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+					}
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+				}
+
+			}
+		});
+		
 		JMenuItem mntmExame = new JMenuItem("Exame");
 		mnImpresses.add(mntmExame);
 		

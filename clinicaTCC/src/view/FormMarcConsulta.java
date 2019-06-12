@@ -158,8 +158,15 @@ public class FormMarcConsulta extends JFrame {
 		conexao.desconectar();
 
 	}
+	public String recebe(String valorCalculado) {
+		
+		textFieldPagar.setText(null);
+		textFieldPagar.setText(valorCalculado.toString());
+		
+		return valorCalculado;
+	}
 
-	public static void main(String[] args) {
+	public static void main(String[] asrgs) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -487,15 +494,15 @@ public class FormMarcConsulta extends JFrame {
 		textFieldPagar.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
+				FormMarcConsulta j = new FormMarcConsulta();
+				String a = j.recebe("");
 				
-			//	textFieldPagar.setText("");
-				Parametros parametro = new Parametros();
-				textFieldPagar.setText(parametro.getParametro());
-				
-				
+				if(!a.equals(null)) {
+					textFieldPagar.setText(a);
+				}
 			}
 		});
-		textFieldPagar.setEnabled(false);
+		//textFieldPagar.setEnabled(false);
 		textFieldPagar.setColumns(10);
 
 		JButton btnPagar = new JButton("Pagar");
@@ -529,4 +536,6 @@ public class FormMarcConsulta extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 
 	}
+	
+	
 }

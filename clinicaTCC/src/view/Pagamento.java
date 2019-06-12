@@ -123,10 +123,15 @@ public class Pagamento extends JFrame {
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				Parametros parametro = new Parametros();
-				parametro.setParametro(textFieldValorTotal.getText());
+				//Parametros parametro = new Parametros();
+				//parametro.setParametro(textFieldValorTotal.getText());
 				
-				System.out.println(parametro);
+				//System.out.println(parametro);
+				
+				FormMarcConsulta f = new FormMarcConsulta();
+				
+				f.recebe(textFieldValorTotal.getText());
+				
 				dispose();
 			}
 		});

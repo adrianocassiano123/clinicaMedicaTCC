@@ -54,8 +54,8 @@ public class DaoRecepcionista {
 		conexao.conexao();
 		try {
 			PreparedStatement pst = conexao.conex.prepareStatement(" UPDATE tab_recepcionista SET  nome_recep=?, sexo_recep=?, logradouro_recep=?, num_resid_recep=?, cidade_recep=?, estado_recep=?, bairro_recep=?, "
-					+ "matricula_recep=?, nasc_recep=?, rg_recep=?, cpf_recep=?, cep_recep=?, telefone_recep=?, email_recep=?"+
-					"WHERE id_recep;");
+					+ " matricula_recep=?, nasc_recep=?, rg_recep=?, cpf_recep=?, cep_recep=?, telefone_recep=?, email_recep=? "+
+					" WHERE id_recep=? ");
 					
 			pst.setString(1, modelo.getNome());
 			pst.setString(2, modelo.getSexo());
@@ -116,7 +116,7 @@ public class DaoRecepcionista {
 			JOptionPane.showMessageDialog(null, "Excluido com Sucesso!!!");
 		} catch (SQLException e) {
 			JOptionPane.showConfirmDialog(null, "Erro ao excluir"+e);
-			//e.printStackTrace();
+			
 		}
 		
 		conexao.desconectar();
@@ -131,20 +131,7 @@ public class DaoRecepcionista {
 			conexao.rs.first();
 			beanRecep.setIdRecep(conexao.rs.getInt("id_recep"));
 			beanRecep.setNome(conexao.rs.getString("nome_recep"));
-			beanRecep.setSexo(conexao.rs.getString("sexo_recep"));
-			endereco.setLogradouro((conexao.rs.getString("logradouro_recep")));
-			endereco.setCidade((conexao.rs.getString("cidade_recep")));
-			endereco.setEstado((conexao.rs.getString("estado_recep")));
-			endereco.setBairro((conexao.rs.getString("bairro_recep")));
-			beanRecep.setEmail((conexao.rs.getString("email_recep")));
-			beanRecep.setMatricula((conexao.rs.getString("metricula_recep")));
-			beanRecep.setNascimento((conexao.rs.getString("nasc_recep")));
-			endereco.setNumero((conexao.rs.getInt("num_resid_recep")));
-			beanRecep.setRg((conexao.rs.getString("rg_recep")));
-			beanRecep.setCpf((conexao.rs.getString("cpf_paciente")));
-			endereco.setCep((conexao.rs.getString("cep_paciente")));
-			beanRecep.setTelefone((conexao.rs.getString("telefone_paciente")));
-					
+			
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Paciente Não Encontrado");
