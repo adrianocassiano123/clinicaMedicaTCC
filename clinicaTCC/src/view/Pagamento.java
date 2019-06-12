@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
+import modeloDao.Parametros;
+
 @SuppressWarnings("serial")
 public class Pagamento extends JFrame {
 
@@ -94,9 +96,10 @@ public class Pagamento extends JFrame {
 				
 				BigDecimal valor = new BigDecimal(textFieldValorConsulta.getText());
 				BigDecimal desconto = new BigDecimal(textFieldDesconto.getText());
-			//	BigDecimal total = new BigDecimal(textFieldValorTotal.getText());
+			
 				textFieldValorTotal.setText(valor.subtract(desconto).toString());
-			//	System.out.println();
+		
+				
 				
 			}
 		});
@@ -107,8 +110,6 @@ public class Pagamento extends JFrame {
 		
 		textFieldValorConsulta.setText(valor);
 		textFieldValorTotal.setText(valor);
-		
-		//textFieldValorConsulta.setText("VALOR");
 		
 		
 		
@@ -122,8 +123,10 @@ public class Pagamento extends JFrame {
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				Parametros parametro = new Parametros();
+				parametro.setParametro(textFieldValorTotal.getText());
 				
-				
+				System.out.println(parametro);
 				dispose();
 			}
 		});

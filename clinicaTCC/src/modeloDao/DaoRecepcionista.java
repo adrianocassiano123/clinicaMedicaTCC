@@ -123,7 +123,7 @@ public class DaoRecepcionista {
 
 	}
 	
-	public BeanRecepcionista pesquisarPaciente(BeanRecepcionista mod ) {
+	public BeanRecepcionista pesquisarRecepcionista(BeanRecepcionista mod ) {
 		conexao.conexao();
 
 		conexao.executarSQL("select *from tab_recepcionista where nome_recep like'%" + mod.getPesquisaRecep() + "%'");

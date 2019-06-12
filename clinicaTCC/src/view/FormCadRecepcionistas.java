@@ -91,8 +91,8 @@ public class FormCadRecepcionistas extends JFrame {
 	private JTextField textFieldCpfPaciente = new JTextField();
 	private JTextField textFieldCpfRecep;;
 
-	public void preencherTabela(String Sql) {
-
+	public void preencherTabela() {
+		String Sql ="select *from tab_recepcionista order by nome_recep";
 		ArrayList<Object[]> dados = new ArrayList<Object[]>();
 		String[] colunas = new String[] { "ID", "NOME", "SEXO", "LOGRADOURO", "CIDADE", "ESTADO", "BAIRRO", "EMAIL",
 				"MATRICULA", "NASCIMENTO", "NUMERO", "RG", "CPF", "CEP", "TELEFONE" };
@@ -103,14 +103,21 @@ public class FormCadRecepcionistas extends JFrame {
 			conexao.rs.first(); // Seta o primeiro registro
 
 			do {
-				dados.add(new Object[] { conexao.rs.getInt("id_recep"), conexao.rs.getString("nome_recep"),
-						conexao.rs.getString("sexo_recep"), conexao.rs.getString("logradouro_recep"),
-						conexao.rs.getString("cidade_recep"), conexao.rs.getString("estado_recep"),
-						conexao.rs.getString("bairro_recep"), conexao.rs.getString("email_recep"),
-						conexao.rs.getString("matricula_recep"), conexao.rs.getString("nasc_recep"),
-						conexao.rs.getInt("num_resid_recep"), conexao.rs.getString("rg_recep"),
-						conexao.rs.getString("cpf_recep"), conexao.rs.getString("cep_recep"),
-						conexao.rs.getString("telefone_recep") });
+				dados.add(new Object[] {conexao.rs.getInt("id_recep"), 
+										conexao.rs.getString("nome_recep"),
+										conexao.rs.getString("sexo_recep"),
+										conexao.rs.getString("logradouro_recep"),
+										conexao.rs.getString("cidade_recep"),
+										conexao.rs.getString("estado_recep"),
+										conexao.rs.getString("bairro_recep"),
+										conexao.rs.getString("email_recep"),
+										conexao.rs.getString("matricula_recep"),
+										conexao.rs.getString("nasc_recep"),
+										conexao.rs.getInt("num_resid_recep"),
+										conexao.rs.getString("rg_recep"),
+										conexao.rs.getString("cpf_recep"),
+										conexao.rs.getString("cep_recep"),
+										conexao.rs.getString("telefone_recep") });
 
 			} while (conexao.rs.next());
 
@@ -222,7 +229,9 @@ public class FormCadRecepcionistas extends JFrame {
 	}
 
 	public FormCadRecepcionistas() {
-		preencherTabela("select *from tab_paciente order by nome_paciente");
+		
+		preencherTabela();
+		
 		textFieldTelefoneRecep.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldTelefoneRecep.setEnabled(false);
 		textFieldTelefoneRecep.setColumns(10);
@@ -374,6 +383,7 @@ public class FormCadRecepcionistas extends JFrame {
 						modRecepcionista.setTelefone(textFieldTelefoneRecep.getText());
 
 						daoRecepcionista.salvar(modRecepcionista,endereco);
+						
 
 						textFieldNomeRecep.setText("");
 						textFieldLogradouroRecep.setText("");
@@ -539,7 +549,7 @@ public class FormCadRecepcionistas extends JFrame {
 					btnEditar.setEnabled(false);
 					btnNovo.setEnabled(true);
 					buttonExcluirMouClick.setEnabled(false);
-					preencherTabela("select *from tab_paciente order by nome_paciente");
+				//("select *from tab_paciente order by nome_paciente");
 
 				}
 			}
@@ -574,7 +584,7 @@ public class FormCadRecepcionistas extends JFrame {
 					btnEditar.setEnabled(false);
 					btnExcluir.setEnabled(false);
 					btnNovo.setEnabled(true);
-					preencherTabela("select *from tab_paciente order by nome_paciente");
+			//		preencherTabela("select *from tab_paciente order by nome_paciente");
 				}
 
 			}
@@ -620,7 +630,7 @@ public class FormCadRecepcionistas extends JFrame {
 				btnExcluir.setEnabled(false);
 				btnNovo.setEnabled(true);
 				
-				preencherTabela("select *from tab_paciente order by nome_paciente");
+		//		preencherTabela("select *from tab_paciente order by nome_paciente");
 
 			}
 		});
@@ -632,25 +642,25 @@ public class FormCadRecepcionistas extends JFrame {
 
 		btnPesquisar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				modRecepcionista.setPesquisaRecep(textFieldPesquisa.getText());
-				BeanRecepcionista model = daoRecepcionista.pesquisarRecepcionista(modRecepcionista);
-				textFieldIdRecep.setText(String.valueOf(model.getCodPaciente()));
-				textFieldNomeRecep.setText(model.getNome());
-				comboBoxSexoRecep.setEditable(true);/////////////////////////////// Editar combobox
-				comboBoxSexoRecep.setSelectedItem(model.getSexo());
+//				modRecepcionista.setPesquisaRecep(textFieldPesquisa.getText());
+//				BeanRecepcionista model = daoRecepcionista.pesquisarRecepcionista(modRecepcionista);
+//				textFieldIdRecep.setText(String.valueOf(model.getIdRecep()));
+//				textFieldNomeRecep.setText(model.getNome());
+//				comboBoxSexoRecep.setEditable(true);/////////////////////////////// Editar combobox
+//				comboBoxSexoRecep.setSelectedItem(model.getSexo());
 
-				textFieldLogradouroRecep.setText(model.getLogradouro());
-				textFieldCidadeRecep.setText(model.getCidade());
-				textFieldEstadoPaciente.setText(model.getEstado());
-				textFieldBairroRecep.setText(model.getBairro());
-				textFieldEmailRecep.setText(model.getEmail());
-				textFieldMatricula.setText(model.getConvenioPaciente());
-				textFieldNascimentPaciente.setText(model.getNascimento());
-				textFieldNumeroRecep.setText(String.valueOf(model.getNumero()));
-				textFieldRgRecep.setText(model.getRg());
-				textFieldCpfPaciente.setText(model.getCpf());
-				textFieldCepPaciente.setText(model.getCep());
-				textFieldTelefoneRecep.setText(model.getTelefone());
+//				textFieldLogradouroRecep.setText(model.getLogradouro());
+//				textFieldCidadeRecep.setText(model.getCidade());
+//				textFieldEstadoPaciente.setText(model.getEstado());
+//				textFieldBairroRecep.setText(model.getBairro());
+//				textFieldEmailRecep.setText(model.getEmail());
+//				textFieldMatricula.setText(model.getConvenioPaciente());
+//				textFieldNascimentPaciente.setText(model.getNascimento());
+//				textFieldNumeroRecep.setText(String.valueOf(model.getNumero()));
+//				textFieldRgRecep.setText(model.getRg());
+//				textFieldCpfPaciente.setText(model.getCpf());
+//				textFieldCepPaciente.setText(model.getCep());
+//				textFieldTelefoneRecep.setText(model.getTelefone());
 
 				btnExcluir.setEnabled(true);
 				comboBoxSexoRecep.setEditable(false);
@@ -658,8 +668,8 @@ public class FormCadRecepcionistas extends JFrame {
 				btnNovo.setEnabled(false);
 				btnCancelar.setEnabled(true);
 				textFieldPesquisa.setText("");
-				preencherTabela("select *from tab_paciente where nome_paciente like'%"
-						+ modRecepcionista.getPesquisaRecep() + "%'");
+	//			preencherTabela("select *from tab_paciente where nome_paciente like'%"
+			//			+ modRecepcionista.getPesquisaRecep() + "%'");
 
 			}
 		});
