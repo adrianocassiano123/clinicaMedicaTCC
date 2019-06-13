@@ -1,7 +1,7 @@
 package modeloDao;
 
 
-public interface TabelaRecep {
+public interface TabelaTela {
 	
 		
 	public void preencherTabela(String Sql);

@@ -18,7 +18,7 @@ public class DaoMedico {
 		try {
 
 			PreparedStatement pst = conexao.conex.prepareStatement(
-					"insert into tabmedico (nomemedico,crmmedico,especialidadefk)" + " values (?,?,?)");
+					"insert into tabmedico (nomemedico,crmmedico,especialidadefk) values (?,?,?)");
 			pst.setString(1, modelo.getNome());
 			pst.setInt(2, modelo.getCrm());
 			pst.setInt(3, modelo.getEspecialidade());
@@ -55,13 +55,18 @@ public class DaoMedico {
 
 		public void editarMedico(BeanMedico mod) {
 		conexao.conexao();
+		
+		//String especialidade = retornaEspecialidade(mod.getEspecialidade());
+		
 		try {
 			PreparedStatement pst = conexao.conex.prepareStatement(
-					"update tabmedico set nomemedico=? ,especialidademedico=?,crmmedico=? where idmedico=?");
+					"update tabmedico set nomemedico=? ,crmmedico=? , especialidadefk=?  where idmedico=?");
+			
 			pst.setString(1, mod.getNome());
-			pst.setInt(2, mod.getEspecialidade());
-			pst.setInt(3, mod.getCrm());
+			pst.setInt(2, mod.getCrm());
+			pst.setInt(3, mod.getEspecialidade());
 			pst.setInt(4, mod.getCodigo());
+			
 			pst.execute();
 			JOptionPane.showMessageDialog(null, "Editado com sucesso!!!");
 
@@ -109,6 +114,10 @@ public class DaoMedico {
 			
 			conexao.desconectar();
 
+		}
+		
+		public void retornaEspecialidade(String especialidade) {
+			
 		}
 		
 		

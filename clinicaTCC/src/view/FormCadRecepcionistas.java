@@ -33,9 +33,9 @@ import modelo.BeanEndereco;
 import modelo.BeanRecepcionista;
 import modelo.ModeloTabela;
 import modeloDao.DaoRecepcionista;
-import modeloDao.TabelaRecep;
+import modeloDao.TabelaTela;
 
-public class FormCadRecepcionistas extends JFrame implements TabelaRecep{
+public class FormCadRecepcionistas extends JFrame implements TabelaTela{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -179,31 +179,31 @@ public class FormCadRecepcionistas extends JFrame implements TabelaRecep{
 		tableRecepcionistas.getColumnModel().getColumn(1).setPreferredWidth(200);
 		tableRecepcionistas.getColumnModel().getColumn(1).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(2).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(2).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(2).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(3).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(3).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(3).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(4).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(4).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(4).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(5).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(5).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(5).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(6).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(6).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(6).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(7).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(7).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(7).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(8).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(8).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(8).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(9).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(9).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(9).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(10).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(10).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(10).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(11).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(11).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(11).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(12).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(12).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(12).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(13).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(13).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(13).setResizable(true);
 		tableRecepcionistas.getColumnModel().getColumn(14).setPreferredWidth(200);
-		tableRecepcionistas.getColumnModel().getColumn(14).setResizable(false);
+		tableRecepcionistas.getColumnModel().getColumn(14).setResizable(true);
 
 
 		tableRecepcionistas.getTableHeader().setReorderingAllowed(false); // Não permite reordenar o cabeçalho

@@ -31,9 +31,10 @@ import ModeloConexao.ConexaoBD;
 import modelo.BeanMedico;
 import modelo.ModeloTabela;
 import modeloDao.DaoMedico;
+import modeloDao.TabelaTela;
 import relatorios.Relatorio;
 
-public class FormCadMedico extends JFrame {
+public class FormCadMedico extends JFrame implements TabelaTela{
 
 
 	
@@ -63,17 +64,11 @@ public class FormCadMedico extends JFrame {
 	private JPanel panel;
 	private JLabel label;
 	private JPanel panel_1;
+	
+	@Override
+	public void preencherTabela(String Sql) {
 
-	public void preencherTabela() {
 
-		String Sql = " SELECT tabmedico.idmedico as id, " + 
-				"  tabmedico.nomemedico as nome,  " + 
-				"  tab_especialidade.tipo_especialidade as especialidade, " + 
-				"  tabmedico.crmmedico as crm " + 
-				"  FROM tab_especialidade, " + 
-				"	    tabmedico " + 
-				" WHERE tabmedico.especialidadefk = tab_especialidade.id_especialidade ";
-		
 		
 		ArrayList<Object[]> dados = new ArrayList<Object[]>();
 		String[] colunas = new String[] { "ID", "NOME", "ESPECIALIDADE", "CRM" };
@@ -212,7 +207,13 @@ public class FormCadMedico extends JFrame {
 		setResizable(false);
 		preencherEspecialidade();
 
-		preencherTabela();
+		preencherTabela("SELECT tabmedico.idmedico as id, " + 
+				"  tabmedico.nomemedico as nome,  " + 
+				"  tab_especialidade.tipo_especialidade as especialidade, " + 
+				"  tabmedico.crmmedico as crm " + 
+				"  FROM tab_especialidade, " + 
+				"	    tabmedico " + 
+				" WHERE tabmedico.especialidadefk = tab_especialidade.id_especialidade ");
 
 		btnEditarCadMedico.setEnabled(false);
 		btnEditarCadMedico.addActionListener(new ActionListener() {
@@ -249,6 +250,8 @@ public class FormCadMedico extends JFrame {
 						modMedico.setCrm(Integer.parseInt(textFieldCrm.getText()));
 						
 						String especialidade = comboBoxEspecialidade.getSelectedItem().toString();
+						int id = pegarIdEspecialidade(especialidade);
+						modMedico.setEspecialidade(id);
 						
 						modMedico.setEspecialidade(pegarIdEspecialidade(especialidade));
 						
@@ -262,14 +265,26 @@ public class FormCadMedico extends JFrame {
 						comboBoxEspecialidade.setEnabled(false);
 						textFieldCrm.setEnabled(false);
 						btnSalvarCadMedico.setEnabled(false);
-						//preencherTabela("select *from tabmedico order by nomemedico");
+						
+						preencherTabela(" SELECT tabmedico.idmedico as id, " + 
+								"  tabmedico.nomemedico as nome,  " + 
+								"  tab_especialidade.tipo_especialidade as especialidade, " + 
+								"  tabmedico.crmmedico as crm " + 
+								"  FROM tab_especialidade, " + 
+								"	    tabmedico " + 
+								" WHERE tabmedico.especialidadefk = tab_especialidade.id_especialidade ");
+					
 
 					} else {
 						modMedico.setCodigo(Integer.parseInt(textFieldCodMedico.getText()));
 						modMedico.setNome(textFieldNome.getText().toUpperCase());
-
+						String especialidade = comboBoxEspecialidade.getSelectedItem().toString();
+						int id = pegarIdEspecialidade(especialidade);
+						modMedico.setEspecialidade(id);
 						modMedico.setCrm(Integer.parseInt(textFieldCrm.getText()));
+						
 						control.editarMedico(modMedico);
+						
 						textFieldNome.setText("");
 
 						textFieldCrm.setText("");
@@ -281,11 +296,18 @@ public class FormCadMedico extends JFrame {
 						btnSalvarCadMedico.setEnabled(false);
 						btnNovoCadMedico.setEnabled(true);
 						btnCancelar.setEnabled(false);
-						//preencherTabela("select *from tabmedico order by nomemedico");
+						preencherTabela(" SELECT tabmedico.idmedico as id, " + 
+								"  tabmedico.nomemedico as nome,  " + 
+								"  tab_especialidade.tipo_especialidade as especialidade, " + 
+								"  tabmedico.crmmedico as crm " + 
+								"  FROM tab_especialidade, " + 
+								"	    tabmedico " + 
+								" WHERE tabmedico.especialidadefk = tab_especialidade.id_especialidade ");
 
 					}
 				}
 			}
+
 
 			private int pegarIdEspecialidade(String especilidade) {
 				int codEspecialidade = 0;
@@ -353,14 +375,21 @@ public class FormCadMedico extends JFrame {
 				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
 				if (resposta == JOptionPane.YES_NO_OPTION) {
 					modMedico.setCodigo(Integer.parseInt(textFieldCodMedico.getText()));
+					
 					control.excluir();
+					
 					textFieldNome.setText("");
-
 					textFieldCrm.setText("");
 					textFieldCodMedico.setText("");
 					btnEditarCadMedico.setEnabled(false);
 					btnExcluir.setEnabled(false);
-					// preencherTabela("select *from tabmedico order by nomemedico");
+					preencherTabela("SELECT tabmedico.idmedico as id, " + 
+							"  tabmedico.nomemedico as nome,  " + 
+							"  tab_especialidade.tipo_especialidade as especialidade, " + 
+							"  tabmedico.crmmedico as crm " + 
+							"  FROM tab_especialidade, " + 
+							"	    tabmedico " + 
+							" WHERE tabmedico.especialidadefk = tab_especialidade.id_especialidade ");
 				}
 
 			}
@@ -385,16 +414,14 @@ public class FormCadMedico extends JFrame {
 				btnNovoCadMedico.setEnabled(false);
 				btnCancelar.setEnabled(true);
 				textFieldPesquisa.setText("");
-				// preencherTabela("select *from tabmedico where nomemedico like'%" + modMedico.getPesquisa() + "%'"); // Mostra
-																													// todos
-																													// os
-																													// médicos
-																													// de
-																													// acordo
-																													// com
-																													// a
-																													// letra
-																													// pesquisada
+
+				preencherTabela("SELECT tabmedico.idmedico as id, " + 
+						"  tabmedico.nomemedico as nome,  " + 
+						"  tab_especialidade.tipo_especialidade as especialidade, " + 
+						"  tabmedico.crmmedico as crm " + 
+						"  FROM tab_especialidade, " + 
+						"	    tabmedico " + 
+						" WHERE tabmedico.especialidadefk = tab_especialidade.id_especialidade ");
 
 			}
 		});

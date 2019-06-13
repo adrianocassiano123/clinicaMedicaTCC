@@ -3,7 +3,7 @@ package modelo;
 public class BeanMedico extends BeanPessoa{
 	
 	private int codigo;
-	private String nomeMedico;
+	
 	private BeanEndereco endMedico;
 	private int especialidade;
 	private int crm;
@@ -12,12 +12,12 @@ public class BeanMedico extends BeanPessoa{
 	
 	
 	
-	public String getNomeMedico() {
-		return nomeMedico;
-	}
-	public void setNomeMedico(String nomeMedico) {
-		this.nomeMedico = nomeMedico;
-	}
+//	public String getNomeMedico() {
+//		return nomeMedico;
+//	}
+//	public void setNomeMedico(String nomeMedico) {
+//		this.nomeMedico = nomeMedico;
+//	}
 	public BeanEndereco getEndMedico() {
 		return endMedico;
 	}
@@ -30,12 +30,7 @@ public class BeanMedico extends BeanPessoa{
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
 	}
-	public String getNome() {
-		return nomeMedico;
-	}
-	public void setNome(String nome) {
-		this.nomeMedico = nome;
-	}
+	
 	public int getEspecialidade() {
 		return especialidade;
 	}
