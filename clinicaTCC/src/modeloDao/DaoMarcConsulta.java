@@ -1,5 +1,6 @@
 package modeloDao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -267,6 +268,35 @@ public class DaoMarcConsulta {
 		conexao.desconectar();
 		return marcacao;
 
+	}
+
+	public void pagar(String valorPagoConsulta) {
+
+		conexao.conexao();
+		conexao.executarSQL(" SELECT  MAX(id_marcacao) as id FROM tab_marcacao  ");
+		
+		try {
+			conexao.rs.first();
+
+			//textFieldIdMarcar.setText();
+			int idMarcacao = conexao.rs.getInt("id"); 
+								
+			PreparedStatement pst = conexao.conex.prepareStatement( 
+					" INSERT INTO tab_pagamento( valor_pago, marc_consultafk) VALUES (?, ?); ");
+			
+			pst.setBigDecimal(1, new BigDecimal(valorPagoConsulta));
+			pst.setInt(2, idMarcacao);
+							
+			pst.execute();
+			JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!!");
+		} catch (SQLException ex) {
+			//System.out.println(e);
+			JOptionPane.showMessageDialog(null, "Erro ao inserir dados:");
+			
+		}
+		
+		conexao.desconectar();
+		
 	}
 
 }

@@ -11,14 +11,9 @@ import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.swing.AbstractButton;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -33,22 +28,22 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
-import com.mongodb.util.StringParseUtil;
+import org.apache.hadoop.classification.InterfaceAudience.Public;
+
 import com.toedter.calendar.JDateChooser;
 
 import ModeloConexao.ConexaoBD;
+import groovy.transform.ToString;
 import modelo.BeanMarcConsulta;
 import modelo.BeanPaciente;
 import modelo.ModeloTabela;
 import modeloDao.DaoMarcConsulta;
 import modeloDao.DaoPacientes;
-import modeloDao.Parametros;
-
-import javax.swing.border.LineBorder;
-import javax.swing.JFormattedTextField;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class FormMarcConsulta extends JFrame {
 
@@ -77,9 +72,11 @@ public class FormMarcConsulta extends JFrame {
 	private JTextField textFieldEspecialidade;
 	JButton btnPagar = new JButton("Pagar");
 	private JTextField textFieldValor;
-	private JTextField textFieldDesconto;
+	private JTextField textFieldDesconto = new JTextField();
+	String valorPagoConsulta = null;
+	JButton btnDarDesconto = new JButton("Desconto");
 
-	public void preencherTabela(String Sql) {
+	void preencherTabela(String Sql) {
 
 		ArrayList<Object[]> dados = new ArrayList<Object[]>();
 		String[] colunas = new String[] { "ID", "PACIENTE", "EMAIL", "CONVÊNIO", "NASCIMENTO", "RG", "CPF",
@@ -161,13 +158,6 @@ public class FormMarcConsulta extends JFrame {
 		conexao.desconectar();
 
 	}
-	public String recebe(String valorCalculado) {
-		
-		textFieldPagar.setText(null);
-		textFieldPagar.setText(valorCalculado.toString());
-		
-		return valorCalculado;
-	}
 
 	public static void main(String[] asrgs) {
 		EventQueue.invokeLater(new Runnable() {
@@ -232,6 +222,7 @@ public class FormMarcConsulta extends JFrame {
 
 					textFieldPagar.setText(conexao.rs.getString("valor").toString());
 					textFieldValor.setText(conexao.rs.getString("valor").toString());
+					textFieldDesconto.setEnabled(true);
 
 				} catch (Exception ezx) {
 					ezx.printStackTrace();
@@ -247,7 +238,7 @@ public class FormMarcConsulta extends JFrame {
 	}
 
 	public FormMarcConsulta() {
-		
+
 		preencherMedicos();
 		lblMdico.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		preencherTabela("select *from tab_paciente order by nome_paciente");
@@ -257,9 +248,17 @@ public class FormMarcConsulta extends JFrame {
 		textFieldPesquisaPaciente.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textFieldPesquisaPaciente.setColumns(10);
 		btnPesquisarPaciente.setFont(new Font("Tahoma", Font.BOLD, 14));
-		
-		btnPagar.setEnabled(false); 
-		
+		btnDarDesconto.setEnabled(false);
+		btnPagar.setEnabled(false);
+
+		btnPagar.setEnabled(false);
+		textFieldDesconto.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				btnDarDesconto.setEnabled(true);
+			}
+		});
+		textFieldDesconto.setEnabled(false);
 
 		btnPesquisarPaciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -296,7 +295,6 @@ public class FormMarcConsulta extends JFrame {
 		setLocationRelativeTo(null);
 		setResizable(false);
 
-		// textFieldIdPaciente.setEditable(false);
 		textFieldIdMarcar.setVisible(false);
 
 		scrollPane = new JScrollPane();
@@ -338,6 +336,7 @@ public class FormMarcConsulta extends JFrame {
 				marcarConsulta.setStatus("Aberto");
 				DaoMarcConsulta dao = new DaoMarcConsulta();
 				dao.salvar(marcarConsulta);
+				dao.pagar(valorPagoConsulta);
 
 				textFieldPesquisaPaciente.setText("");
 
@@ -348,7 +347,7 @@ public class FormMarcConsulta extends JFrame {
 				textFieldMotivo.setEnabled(false);
 				dateConsulta.setEnabled(false);
 				btnConfirmarMarcao.setEnabled(false);
-				;
+
 				btnCancelarMarcao.setEnabled(false);
 
 			}
@@ -402,187 +401,195 @@ public class FormMarcConsulta extends JFrame {
 		JLabel lblEspecialidade = new JLabel("Especialidade :");
 		lblEspecialidade.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(textFieldMotivo, GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE)
-						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE)
-						.addComponent(panel_1, 0, 0, Short.MAX_VALUE)
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE)
-						.addComponent(textFieldIdMarcar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblMdico, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-									.addComponent(comboBoxMedico, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(lblMotivoDaConsulta, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
-									.addComponent(lblEspecialidade, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
-									.addComponent(lblTurno, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-									.addComponent(lblData, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-									.addComponent(dateConsulta, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
-									.addComponent(comboBoxTurno, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(textFieldEspecialidade, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)))
-							.addGap(224)
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addGap(28))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(39)
-					.addComponent(btnConfirmarMarcao, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
-					.addGap(113)
-					.addComponent(btnCancelarMarcao, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-					.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
-					.addGap(42))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textFieldIdMarcar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblMdico, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboBoxMedico, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(4)
-							.addComponent(lblEspecialidade, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-							.addGap(4)
-							.addComponent(textFieldEspecialidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblTurno, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboBoxTurno, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(dateConsulta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblMotivoDaConsulta, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(textFieldMotivo, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnCancelarMarcao, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnConfirmarMarcao, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-						.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-					.addGap(99))
-		);
-
 		textFieldPagar = new JTextField();
 		textFieldPagar.setEnabled(false);
 		textFieldPagar.setFont(new Font("Tahoma", Font.BOLD, 20));
-		
+
 		textFieldPagar.setColumns(10);
 
-		JButton btnPagar = new JButton("Pagar");
 		btnPagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-//				Pagamento pagamento = new Pagamento(textFieldPagar.getText());
-//				pagamento.setVisible(true);
-				
-				conexao.conexao();
-				
-				try {
+				if (!textFieldPagar.getText().equals(null)) {
 
-					PreparedStatement pst = conexao.conex.prepareStatement(
-							"insert into tab_pagamento (valor_pago, marc_consultafk)" + " values (?,?) ");
-					pst.setBigDecimal(1, new BigDecimal(textFieldPagar.getText()));
-					pst.setInt(2, Integer.parseInt(textFieldIdMarcar.getText()));
-					
-					pst.execute();
-					JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!!");
-				} catch (SQLException ex) {
-					JOptionPane.showMessageDialog(null, "Erro ao inserir dados \n ERRO:" + e);
-					// e.printStackTrace();
+					valorPagoConsulta = textFieldPagar.getText();
+					System.out.println(valorPagoConsulta);
+
+					textFieldDesconto.setText("");
+					textFieldDesconto.setEnabled(false);
+					btnPagar.setEnabled(false);
+
+				} else {
+
+					JOptionPane.showMessageDialog(null, "Erro ao pagar");
 				}
-				
-				conexao.desconectar();
 
 			}
 		});
 		btnPagar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		
+
 		textFieldValor = new JTextField();
 		textFieldValor.setEnabled(false);
 		textFieldValor.setColumns(10);
-		
-		textFieldDesconto = new JTextField();
+
 		textFieldDesconto.setColumns(10);
-		
-		JButton btnDarDesconto = new JButton("Desconto");
+
 		btnDarDesconto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				BigDecimal valor = new BigDecimal(textFieldValor.getText());
 				BigDecimal desconto = new BigDecimal(textFieldDesconto.getText());
-			
+
 				textFieldPagar.setText(valor.subtract(desconto).toString());
-				
+				textFieldDesconto.setText("");
+				btnDarDesconto.setEnabled(false);
+				btnPagar.setEnabled(true);
+
 			}
 		});
 		btnDarDesconto.setFont(new Font("Tahoma", Font.BOLD, 11));
-		
+
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane
+				.createSequentialGroup().addContainerGap()
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(textFieldMotivo, GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE)
+						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE)
+						.addComponent(panel_1, 0, 0, Short.MAX_VALUE)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE)
+						.addComponent(textFieldIdMarcar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_contentPane.createSequentialGroup().addGroup(gl_contentPane
+								.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblMdico, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(comboBoxMedico, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)
+										.addComponent(lblMotivoDaConsulta, Alignment.LEADING,
+												GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblEspecialidade, Alignment.LEADING, GroupLayout.PREFERRED_SIZE,
+												108, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblTurno, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 58,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblData, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 58,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(dateConsulta, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 244,
+												Short.MAX_VALUE)
+										.addComponent(comboBoxTurno, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)
+										.addComponent(textFieldEspecialidade, Alignment.LEADING,
+												GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)))
+								.addGap(224).addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)))
+				.addGap(28))
+				.addGroup(gl_contentPane.createSequentialGroup().addGap(39)
+						.addComponent(btnConfirmarMarcao, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
+						.addGap(113)
+						.addComponent(btnCancelarMarcao, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+						.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
+						.addGap(42)));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane
+				.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(textFieldIdMarcar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+						GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addGroup(
+						gl_contentPane
+								.createParallelGroup(
+										Alignment.TRAILING)
+								.addGroup(
+										gl_contentPane.createSequentialGroup()
+												.addComponent(lblMdico, GroupLayout.PREFERRED_SIZE, 17,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(comboBoxMedico, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(4)
+												.addComponent(lblEspecialidade, GroupLayout.PREFERRED_SIZE, 17,
+														GroupLayout.PREFERRED_SIZE)
+												.addGap(4)
+												.addComponent(textFieldEspecialidade, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(lblTurno, GroupLayout.PREFERRED_SIZE, 17,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(comboBoxTurno, GroupLayout.PREFERRED_SIZE, 20,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 17,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
+														Short.MAX_VALUE)
+												.addComponent(dateConsulta, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(lblMotivoDaConsulta, GroupLayout.PREFERRED_SIZE, 17,
+														GroupLayout.PREFERRED_SIZE))
+								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addComponent(textFieldMotivo, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE).addGap(18)
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnCancelarMarcao, GroupLayout.PREFERRED_SIZE, 37,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnConfirmarMarcao, GroupLayout.PREFERRED_SIZE, 37,
+										GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+				.addGap(99)));
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.activeCaption);
-		
+
 		JLabel lblPagamento = new JLabel("Pagamento");
 		lblPagamento.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel_3.add(lblPagamento);
-		
+
 		JLabel lblValor = new JLabel("Valor :");
 		lblValor.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap(19, Short.MAX_VALUE)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.TRAILING).addGroup(gl_panel
+				.createSequentialGroup().addContainerGap(19, Short.MAX_VALUE)
+				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_panel.createSequentialGroup()
-								.addComponent(textFieldPagar, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(btnPagar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addComponent(panel_3, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 337, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel.createSequentialGroup()
+										.addComponent(textFieldPagar, GroupLayout.PREFERRED_SIZE, 202,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnPagar,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+								.addComponent(panel_3, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 337,
+										GroupLayout.PREFERRED_SIZE))
 						.addComponent(textFieldValor, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblValor, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(textFieldDesconto, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(btnDarDesconto)))
-					.addContainerGap())
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(4)
-					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblValor, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textFieldValor, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textFieldDesconto, GroupLayout.PREFERRED_SIZE, 127,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(18).addComponent(btnDarDesconto)))
+				.addContainerGap()));
+		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.TRAILING).addGroup(gl_panel
+				.createSequentialGroup().addGap(4)
+				.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(lblValor, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(textFieldValor, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(textFieldDesconto, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnDarDesconto, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldPagar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addGap(18)
+				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textFieldPagar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnPagar, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
+				.addContainerGap()));
 		panel.setLayout(gl_panel);
 
 		JLabel lblCadastroDePacientes = new JLabel("Marca\u00E7\u00E3o de Consulta");

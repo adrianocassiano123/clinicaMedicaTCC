@@ -29,8 +29,9 @@ import ModeloConexao.ConexaoBD;
 import modelo.BeanUsuario;
 import modelo.ModeloTabela;
 import modeloDao.DaoUsuario;
+import modeloDao.TabelaTela;
 
-public class FormCadUsuario extends JFrame {
+public class FormCadUsuario extends JFrame implements TabelaTela{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -55,6 +56,7 @@ public class FormCadUsuario extends JFrame {
 	private final JTextField textFieldIdUsuario = new JTextField();
 	JButton buttonExcluirMouClick = new JButton("Excluir ");
 
+	@Override
 	public void preencherTabela(String Sql) {
 
 		ArrayList<Object[]> dados = new ArrayList<Object[]>();

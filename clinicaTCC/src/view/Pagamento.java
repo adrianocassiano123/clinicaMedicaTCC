@@ -130,7 +130,7 @@ public class Pagamento extends JFrame {
 				
 				FormMarcConsulta f = new FormMarcConsulta();
 				
-				f.recebe(textFieldValorTotal.getText());
+				//f.recebe(textFieldValorTotal.getText());
 				
 				dispose();
 			}

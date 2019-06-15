@@ -53,7 +53,6 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 	JButton btnSalvarCadMedico = new JButton("Salvar");
 	JButton btnCancelar = new JButton("Cancelar");
 	JButton btnNovoCadMedico = new JButton("Novo");
-	JButton btnExcluir = new JButton("Excluir ");
 	JButton btnEditarCadMedico = new JButton("Editar");
 	private JLabel lblCodigo;
 	private JTextField textFieldCodMedico;
@@ -125,7 +124,6 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 					btnEditarCadMedico.setEnabled(true);
 					btnNovoCadMedico.setEnabled(false);
 					btnCancelar.setEnabled(true);
-					btnExcluir.setVisible(false);
 					btnExcluirMous.setEnabled(true);
 
 				} catch (SQLException e) {
@@ -199,7 +197,7 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 
 	public FormCadMedico() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 884, 730);
+		setBounds(100, 100, 884, 604);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -227,7 +225,7 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 				btnSalvarCadMedico.setEnabled(true);
 				btnEditarCadMedico.setEnabled(false);
 				btnNovoCadMedico.setEnabled(false);
-				btnExcluir.setEnabled(false);
+				
 
 			}
 		});
@@ -345,7 +343,6 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 				btnNovoCadMedico.setEnabled(true);
 				btnEditarCadMedico.setEnabled(false);
 				btnSalvarCadMedico.setEnabled(false);
-				btnExcluir.setEnabled(false);
 				textFieldNome.setText("");
 
 				textFieldCrm.setText("");
@@ -367,37 +364,6 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 			}
 		});
 
-		btnExcluir.setEnabled(false);
-		btnExcluir.setVisible(false);
-		btnExcluir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int resposta = 0;
-				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
-				if (resposta == JOptionPane.YES_NO_OPTION) {
-					modMedico.setCodigo(Integer.parseInt(textFieldCodMedico.getText()));
-					
-					control.excluir();
-					
-					textFieldNome.setText("");
-					textFieldCrm.setText("");
-					textFieldCodMedico.setText("");
-					btnEditarCadMedico.setEnabled(false);
-					btnExcluir.setEnabled(false);
-					preencherTabela("SELECT tabmedico.idmedico as id, " + 
-							"  tabmedico.nomemedico as nome,  " + 
-							"  tab_especialidade.tipo_especialidade as especialidade, " + 
-							"  tabmedico.crmmedico as crm " + 
-							"  FROM tab_especialidade, " + 
-							"	    tabmedico " + 
-							" WHERE tabmedico.especialidadefk = tab_especialidade.id_especialidade ");
-				}
-
-			}
-
-		}
-
-		);
-
 		textFieldPesquisa = new JTextField();
 		textFieldPesquisa.setColumns(10);
 
@@ -410,7 +376,7 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 				textFieldCrm.setText(String.valueOf(model.getCrm()));
 
 				btnEditarCadMedico.setEnabled(true);
-				btnExcluir.setEnabled(true);
+				
 				btnNovoCadMedico.setEnabled(false);
 				btnCancelar.setEnabled(true);
 				textFieldPesquisa.setText("");
@@ -441,12 +407,24 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 		btnExcluirMous = new JButton("Excluir");
 		btnExcluirMous.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				int resposta = 0;
+				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
+				if (resposta == JOptionPane.YES_NO_OPTION) {
+					modMedico.setCodigo(Integer.parseInt(textFieldCodMedico.getText()));
 
 				control.excluir(Integer.parseInt(textFieldCodMedico.getText()));
-				// preencherTabela("select *from tabmedico order by nomemedico");
+				preencherTabela("SELECT tabmedico.idmedico as id, " + 
+						"  tabmedico.nomemedico as nome,  " + 
+						"  tab_especialidade.tipo_especialidade as especialidade, " + 
+						"  tabmedico.crmmedico as crm " + 
+						"  FROM tab_especialidade, " + 
+						"	    tabmedico " + 
+						" WHERE tabmedico.especialidadefk = tab_especialidade.id_especialidade ");
+				
 
 			}
-		});
+			}	});
 
 		panel = new JPanel();
 		panel.setBackground(SystemColor.activeCaption);
@@ -455,66 +433,66 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 		panel_1.setBorder(new LineBorder(SystemColor.activeCaption));
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup().addContainerGap()
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-						.createSequentialGroup()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup().addComponent(lblCodigo)
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(textFieldCodMedico,
-												GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-										.addComponent(panel, GroupLayout.PREFERRED_SIZE, 827,
-												GroupLayout.PREFERRED_SIZE)
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-												.addGroup(gl_contentPane.createSequentialGroup()
-														.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE,
-																716, GroupLayout.PREFERRED_SIZE)
-														.addGap(18).addComponent(btnPesquisar, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-												.addComponent(scrollPane, Alignment.TRAILING,
-														GroupLayout.PREFERRED_SIZE, 820, GroupLayout.PREFERRED_SIZE))))
-						.addGap(31))
-						.addGroup(gl_contentPane.createSequentialGroup().addGroup(gl_contentPane
-								.createParallelGroup(Alignment.TRAILING)
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(btnNovoCadMedico, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
+							.addGap(68)
+							.addComponent(btnEditarCadMedico, GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+							.addGap(95)
+							.addComponent(btnSalvarCadMedico, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+							.addGap(118)
+							.addComponent(btnExcluirMous, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+							.addGap(120)
+							.addComponent(btnCancelar)
+							.addGap(39))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 827, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(btnNovoCadMedico, GroupLayout.PREFERRED_SIZE, 91,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(61)
-										.addComponent(btnEditarCadMedico, GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-										.addGap(79)
-										.addComponent(btnSalvarCadMedico, GroupLayout.PREFERRED_SIZE, 86,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(70)
-										.addComponent(btnExcluirMous, GroupLayout.PREFERRED_SIZE, 82,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnExcluir)
-										.addGap(118).addComponent(btnCancelar))
-								.addComponent(panel_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 819,
-										GroupLayout.PREFERRED_SIZE))
-								.addContainerGap(39, Short.MAX_VALUE)))));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup().addContainerGap()
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE).addGap(12)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(lblCodigo).addComponent(
-						textFieldCodMedico, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-						GroupLayout.PREFERRED_SIZE))
-				.addGap(18).addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(38)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+									.addComponent(lblCodigo)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(textFieldCodMedico, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addComponent(panel, GroupLayout.PREFERRED_SIZE, 827, GroupLayout.PREFERRED_SIZE)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+										.addGroup(gl_contentPane.createSequentialGroup()
+											.addGap(405)
+											.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, 311, GroupLayout.PREFERRED_SIZE)
+											.addGap(18)
+											.addComponent(btnPesquisar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+										.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 820, GroupLayout.PREFERRED_SIZE))))
+							.addGap(31))))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+					.addGap(12)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblCodigo)
+						.addComponent(textFieldCodMedico, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+					.addGap(38)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNovoCadMedico, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnExcluirMous, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnSalvarCadMedico, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnEditarCadMedico, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-				.addGap(47)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(btnPesquisar)
-						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 247, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(142, Short.MAX_VALUE)));
+					.addGap(47)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnPesquisar)
+						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 247, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(142, Short.MAX_VALUE))
+		);
 
 		JLabel lblNome = new JLabel("Nome:");
 
@@ -540,13 +518,13 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 					.addComponent(textFieldNome, GroupLayout.PREFERRED_SIZE, 306, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(lblEspecialidade)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(comboBoxEspecialidade, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(lblCrm)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textFieldCrm, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(24, Short.MAX_VALUE))
+					.addComponent(textFieldCrm, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(35, Short.MAX_VALUE))
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -554,10 +532,10 @@ public class FormCadMedico extends JFrame implements TabelaTela{
 					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNome)
-						.addComponent(lblCrm)
-						.addComponent(comboBoxEspecialidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblEspecialidade)
 						.addComponent(textFieldNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(comboBoxEspecialidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblCrm)
 						.addComponent(textFieldCrm, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(17, Short.MAX_VALUE))
 		);

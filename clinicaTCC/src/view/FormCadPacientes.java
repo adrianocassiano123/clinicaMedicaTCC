@@ -32,9 +32,11 @@ import ModeloConexao.ConexaoBD;
 import modelo.BeanPaciente;
 import modelo.ModeloTabela;
 import modeloDao.DaoPacientes;
+import modeloDao.TabelaTela;
+
 import javax.swing.ScrollPaneConstants;
 
-public class FormCadPacientes extends JFrame {
+public class FormCadPacientes extends JFrame implements TabelaTela{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -85,6 +87,8 @@ public class FormCadPacientes extends JFrame {
 	private final JTextField textFieldTelefonePaciente = new JTextField();
 	private JTextField textFieldCpfPaciente = new JTextField();;
 
+	
+	@Override
 	public void preencherTabela(String Sql) {
 
 		ArrayList<Object[]> dados = new ArrayList<Object[]>();
