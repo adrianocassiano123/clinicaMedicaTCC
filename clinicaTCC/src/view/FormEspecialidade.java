@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -65,7 +67,14 @@ public class FormEspecialidade extends JFrame {
 			conexao.rs.first(); // Seta o primeiro registro
 
 			do {
-				dados.add(new Object[] { conexao.rs.getInt("id_especialidade"), conexao.rs.getString("tipo_especialidade"),"R$", conexao.rs.getBigDecimal("valor") });
+				DecimalFormat df = new DecimalFormat("#.00");
+				//df.setRoundingMode(RoundingMode.DOWN);
+				
+				dados.add(new Object[] { conexao.rs.getInt("id_especialidade"), 
+										 conexao.rs.getString("tipo_especialidade")
+										 ,"R$"
+										 , df.format(conexao.rs.getBigDecimal("valor")) 
+									   });
 				
 			} while (conexao.rs.next());
 
@@ -86,11 +95,13 @@ public class FormEspecialidade extends JFrame {
 				conexao.executarSQL("select *from tab_especialidade where tipo_especialidade= '" + especialidade + "'");
 				flag=2;
 				try {
-
+					DecimalFormat df = new DecimalFormat("#.00");
 					conexao.rs.first();
 					textFieldCodEspecialidade.setText(String.valueOf(conexao.rs.getInt("id_especialidade")));
 					
-					textFieldValor.setText(conexao.rs.getString("valor"));
+					//String valor = df.format(conexao.rs.getBigDecimal("valor"));
+					
+					textFieldValor.setText(df.format(conexao.rs.getBigDecimal("valor")));
 										
 									
 					txtEspecialidade.setText(conexao.rs.getString("tipo_especialidade"));
@@ -165,11 +176,16 @@ public class FormEspecialidade extends JFrame {
 				
 
 					if (flag == 1) {
-
-						especialidade.setValor(new BigDecimal(textFieldValor.getText()));
-						especialidade.setTipo(txtEspecialidade.getText());
 						
-
+						String a = textFieldValor.getText().toString();
+						
+						BigDecimal trans = new BigDecimal(a);
+					
+						especialidade.setTipo(txtEspecialidade.getText());
+						especialidade.setValor(trans);
+								
+						especialidade.getValor();
+						
 						dao.salvar(especialidade);
 
 						textFieldValor.setText("");

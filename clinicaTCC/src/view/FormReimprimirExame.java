@@ -8,7 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -48,6 +51,7 @@ public class FormReimprimirExame extends JFrame {
 	JScrollPane scrollPane = new JScrollPane();
 	BeanMarcConsulta marcacao = new BeanMarcConsulta();
 	Relatorio relatorio = new Relatorio();
+	String data;
 	
 	
 	
@@ -63,10 +67,11 @@ public class FormReimprimirExame extends JFrame {
 			conexao.rs.first(); // Seta o primeiro registro
 
 			do {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				dados.add(new Object[] {  conexao.rs.getInt("id")
 										, conexao.rs.getString("paciente")
 										, conexao.rs.getString("medico")
-										, conexao.rs.getString("data") 
+										, sdf.format(conexao.rs.getDate("data")) 
 									 });
 				
 			} while (conexao.rs.next());
@@ -74,6 +79,16 @@ public class FormReimprimirExame extends JFrame {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(rootPane, "Faça outra Pesquisa!");
 		}
+		
+		
+		
+		Calendar data = Calendar.getInstance();
+		Date dat = data.getTime();
+
+		SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy"); // Mascara;
+
+		dateformat.format(dat);
+	//	data = dateformat.format(dat);
 
 		ModeloTabela modeloTabela = new ModeloTabela(dados, colunas);
 		contentPane.add(scrollPane);
@@ -106,9 +121,11 @@ public class FormReimprimirExame extends JFrame {
 								"	AND nome_paciente like'%" + exame + "%'");
 				
 				try {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 					conexao.rs.first();
-					textFieldIdMarcacao.setText(String.valueOf(conexao.rs.getInt("id")));
 					
+					textFieldIdMarcacao.setText(String.valueOf(conexao.rs.getInt("id")));
+			
 					relatorio.SolicitarExame(Integer.parseInt(textFieldIdMarcacao.getText()));
 					
 				} catch (SQLException e) {

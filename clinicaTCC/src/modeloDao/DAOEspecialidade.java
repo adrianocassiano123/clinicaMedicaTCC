@@ -1,5 +1,6 @@
 package modeloDao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -18,11 +19,11 @@ public class DAOEspecialidade {
 	public void salvar(BeanEspecialidade modelo) {
 		conexao.conexao();
 		try {
-
+			
 			PreparedStatement pst = conexao.conex.prepareStatement(
 					"INSERT INTO tab_especialidade(tipo_especialidade, valor) VALUES (?, ?);");
 			pst.setString(1, modelo.getTipo());
-			pst.setBigDecimal(2, modelo.getValor());
+			pst.setBigDecimal(2,modelo.getValor());
 			pst.execute();
 			JOptionPane.showMessageDialog(null, "Salvo com sucesso!!");
 		} catch (SQLException e) {

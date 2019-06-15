@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -216,17 +217,20 @@ public class FormMarcConsulta extends JFrame {
 				conexao.executarSQL(sql);
 
 				try {
-
+					
+					DecimalFormat df = new DecimalFormat("#.00");
+					conexao.rs.first();
+					
 					conexao.rs.first();
 					textFieldEspecialidade.setText(conexao.rs.getString("especialidade").toString());
 
-					textFieldPagar.setText(conexao.rs.getString("valor").toString());
-					textFieldValor.setText(conexao.rs.getString("valor").toString());
+					textFieldPagar.setText(df.format(conexao.rs.getBigDecimal("valor")));
+					textFieldValor.setText(df.format(conexao.rs.getBigDecimal("valor")));
 					textFieldDesconto.setEnabled(true);
 
 				} catch (Exception ezx) {
 					ezx.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Erro no ");
+					JOptionPane.showMessageDialog(null, "Erro !!! ");
 				}
 
 			}
@@ -413,7 +417,7 @@ public class FormMarcConsulta extends JFrame {
 				if (!textFieldPagar.getText().equals(null)) {
 
 					valorPagoConsulta = textFieldPagar.getText();
-					System.out.println(valorPagoConsulta);
+				//	System.out.println(valorPagoConsulta);
 
 					textFieldDesconto.setText("");
 					textFieldDesconto.setEnabled(false);
@@ -421,7 +425,7 @@ public class FormMarcConsulta extends JFrame {
 
 				} else {
 
-					JOptionPane.showMessageDialog(null, "Erro ao pagar");
+					JOptionPane.showMessageDialog(null, "Erro ao pagar a Cons");
 				}
 
 			}
@@ -436,11 +440,25 @@ public class FormMarcConsulta extends JFrame {
 
 		btnDarDesconto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				DecimalFormat df = new DecimalFormat("#.00");
+				
+				String valor = textFieldValor.getText().toString();
+				String desconto = textFieldDesconto.getText().toString();
+				
+				BigDecimal val = new BigDecimal(valor.replaceAll("\\.", "").replace(",",".")); //remove a virgula e troca por ponto
+				
+				
+				BigDecimal desc = new BigDecimal(desconto.replaceAll("\\.", "").replace(",",".")); //remove a virgula e troca por ponto
+				
+				System.out.println(val); //exibe a saida
+				System.out.println(desc);
+				
+				System.out.println(desconto);
+				
 
-				BigDecimal valor = new BigDecimal(textFieldValor.getText());
-				BigDecimal desconto = new BigDecimal(textFieldDesconto.getText());
-
-				textFieldPagar.setText(valor.subtract(desconto).toString());
+     			BigDecimal calculo = val.subtract(desc);
+     			textFieldPagar.setText(calculo.toString());
+		
 				textFieldDesconto.setText("");
 				btnDarDesconto.setEnabled(false);
 				btnPagar.setEnabled(true);
