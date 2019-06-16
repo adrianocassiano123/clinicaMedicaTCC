@@ -36,7 +36,7 @@ public class FormAgenda extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	
+
 	BeanMarcConsulta modPaciente = new BeanMarcConsulta();
 	ConexaoBD conexao = new ConexaoBD();
 	private JTable tableAgenda = new JTable();
@@ -68,8 +68,6 @@ public class FormAgenda extends JFrame {
 		btnConfirmarMarcao.setEnabled(true);
 		btnCancelarMarcao.setEnabled(true);
 	}
-	
-	
 
 	public void listarTabelaAgenda() {
 		preencherTabela(
@@ -212,11 +210,14 @@ public class FormAgenda extends JFrame {
 		btnCancelarMarcao = new JButton("Cancelar Consulta");
 		btnCancelarMarcao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				int resposta = 0;
+				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente Cancelar?");
+				if (resposta == JOptionPane.YES_NO_OPTION) {
 
-				
 					cancelarConsulta();
 					listarTabelaAgenda();
-				
+
+				}
 			}
 
 		});
@@ -231,24 +232,20 @@ public class FormAgenda extends JFrame {
 
 		buttonRemarcar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
+
 				try {
 					conexao.rs.first();
 					consulta.setIdMarcConsulta(conexao.rs.getInt("id_marcacao"));
 					textFieldIdMarcacao.setText(Integer.toString(conexao.rs.getInt("id_marcacao")));
-					
-					String idMarcacaoCons =textFieldIdMarcacao.getText();
+
+					String idMarcacaoCons = textFieldIdMarcacao.getText();
 					FormRemarcConsulta remarcar = new FormRemarcConsulta(idMarcacaoCons);
 					remarcar.setVisible(true);
-					
 
-					
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, "Erro ao Cancelar");
 					e.printStackTrace();
 				}
-				
 
 			}
 
@@ -304,8 +301,6 @@ public class FormAgenda extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 
 	}
-
-
 
 	private void extracted() {
 		buttonRemarcar.setFont(new Font("Tahoma", Font.BOLD, 14));

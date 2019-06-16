@@ -33,6 +33,7 @@ import modelo.BeanPaciente;
 import modelo.ModeloTabela;
 import modeloDao.DaoMarcConsulta;
 import modeloDao.DaoPacientes;
+import javax.swing.border.LineBorder;
 
 public class FormRemarcConsulta extends JFrame {
 
@@ -124,10 +125,11 @@ public class FormRemarcConsulta extends JFrame {
 		panel_2.setBackground(SystemColor.activeCaption);
 		textFieldIdMarcar.setEditable(false);
 		textFieldIdMarcar.setEnabled(false);
+		textFieldIdMarcar.setVisible(false);
 
 		textFieldIdMarcar.setColumns(10);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 884, 627);
+		setBounds(100, 100, 884, 550);
 		contentPane = new JPanel();
 		contentPane.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -178,6 +180,7 @@ public class FormRemarcConsulta extends JFrame {
 		lblMotivoDaConsulta.setFont(new Font("Tahoma", Font.BOLD, 16));
 
 		textFieldMotivo = new JTextField();
+		textFieldMotivo.setEnabled(false);
 		textFieldMotivo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textFieldMotivo.setColumns(10);
 
@@ -218,11 +221,6 @@ public class FormRemarcConsulta extends JFrame {
 		btnConfirmarMarcao.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		String turno[] = { "Manhã", "Tarde" };
-		comboBoxTurno = new JComboBox<Object>(turno);
-		comboBoxTurno.setFont(new Font("Tahoma", Font.PLAIN, 14));
-
-		JLabel lblTurno = new JLabel("Turno :");
-		lblTurno.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		JButton btnSair = new JButton("Sair");
 		btnSair.addActionListener(new ActionListener() {
@@ -232,56 +230,47 @@ public class FormRemarcConsulta extends JFrame {
 			}
 		});
 		btnSair.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		JLabel lblPaciente = new JLabel("Paciente :");
-		lblPaciente.setFont(new Font("Tahoma", Font.PLAIN, 14));
-
-		textFieldPaciente = new JTextField();
-		textFieldPaciente.setEnabled(false);
-		textFieldPaciente.setColumns(10);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(SystemColor.activeCaption));
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblTurno, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(comboBoxTurno, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblMdico, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboBoxMedico, GroupLayout.PREFERRED_SIZE, 326, GroupLayout.PREFERRED_SIZE)))
-					.addGap(138)
-					.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(dateConsulta, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
+						.addComponent(textFieldIdMarcar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(20))
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(textFieldMotivo, GroupLayout.DEFAULT_SIZE, 848, Short.MAX_VALUE)
-						.addComponent(lblMotivoDaConsulta, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE))
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 837, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(21, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblMdico, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+					.addGap(18, 18, Short.MAX_VALUE)
+					.addComponent(comboBoxMedico, GroupLayout.PREFERRED_SIZE, 262, GroupLayout.PREFERRED_SIZE)
+					.addGap(178)
+					.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(dateConsulta, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)
+					.addGap(22))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblMotivoDaConsulta, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(648, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(textFieldMotivo, GroupLayout.DEFAULT_SIZE, 848, Short.MAX_VALUE)
 					.addContainerGap())
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(149)
+					.addGap(151)
 					.addComponent(btnConfirmarMarcao, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE)
-					.addGap(88)
+					.addGap(78)
 					.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 256, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(123, Short.MAX_VALUE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(textFieldPaciente, GroupLayout.PREFERRED_SIZE, 776, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-									.addComponent(lblPaciente, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(textFieldIdMarcar, Alignment.LEADING)))))
-					.addGap(20))
+					.addContainerGap(131, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -290,31 +279,70 @@ public class FormRemarcConsulta extends JFrame {
 					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textFieldIdMarcar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(8)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblPaciente, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textFieldPaciente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(28)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblMdico, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 							.addComponent(comboBoxMedico, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblMdico, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 							.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
 						.addComponent(dateConsulta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(comboBoxTurno, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTurno, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
-					.addGap(35)
+					.addGap(28)
 					.addComponent(lblMotivoDaConsulta, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textFieldMotivo, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
-					.addGap(70)
+					.addGap(36)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnConfirmarMarcao, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-					.addGap(194))
+					.addGap(248))
 		);
+		
+				JLabel lblPaciente = new JLabel("Paciente :");
+				lblPaciente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+				textFieldPaciente = new JTextField();
+				textFieldPaciente.setEnabled(false);
+				textFieldPaciente.setColumns(10);
+		
+				JLabel lblTurno = new JLabel("Turno :");
+				lblTurno.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		comboBoxTurno = new JComboBox<Object>(turno);
+		comboBoxTurno.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblPaciente, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(textFieldPaciente, GroupLayout.PREFERRED_SIZE, 387, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+					.addComponent(lblTurno, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+					.addGap(48)
+					.addComponent(comboBoxTurno, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_panel.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGap(7)
+								.addComponent(lblPaciente))
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGap(7)
+								.addComponent(textFieldPaciente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(Alignment.TRAILING, gl_panel.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGap(3)
+								.addComponent(lblTurno))
+							.addComponent(comboBoxTurno, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		panel.setLayout(gl_panel);
 
 		JLabel lblCadastroDePacientes = new JLabel("Remarcar Consulta");
 		panel_2.add(lblCadastroDePacientes);

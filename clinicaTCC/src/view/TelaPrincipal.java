@@ -7,7 +7,6 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.swing.GroupLayout;
@@ -25,9 +24,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import ModeloConexao.ConexaoBD;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
 import relatorios.Relatorio;
 
 public class TelaPrincipal extends JFrame {
@@ -56,7 +52,7 @@ public class TelaPrincipal extends JFrame {
 	}
 
 	public TelaPrincipal(String usuario) {
-		setExtendedState(MAXIMIZED_BOTH);
+		// setExtendedState(MAXIMIZED_BOTH);
 		labelUsuario.setText(usuario);
 
 		setTitle("Home");
@@ -286,7 +282,7 @@ public class TelaPrincipal extends JFrame {
 		mnConsultas.add(mntmPronturioEletnico);
 		mntmPronturioEletnico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				conecta.executarSQL("select * from tab_usuarios where nome_usuario='" + labelUsuario.getText() + "'");
 				try {
 					conecta.rs.first();
@@ -305,13 +301,13 @@ public class TelaPrincipal extends JFrame {
 
 			}
 		});
-		
+
 		JMenu mnImpresses = new JMenu("Reimpress\u00E3o");
 		menuBar.add(mnImpresses);
-		
+
 		JMenuItem mntmAtestado = new JMenuItem("Atestado");
 		mnImpresses.add(mntmAtestado);
-		
+
 		mntmAtestado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -320,11 +316,10 @@ public class TelaPrincipal extends JFrame {
 					conecta.rs.first();
 					if (conecta.rs.getString("tipo_usuario").equals("Administrador")
 							|| conecta.rs.getString("tipo_usuario").equals("Recepcionista")
-							||conecta.rs.getString("tipo_usuario").equals("Médico")) {
+							|| conecta.rs.getString("tipo_usuario").equals("Médico")) {
 
 						FormReimprimirAtestado reimpAtestado = new FormReimprimirAtestado();
 						reimpAtestado.setVisible(true);
-						
 
 					} else {
 						JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
@@ -335,12 +330,58 @@ public class TelaPrincipal extends JFrame {
 
 			}
 		});
-		
+
 		JMenuItem mntmExame = new JMenuItem("Exame");
 		mnImpresses.add(mntmExame);
-		
+
+		mntmExame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				conecta.executarSQL("select * from tab_usuarios where nome_usuario='" + labelUsuario.getText() + "'");
+				try {
+					conecta.rs.first();
+					if (conecta.rs.getString("tipo_usuario").equals("Administrador")
+							|| conecta.rs.getString("tipo_usuario").equals("Recepcionista")
+							|| conecta.rs.getString("tipo_usuario").equals("Médico")) {
+
+						FormReimprimirExame reimpExame = new FormReimprimirExame();
+						reimpExame.setVisible(true);
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+					}
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+				}
+
+			}
+		});
+
 		JMenuItem mntmDeclarao = new JMenuItem("Declara\u00E7\u00E3o");
 		mnImpresses.add(mntmDeclarao);
+
+		mntmDeclarao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				conecta.executarSQL("select * from tab_usuarios where nome_usuario='" + labelUsuario.getText() + "'");
+				try {
+					conecta.rs.first();
+					if (conecta.rs.getString("tipo_usuario").equals("Administrador")
+							|| conecta.rs.getString("tipo_usuario").equals("Recepcionista")
+							|| conecta.rs.getString("tipo_usuario").equals("Médico")) {
+
+						FormReimprimirDeclaracao reimpDeclaracao = new FormReimprimirDeclaracao();
+						reimpDeclaracao.setVisible(true);
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+					}
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+				}
+
+			}
+		});
 
 		JMenu menuSair = new JMenu("Sair");
 		menuBar.add(menuSair);
@@ -477,14 +518,32 @@ public class TelaPrincipal extends JFrame {
 		panel_2.setBackground(SystemColor.activeCaption);
 		panel_2.setBorder(null);
 
-		JLabel lblRelatrios = new JLabel("Relat\u00F3rios");
+		JLabel lblRelatrios = new JLabel("Reimpress\u00E3o");
 		lblRelatrios.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel_2.add(lblRelatrios);
 
-		JButton btnRelaConsulta = new JButton("Consultas");
+		JButton btnRelaConsulta = new JButton("Atestado");
 		btnRelaConsulta.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/imagem/relatorio02.png")));
 		btnRelaConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
+				conecta.executarSQL("select * from tab_usuarios where nome_usuario='" + labelUsuario.getText() + "'");
+				try {
+					conecta.rs.first();
+					if (conecta.rs.getString("tipo_usuario").equals("Administrador")
+							|| conecta.rs.getString("tipo_usuario").equals("Recepcionista")
+							|| conecta.rs.getString("tipo_usuario").equals("Médico")) {
+
+						FormReimprimirAtestado reimpAtestado = new FormReimprimirAtestado();
+						reimpAtestado.setVisible(true);
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+					}
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+				}
+
 			}
 		});
 		btnRelaConsulta.setToolTipText("Agendamento");
@@ -552,12 +611,67 @@ public class TelaPrincipal extends JFrame {
 		btnPep.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/imagem/consulta.png")));
 		btnPep.setToolTipText("");
 		btnPep.setFont(new Font("Tahoma", Font.BOLD, 14));
+
+		JButton btnExame = new JButton("Exame");
+		btnExame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				conecta.executarSQL("select * from tab_usuarios where nome_usuario='" + labelUsuario.getText() + "'");
+				try {
+					conecta.rs.first();
+					if (conecta.rs.getString("tipo_usuario").equals("Administrador")
+							|| conecta.rs.getString("tipo_usuario").equals("Recepcionista")
+							|| conecta.rs.getString("tipo_usuario").equals("Médico")) {
+
+						FormReimprimirExame reimpExame = new FormReimprimirExame();
+						reimpExame.setVisible(true);
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+					}
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+				}
+
+			}
+		});
+		btnExame.setToolTipText("Agendamento");
+		btnExame.setFont(new Font("Tahoma", Font.BOLD, 10));
+
+		JButton btnDeclarao = new JButton("Declara\u00E7\u00E3o");
+		btnDeclarao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				conecta.executarSQL("select * from tab_usuarios where nome_usuario='" + labelUsuario.getText() + "'");
+				try {
+					conecta.rs.first();
+					if (conecta.rs.getString("tipo_usuario").equals("Administrador")
+							|| conecta.rs.getString("tipo_usuario").equals("Recepcionista")
+							|| conecta.rs.getString("tipo_usuario").equals("Médico")) {
+
+						FormReimprimirDeclaracao reimpDeclaracao = new FormReimprimirDeclaracao();
+						reimpDeclaracao.setVisible(true);
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+					}
+				} catch (SQLException ee) {
+					JOptionPane.showMessageDialog(null, "Você não tem Permissão para acessar esse Item");
+				}
+			}
+		});
+		btnDeclarao.setToolTipText("Agendamento");
+		btnDeclarao.setFont(new Font("Tahoma", Font.BOLD, 10));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
 				.createSequentialGroup()
 				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup().addGap(264).addComponent(lblNewLabel)
+								.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblSejaBemVindo)
+								.addPreferredGap(ComponentPlacement.RELATED).addComponent(labelUsuario))
 						.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
 								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
 										.addComponent(panel, GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
 										.addGroup(gl_contentPane.createSequentialGroup().addGap(20)
 												.addComponent(CadButMedico, GroupLayout.PREFERRED_SIZE, 176,
@@ -568,12 +682,16 @@ public class TelaPrincipal extends JFrame {
 												.addPreferredGap(ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
 												.addComponent(CadButRecepcionista, GroupLayout.PREFERRED_SIZE, 180,
 														GroupLayout.PREFERRED_SIZE))
-										.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 839,
-												GroupLayout.PREFERRED_SIZE)
 										.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
-										.addGroup(gl_contentPane.createSequentialGroup().addGap(24).addComponent(
-												btnRelaConsulta, GroupLayout.PREFERRED_SIZE, 178,
-												GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_contentPane.createSequentialGroup().addGap(24)
+												.addComponent(btnRelaConsulta, GroupLayout.PREFERRED_SIZE, 178,
+														GroupLayout.PREFERRED_SIZE)
+												.addGap(127)
+												.addComponent(btnExame, GroupLayout.PREFERRED_SIZE, 178,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+												.addComponent(btnDeclarao, GroupLayout.PREFERRED_SIZE, 178,
+														GroupLayout.PREFERRED_SIZE))
 										.addGroup(gl_contentPane.createSequentialGroup().addGap(20)
 												.addComponent(BtnAgendamento, GroupLayout.PREFERRED_SIZE, 177,
 														GroupLayout.PREFERRED_SIZE)
@@ -582,10 +700,7 @@ public class TelaPrincipal extends JFrame {
 														GroupLayout.PREFERRED_SIZE)
 												.addPreferredGap(ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
 												.addComponent(btnPep, GroupLayout.PREFERRED_SIZE, 177,
-														GroupLayout.PREFERRED_SIZE))))
-						.addGroup(gl_contentPane.createSequentialGroup().addGap(264).addComponent(lblNewLabel)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblSejaBemVindo)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(labelUsuario)))
+														GroupLayout.PREFERRED_SIZE)))))
 				.addContainerGap()));
 		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane
 				.createSequentialGroup().addContainerGap(16, Short.MAX_VALUE)
@@ -605,7 +720,10 @@ public class TelaPrincipal extends JFrame {
 						.addComponent(btnPep, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
 				.addGap(24).addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addComponent(btnRelaConsulta, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnRelaConsulta, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnExame, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnDeclarao, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
 				.addContainerGap()));
 
 		JLabel lblConsultas = new JLabel("Consultas");

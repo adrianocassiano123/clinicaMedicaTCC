@@ -75,6 +75,7 @@ public class FormDeclaracao extends JFrame {
 		textFieldMedico = new JTextField();
 		textFieldMedico.setVisible(false);
 		textFieldMedico.setEnabled(false);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 884, 730);
 		contentPane = new JPanel();

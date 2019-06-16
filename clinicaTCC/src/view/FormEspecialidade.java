@@ -99,7 +99,6 @@ public class FormEspecialidade extends JFrame {
 					conexao.rs.first();
 					textFieldCodEspecialidade.setText(String.valueOf(conexao.rs.getInt("id_especialidade")));
 					
-					//String valor = df.format(conexao.rs.getBigDecimal("valor"));
 					
 					textFieldValor.setText(df.format(conexao.rs.getBigDecimal("valor")));
 										
@@ -295,6 +294,8 @@ public class FormEspecialidade extends JFrame {
 		textFieldCodEspecialidade = new JTextField();
 		textFieldCodEspecialidade.setEnabled(false);
 		textFieldCodEspecialidade.setColumns(10);
+		textFieldCodEspecialidade.setVisible(false);
+		lblCodigo.setVisible(false);
 
 		scrollPane = new JScrollPane();
 

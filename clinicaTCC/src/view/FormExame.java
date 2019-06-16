@@ -80,6 +80,7 @@ public class FormExame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		editorPaneDescricao.setText("Solicito : \n\n ");
+		setLocationRelativeTo(null);
 
 		contentPane.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -96,7 +97,7 @@ public class FormExame extends JFrame {
 					textFieldNome.setText(prontuario.getNomePaciente());
 					textFieldIdMarcacao.setText(String.valueOf(prontuario.getIdMarcConsulta()));
 					formattedTextFieldNascimento.setText(prontuario.getNascimento());
-					// textFieldMotivo.setText(prontuario.getMotivo());
+
 					textFieldMedico.setText(prontuario.getNomeMedico());
 
 				} catch (Exception e) {
@@ -142,7 +143,7 @@ public class FormExame extends JFrame {
 
 				dispose();
 
-				// exame.SolicitarExame();
+			
 
 			}
 		});

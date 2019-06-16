@@ -24,6 +24,8 @@ import javax.swing.border.EmptyBorder;
 import org.apache.hadoop.classification.InterfaceAudience.Public;
 
 import ModeloConexao.ConexaoBD;
+import javax.swing.border.LineBorder;
+import java.awt.SystemColor;
 
 public class TelaLogin extends JFrame {
 
@@ -68,6 +70,8 @@ public class TelaLogin extends JFrame {
 				conexao.rs.first();
 
 				if (conexao.rs.getString("senha_usuario").equals(passwordFieldSenha.getText())) {
+					
+					
 					TelaPrincipal telaPrincipal = new TelaPrincipal(textUsuarioLogin.getText());
 					telaPrincipal.setVisible(true);
 					dispose();
@@ -91,11 +95,14 @@ public class TelaLogin extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(new LineBorder(SystemColor.activeCaption));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setUndecorated(true);
+		
+		Fundo tela = new Fundo();
+		tela.setVisible(true);
 
 		JLabel lblUsurio = new JLabel("Usu\u00E1rio:");
 		lblUsurio.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -136,8 +143,8 @@ public class TelaLogin extends JFrame {
 		btnSair.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-
-				dispose();
+				
+				System.exit(0);
 
 			}
 		});

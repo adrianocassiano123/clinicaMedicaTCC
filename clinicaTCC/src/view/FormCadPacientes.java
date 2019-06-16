@@ -52,7 +52,6 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 	JButton btnSalvarPaciente = new JButton("Salvar");
 	JButton btnCancelarPaciente = new JButton("Cancelar");
 	JButton btnNovoPaciente = new JButton("Novo");
-	JButton btnExcluirPaciente = new JButton("Excluir ");
 	JButton btnEditarPaciente = new JButton("Editar");
 	private JTable tablePacientes = new JTable();
 	JScrollPane scrollPane = new JScrollPane();
@@ -153,8 +152,8 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 					btnEditarPaciente.setEnabled(true);
 					btnNovoPaciente.setEnabled(false);
 					btnCancelarPaciente.setEnabled(true);
-					btnExcluirPaciente.setVisible(false);
-					buttonExcluirMouClick.setVisible(true);
+			//		btnExcluirPaciente.setVisible(false);
+					buttonExcluirMouClick.setEnabled(true);
 
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, "Erro ao acessar dados" + e);
@@ -171,33 +170,31 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 		tablePacientes.getColumnModel().getColumn(1).setPreferredWidth(200);
 		tablePacientes.getColumnModel().getColumn(1).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(2).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(2).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(2).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(3).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(3).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(3).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(4).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(4).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(4).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(5).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(5).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(5).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(6).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(6).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(6).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(7).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(7).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(7).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(8).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(8).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(8).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(9).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(9).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(9).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(10).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(10).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(10).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(11).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(11).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(11).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(12).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(12).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(12).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(13).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(13).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(13).setResizable(true);
 		tablePacientes.getColumnModel().getColumn(14).setPreferredWidth(200);
-		tablePacientes.getColumnModel().getColumn(14).setResizable(false);
-//		tablePacientes.getColumnModel().getColumn(15).setPreferredWidth(80);
-//		tablePacientes.getColumnModel().getColumn(15).setResizable(false);
+		tablePacientes.getColumnModel().getColumn(14).setResizable(true);
 
 		tablePacientes.getTableHeader().setReorderingAllowed(false); // Não permite reordenar o cabeçalho
 		tablePacientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Permite selecionar apenas um dado por
@@ -221,6 +218,7 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 	}
 
 	public FormCadPacientes() {
+		
 		preencherTabela("select *from tab_paciente order by nome_paciente");
 		textFieldTelefonePaciente.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldTelefonePaciente.setEnabled(false);
@@ -260,8 +258,6 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 		panel_2.setBackground(SystemColor.activeCaption);
 		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) SystemColor.activeCaption));
 		btnNovoPaciente.setFont(new Font("Tahoma", Font.BOLD, 14));
-		buttonExcluirMouClick.setVisible(false);
-		btnExcluirPaciente.setEnabled(false);
 		textFieldCepPaciente.setEnabled(false);
 		textFieldCpfPaciente.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldCpfPaciente.setColumns(10);
@@ -288,7 +284,7 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 				btnNovoPaciente.setEnabled(false);
 				btnCancelarPaciente.setEnabled(true);
 				btnSalvarPaciente.setEnabled(true);
-				btnExcluirPaciente.setEnabled(false);
+			
 
 			}
 		});
@@ -491,7 +487,7 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 				btnSalvarPaciente.setEnabled(true);
 				btnEditarPaciente.setEnabled(false);
 				btnNovoPaciente.setEnabled(true);
-				btnExcluirPaciente.setEnabled(false);
+	//			btnExcluirPaciente.setEnabled(false);
 
 			}
 		});
@@ -543,43 +539,6 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 			}
 		});
 		buttonExcluirMouClick.setFont(new Font("Tahoma", Font.BOLD, 14));
-		buttonExcluirMouClick.setVisible(false);
-		btnExcluirPaciente.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		btnExcluirPaciente.setEnabled(false);
-		btnExcluirPaciente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int resposta = 0;
-				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
-				if (resposta == JOptionPane.YES_NO_OPTION) {
-					textFieldIdPaciente.setText(String.valueOf(modPaciente.getCodPaciente()));
-					
-					daoPaciente.excluir(modPaciente);
-
-					textFieldNomePaciente.setText("");
-					textFieldLogradouroPaciente.setText("");
-					textFieldCidadePaciente.setText("");
-					textFieldEstadoPaciente.setText("");
-					textFieldBairroPaciente.setText("");
-					textFieldEmailPaciente.setText("");
-					textFieldConvenioPaci.setText("");
-					textFieldNascimentPaciente.setText("");
-					textFieldRgPaciente.setText("");
-					textFieldCpfPaciente.setText("");
-					textFieldCepPaciente.setText("");
-					textFieldTelefonePaciente.setText("");
-
-					btnEditarPaciente.setEnabled(false);
-					btnExcluirPaciente.setEnabled(false);
-					btnNovoPaciente.setEnabled(true);
-					preencherTabela("select *from tab_paciente order by nome_paciente");
-				}
-
-			}
-
-		}
-
-		);
 		btnCancelarPaciente.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		btnCancelarPaciente.addActionListener(new ActionListener() {
@@ -615,7 +574,7 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 				
 				btnEditarPaciente.setEnabled(false);
 				btnSalvarPaciente.setEnabled(false);
-				btnExcluirPaciente.setEnabled(false);
+	//			btnExcluirPaciente.setEnabled(false);
 				btnNovoPaciente.setEnabled(true);
 				
 				preencherTabela("select *from tab_paciente order by nome_paciente");
@@ -650,7 +609,7 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 				textFieldCepPaciente.setText(model.getCep());
 				textFieldTelefonePaciente.setText(model.getTelefone());
 
-				btnExcluirPaciente.setEnabled(true);
+	//			btnExcluirPaciente.setEnabled(true);
 				comboBoxSexoPaciente.setEditable(false);
 				btnEditarPaciente.setEnabled(true);
 				btnNovoPaciente.setEnabled(false);
@@ -662,23 +621,41 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_1
-				.createSequentialGroup()
-				.addComponent(btnNovoPaciente, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE).addGap(37)
-				.addComponent(btnSalvarPaciente, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE).addGap(43)
-				.addComponent(btnEditarPaciente, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE).addGap(54)
-				.addComponent(btnExcluirPaciente, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-				.addComponent(btnCancelarPaciente, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap())
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-						.addComponent(textFieldPesquisaPaciente, GroupLayout.PREFERRED_SIZE, 658,
-								GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(btnPesquisarPaciente, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
-						.addGap(2)));
+					.addComponent(btnNovoPaciente, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+					.addComponent(btnSalvarPaciente, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
+					.addGap(69)
+					.addComponent(btnEditarPaciente, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+					.addGap(84)
+					.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
+					.addGap(75)
+					.addComponent(btnCancelarPaciente, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addComponent(textFieldPesquisaPaciente, GroupLayout.PREFERRED_SIZE, 658, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnPesquisarPaciente, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
+					.addGap(2))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnCancelarPaciente, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNovoPaciente, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+						.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnEditarPaciente, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSalvarPaciente, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textFieldPesquisaPaciente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnPesquisarPaciente, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
 //		buttonExcluirMouClick.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent arg0) {
 //			}
@@ -699,23 +676,6 @@ public class FormCadPacientes extends JFrame implements TabelaTela{
 		String tipoUsu[] = { "Masculino", "Feminino" };
 
 		scrollPane = new JScrollPane();
-
-		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
-				gl_panel_1.createSequentialGroup().addContainerGap(14, Short.MAX_VALUE).addGroup(gl_panel_1
-						.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnCancelarPaciente, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-						.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnExcluirPaciente, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEditarPaciente, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSalvarPaciente, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnNovoPaciente, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textFieldPesquisaPaciente, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnPesquisarPaciente, GroupLayout.PREFERRED_SIZE, 27,
-										GroupLayout.PREFERRED_SIZE))
-						.addContainerGap()));
 		panel_1.setLayout(gl_panel_1);
 
 		JPanel panel_3 = new JPanel();

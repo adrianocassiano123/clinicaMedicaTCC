@@ -300,9 +300,10 @@ public class PEP extends JFrame {
 		textFieldIdMarcacao.setVisible(false);
 
 		JLabel lblPep = new JLabel("PEP");
+		lblPep.setVisible(false);
 
 		JLabel lblMarcacao = new JLabel("Marcacao");
-
+		lblMarcacao.setVisible(false);
 		
 		btnDeclaracao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

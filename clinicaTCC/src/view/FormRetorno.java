@@ -110,6 +110,7 @@ public class FormRetorno extends JFrame {
 		panel_2.setBackground(SystemColor.activeCaption);
 		textFieldIdMarcar.setEditable(false);
 		textFieldIdMarcar.setEnabled(false);
+		textFieldIdMarcar.setVisible(false);
 
 		textFieldIdMarcar.setColumns(10);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

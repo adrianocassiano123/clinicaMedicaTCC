@@ -47,7 +47,7 @@ public class FormConsultas extends JFrame {
 	JButton btnConfirmarMarcao = new JButton();
 	private JButton btnConfirmarAtendimento;
 	JButton btnCancelarMarcao = new JButton();
-	private JButton btnCancelarAtendimento;
+	private JButton btnSair;
 	BeanMarcConsulta consulta = new BeanMarcConsulta();
 	DaoMarcConsulta dao = new DaoMarcConsulta();
 
@@ -86,7 +86,7 @@ public class FormConsultas extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 
 				btnConfirmarAtendimento.setEnabled(true);
-				btnCancelarAtendimento.setEnabled(true);
+				btnSair.setEnabled(true);
 				cod_agendamento = "" + tableConsulta.getValueAt(tableConsulta.getSelectedRow(), 0);
 				conexao.conexao();
 				conexao.executarSQL("select *from tab_marcacao where id_marcacao= '" + cod_agendamento + "'");
@@ -194,17 +194,18 @@ public class FormConsultas extends JFrame {
 		});
 		btnConfirmarAtendimento.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		btnCancelarAtendimento = new JButton("Cancelar Consulta"); // CANCELA A CONSULTA
-		btnCancelarAtendimento.addActionListener(new ActionListener() {
+		btnSair = new JButton("Sair"); // CANCELA A CONSULTA
+		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-//						
+				dispose();
+				
 				btnConfirmarMarcao.setEnabled(false);
 				btnCancelarMarcao.setEnabled(false);
 			}
 		});
-		btnCancelarAtendimento.setEnabled(false);
-		btnCancelarAtendimento.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnSair.setEnabled(false);
+		btnSair.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		JLabel lblMedico = new JLabel("M\u00E9dico :");
 		lblMedico.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -228,49 +229,55 @@ public class FormConsultas extends JFrame {
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 18));
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane
-				.createSequentialGroup().addGap(157)
-				.addComponent(btnConfirmarAtendimento, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
-				.addGap(123)
-				.addComponent(btnCancelarAtendimento, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(198, Short.MAX_VALUE))
-				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_contentPane.createSequentialGroup().addComponent(lblMedico)
-										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(textFieldMedico,
-												GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
-								.addComponent(textFieldIdConsulta, Alignment.LEADING, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(panel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 838,
-										Short.MAX_VALUE))
-						.addGap(20))
-				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE))
-						.addGap(20)));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane
-				.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(textFieldIdConsulta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup().addGap(29)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-										.addComponent(textFieldMedico, GroupLayout.PREFERRED_SIZE, 32,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblMedico))))
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE).addGap(28)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnCancelarAtendimento, GroupLayout.PREFERRED_SIZE, 37,
-								GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnConfirmarAtendimento, GroupLayout.PREFERRED_SIZE, 37,
-								GroupLayout.PREFERRED_SIZE))
-				.addGap(152)));
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addGap(237)
+					.addComponent(btnConfirmarAtendimento, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
+					.addGap(32)
+					.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(307, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(lblMedico)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(textFieldMedico, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textFieldIdConsulta, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE))
+					.addGap(20))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE))
+					.addGap(20))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textFieldIdConsulta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(29)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textFieldMedico, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblMedico))))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
+					.addGap(28)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnConfirmarAtendimento, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+					.addGap(152))
+		);
 
 		JLabel lblCadastroDePacientes = new JLabel("Consultas");
 		panel_2.add(lblCadastroDePacientes);

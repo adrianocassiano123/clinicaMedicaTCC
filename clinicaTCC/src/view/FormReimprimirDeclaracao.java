@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -63,10 +64,11 @@ public class FormReimprimirDeclaracao extends JFrame {
 			conexao.rs.first(); // Seta o primeiro registro
 
 			do {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				dados.add(new Object[] {  conexao.rs.getInt("id")
 										, conexao.rs.getString("paciente")
 										, conexao.rs.getString("medico")
-										, conexao.rs.getString("data") 
+										, sdf.format(conexao.rs.getDate("data")) 
 									 });
 				
 			} while (conexao.rs.next());
@@ -211,17 +213,18 @@ public class FormReimprimirDeclaracao extends JFrame {
 
 
 		lblCodigo = new JLabel("Codigo: ");
-
+		lblCodigo.setVisible(false);
 		textFieldIdMarcacao = new JTextField();
 		textFieldIdMarcacao.setEnabled(false);
 		textFieldIdMarcacao.setColumns(10);
+		textFieldIdMarcacao.setVisible(false);
 
 		scrollPane = new JScrollPane();
 
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.activeCaption);
 
-		JLabel lblCadastrarEspecialidade = new JLabel("Reimprimir Exame");
+		JLabel lblCadastrarEspecialidade = new JLabel("Reimprimir Declara\u00E7\u00E3o");
 		lblCadastrarEspecialidade.setFont(new Font("Tahoma", Font.BOLD, 21));
 		panel.add(lblCadastrarEspecialidade);
 

@@ -142,8 +142,8 @@ public class DaoPacientes {
 			pst.execute();
 			JOptionPane.showMessageDialog(null, "Excluido com Sucesso!!!");
 		} catch (SQLException e) {
-			JOptionPane.showConfirmDialog(null, "Erro ao excluir"+e);
-			//e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Este item não pode ser excluido");
+			
 		}
 		
 		conexao.desconectar();

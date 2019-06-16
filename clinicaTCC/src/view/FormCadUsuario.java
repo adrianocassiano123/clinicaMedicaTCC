@@ -30,6 +30,8 @@ import modelo.BeanUsuario;
 import modelo.ModeloTabela;
 import modeloDao.DaoUsuario;
 import modeloDao.TabelaTela;
+import java.awt.SystemColor;
+import javax.swing.border.LineBorder;
 
 public class FormCadUsuario extends JFrame implements TabelaTela{
 
@@ -47,7 +49,6 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 	JButton btnSalvarUsuario = new JButton("Salvar");
 	JButton btnCancelarUsuario = new JButton("Cancelar");
 	JButton btnNovoUsuario = new JButton("Novo");
-	JButton btnExcluirUsuario = new JButton("Excluir ");
 	JButton btnEditarUsuario = new JButton("Editar");
 	private JTable tableUsuarios = new JTable();
 	JScrollPane scrollPane = new JScrollPane();
@@ -55,6 +56,9 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 	private final JPasswordField passwordConfSenha = new JPasswordField();
 	private final JTextField textFieldIdUsuario = new JTextField();
 	JButton buttonExcluirMouClick = new JButton("Excluir ");
+	private final JPanel panel = new JPanel();
+	private final JLabel label = new JLabel("Cadastro de Usu\u00E1rios");
+	private final JPanel panel_1 = new JPanel();
 
 	@Override
 	public void preencherTabela(String Sql) {
@@ -102,7 +106,7 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 					btnEditarUsuario.setEnabled(true);
 					btnNovoUsuario.setEnabled(false);
 					btnCancelarUsuario.setEnabled(true);
-					btnExcluirUsuario.setVisible(false);
+				//	btnExcluirUsuario.setVisible(false);
 					buttonExcluirMouClick.setVisible(true);
 					buttonExcluirMouClick.setVisible(true);
 
@@ -147,23 +151,18 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 	}
 
 	public FormCadUsuario() {
+		panel.setBackground(SystemColor.activeCaption);
 		textFieldIdUsuario.setColumns(10);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 884, 730);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 884, 549);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		preencherTabela("select *from tab_usuarios order by nome_usuario");
-
-		passwordConfSenha.setEnabled(false);
-		passwordSenha.setEnabled(false);
 		textFieldIdUsuario.setEditable(false);
 		textFieldIdUsuario.setVisible(false);
-
-		JLabel lblCadastroDeUsuarios = new JLabel("Cadastro de Usu\u00E1rios");
-		lblCadastroDeUsuarios.setFont(new Font("Tahoma", Font.BOLD, 21));
 		btnEditarUsuario.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		btnEditarUsuario.setEnabled(false);
@@ -178,7 +177,7 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 				btnSalvarUsuario.setEnabled(true);
 				btnEditarUsuario.setEnabled(false);
 				btnNovoUsuario.setEnabled(true);
-				btnExcluirUsuario.setEnabled(false);
+				//btnExcluirUsuario.setEnabled(false);
 
 			}
 		});
@@ -269,7 +268,7 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 				btnSalvarUsuario.setEnabled(false);
 				passwordConfSenha.setEnabled(false);
 				passwordSenha.setEnabled(false);
-				btnExcluirUsuario.setEnabled(false);
+				//btnExcluirUsuario.setEnabled(false);
 				btnNovoUsuario.setEnabled(true);
 
 			}
@@ -288,42 +287,6 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 
 			}
 		});
-		btnExcluirUsuario.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		btnExcluirUsuario.setEnabled(false);
-		btnExcluirUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int resposta = 0;
-				resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
-				if (resposta == JOptionPane.YES_NO_OPTION) {
-					textFieldIdUsuario.setText(String.valueOf(modUsuario.getIdUsuario()));
-
-					daoUsuario.excluir(modUsuario);
-
-					textFieldUsuario.setText("");
-					passwordConfSenha.setText("");
-					passwordSenha.setText("");
-					btnEditarUsuario.setEnabled(false);
-					btnExcluirUsuario.setEnabled(false);
-					preencherTabela("select *from tab_usuarios order by nome_usuario");
-				}
-
-			}
-
-		}
-
-		);
-
-		JLabel lblUsuario = new JLabel("Usu\u00E1rio :");
-		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 13));
-
-		textFieldUsuario = new JTextField();
-		textFieldUsuario.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textFieldUsuario.setEnabled(false);
-		textFieldUsuario.setColumns(10);
-
-		JLabel lblSenha = new JLabel("Senha :");
-		lblSenha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		textFieldPesquisa = new JTextField();
 		textFieldPesquisa.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -341,7 +304,7 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 				comboBoxTipoUsuario.setSelectedItem(model.getTipoUsuario());
 				comboBoxTipoUsuario.setEditable(false);
 				btnEditarUsuario.setEnabled(true);
-				btnExcluirUsuario.setEnabled(true);
+				//btnExcluirUsuario.setEnabled(true);
 				btnNovoUsuario.setEnabled(false);
 				btnCancelarUsuario.setEnabled(true);
 				textFieldPesquisa.setText("");
@@ -351,17 +314,8 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 		});
 
 		String tipoUsu[] = { "Administrador", "Recepcionista", "M\u00E9dico" };
-		comboBoxTipoUsuario = new JComboBox<Object>(tipoUsu);
-		comboBoxTipoUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		comboBoxTipoUsuario.setEnabled(false);
-
-		JLabel lblTipoUsuario = new JLabel("Tipo de Usu\u00E1rio :");
-		lblTipoUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		scrollPane = new JScrollPane();
-
-		JLabel labelConfirmarSenha = new JLabel("Confirmar Senha :");
-		labelConfirmarSenha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		buttonExcluirMouClick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -383,132 +337,146 @@ public class FormCadUsuario extends JFrame implements TabelaTela{
 			}
 		});
 		buttonExcluirMouClick.setFont(new Font("Tahoma", Font.BOLD, 14));
-		buttonExcluirMouClick.setVisible(false);
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 829,
-										Short.MAX_VALUE)
-								.addGroup(gl_contentPane.createSequentialGroup().addGroup(gl_contentPane
-										.createParallelGroup(Alignment.TRAILING).addGroup(Alignment.LEADING,
-												gl_contentPane.createSequentialGroup()
-														.addComponent(btnNovoUsuario, GroupLayout.PREFERRED_SIZE, 101,
-																GroupLayout.PREFERRED_SIZE)
-														.addGap(54)
-														.addComponent(btnEditarUsuario, GroupLayout.PREFERRED_SIZE, 90,
-																GroupLayout.PREFERRED_SIZE))
-										.addComponent(textFieldPesquisa, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
-												674, Short.MAX_VALUE)
-										.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-												.addComponent(lblUsuario).addGap(18)
-												.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-														.addGroup(gl_contentPane.createSequentialGroup()
-																.addComponent(
-																		textFieldIdUsuario, GroupLayout.PREFERRED_SIZE,
-																		GroupLayout.DEFAULT_SIZE,
-																		GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(ComponentPlacement.RELATED))
-														.addGroup(gl_contentPane.createSequentialGroup()
-																.addGroup(gl_contentPane
-																		.createParallelGroup(Alignment.TRAILING)
-																		.addComponent(lblCadastroDeUsuarios)
-																		.addGroup(gl_contentPane
-																				.createSequentialGroup()
-																				.addGroup(gl_contentPane
-																						.createParallelGroup(
-																								Alignment.TRAILING)
-																						.addComponent(btnSalvarUsuario,
-																								GroupLayout.PREFERRED_SIZE,
-																								93,
-																								GroupLayout.PREFERRED_SIZE)
-																						.addGroup(gl_contentPane
-																								.createSequentialGroup()
-																								.addComponent(
-																										textFieldUsuario,
-																										GroupLayout.PREFERRED_SIZE,
-																										292,
-																										GroupLayout.PREFERRED_SIZE)
-																								.addPreferredGap(
-																										ComponentPlacement.RELATED)
-																								.addComponent(
-																										lblSenha)))
-																				.addPreferredGap(
-																						ComponentPlacement.RELATED)
-																				.addGroup(gl_contentPane
-																						.createParallelGroup(
-																								Alignment.TRAILING)
-																						.addComponent(passwordSenha,
-																								GroupLayout.PREFERRED_SIZE,
-																								126,
-																								GroupLayout.PREFERRED_SIZE)
-																						.addComponent(
-																								buttonExcluirMouClick))))
-																.addGroup(gl_contentPane
-																		.createParallelGroup(Alignment.TRAILING)
-																		.addGroup(gl_contentPane.createSequentialGroup()
-																				.addGap(18)
-																				.addComponent(labelConfirmarSenha,
-																						GroupLayout.DEFAULT_SIZE,
-																						GroupLayout.DEFAULT_SIZE,
-																						Short.MAX_VALUE))
-																		.addGroup(gl_contentPane.createSequentialGroup()
-																				.addPreferredGap(
-																						ComponentPlacement.RELATED)
-																				.addComponent(btnExcluirUsuario,
-																						GroupLayout.PREFERRED_SIZE, 94,
-																						GroupLayout.PREFERRED_SIZE))))))
-										.addGroup(gl_contentPane.createSequentialGroup().addComponent(lblTipoUsuario)
-												.addGap(16)))
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_contentPane.createSequentialGroup().addGap(18)
-														.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-																.addComponent(btnCancelarUsuario,
-																		GroupLayout.PREFERRED_SIZE, 100,
-																		GroupLayout.PREFERRED_SIZE)
-																.addComponent(btnPesquisarUsuario,
-																		GroupLayout.PREFERRED_SIZE, 137,
-																		GroupLayout.PREFERRED_SIZE)))
-												.addGroup(gl_contentPane.createSequentialGroup()
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-																.addComponent(comboBoxTipoUsuario, 0, 155,
-																		Short.MAX_VALUE)
-																.addComponent(passwordConfSenha,
-																		GroupLayout.DEFAULT_SIZE, 155,
-																		Short.MAX_VALUE))))))
-						.addGap(29)));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup().addComponent(lblCadastroDeUsuarios).addGap(59)
-				.addComponent(textFieldIdUsuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-						GroupLayout.PREFERRED_SIZE)
-				.addGap(30)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldUsuario, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblSenha).addComponent(labelConfirmarSenha).addComponent(lblUsuario)
-						.addComponent(passwordSenha, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-						.addComponent(passwordConfSenha, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
-				.addGap(33)
-				.addGroup(
-						gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(comboBoxTipoUsuario, GroupLayout.PREFERRED_SIZE, 35,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblTipoUsuario))
-				.addGap(22)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 838, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 858, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(textFieldIdUsuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(772, Short.MAX_VALUE))
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 839, Short.MAX_VALUE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(btnPesquisarUsuario, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(btnNovoUsuario, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+										.addComponent(btnEditarUsuario, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+										.addGap(93)
+										.addComponent(btnSalvarUsuario, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
+										.addGap(90)
+										.addComponent(buttonExcluirMouClick)
+										.addGap(39))
+									.addGap(18)
+									.addComponent(btnCancelarUsuario, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)))
+							.addGap(29))))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(textFieldIdUsuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNovoUsuario, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEditarUsuario, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSalvarUsuario, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnCancelarUsuario, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(buttonExcluirMouClick, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnExcluirUsuario, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnCancelarUsuario, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-				.addGap(32)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnPesquisarUsuario, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
-				.addGap(18).addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 276, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(36, Short.MAX_VALUE)));
+						.addComponent(btnSalvarUsuario, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnEditarUsuario, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnPesquisarUsuario, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		
+				JLabel lblUsuario = new JLabel("Usu\u00E1rio :");
+				lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+				textFieldUsuario = new JTextField();
+				textFieldUsuario.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				textFieldUsuario.setEnabled(false);
+				textFieldUsuario.setColumns(10);
+		
+				JLabel lblSenha = new JLabel("Senha :");
+				lblSenha.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		passwordSenha.setEnabled(false);
+		
+				JLabel labelConfirmarSenha = new JLabel("Confirmar Senha :");
+				labelConfirmarSenha.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+				passwordConfSenha.setEnabled(false);
+		comboBoxTipoUsuario = new JComboBox<Object>(tipoUsu);
+		comboBoxTipoUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		comboBoxTipoUsuario.setEnabled(false);
+		
+				JLabel lblTipoUsuario = new JLabel("Tipo de Usu\u00E1rio :");
+				lblTipoUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addComponent(lblUsuario)
+					.addGap(4)
+					.addComponent(textFieldUsuario, GroupLayout.PREFERRED_SIZE, 292, GroupLayout.PREFERRED_SIZE)
+					.addGap(4)
+					.addComponent(lblSenha)
+					.addGap(4)
+					.addComponent(passwordSenha, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
+					.addGap(32)
+					.addComponent(labelConfirmarSenha, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+					.addComponent(passwordConfSenha, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(26, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+					.addContainerGap(553, Short.MAX_VALUE)
+					.addComponent(lblTipoUsuario)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(comboBoxTipoUsuario, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(17)
+							.addComponent(lblUsuario))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(11)
+							.addComponent(textFieldUsuario, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(16)
+							.addComponent(lblSenha))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(12)
+							.addComponent(passwordSenha, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(16)
+							.addComponent(labelConfirmarSenha))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(12)
+							.addComponent(passwordConfSenha, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(comboBoxTipoUsuario, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblTipoUsuario))
+					.addContainerGap())
+		);
+		panel_1.setBorder(new LineBorder(SystemColor.activeCaption));
+		panel_1.setLayout(gl_panel_1);
+		label.setFont(new Font("Tahoma", Font.BOLD, 21));
+		
+		panel.add(label);
 		scrollPane.setViewportView(tableUsuarios);
 		contentPane.setLayout(gl_contentPane);
 

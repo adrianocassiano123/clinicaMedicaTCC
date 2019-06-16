@@ -165,13 +165,6 @@ where
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descricao_declaracao}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd MMMMM, yyyy">
-				<reportElement x="450" y="270" width="100" height="30" uuid="64aa0b29-7cd4-4edb-9a8a-9d18a3de2684"/>
-				<textElement>
-					<font size="14" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 		</band>
 	</columnHeader>
 	<columnFooter>

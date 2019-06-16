@@ -82,12 +82,12 @@ public class FormReimprimirExame extends JFrame {
 		
 		
 		
-		Calendar data = Calendar.getInstance();
-		Date dat = data.getTime();
+//		Calendar data = Calendar.getInstance();
+//		Date dat = data.getTime();
+//
+//		SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy"); // Mascara;
 
-		SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy"); // Mascara;
-
-		dateformat.format(dat);
+//		dateformat.format(dat);
 	//	data = dateformat.format(dat);
 
 		ModeloTabela modeloTabela = new ModeloTabela(dados, colunas);
@@ -247,6 +247,8 @@ public class FormReimprimirExame extends JFrame {
 		textFieldIdMarcacao = new JTextField();
 		textFieldIdMarcacao.setEnabled(false);
 		textFieldIdMarcacao.setColumns(10);
+		textFieldIdMarcacao.setVisible(false);
+		lblCodigo.setVisible(false);
 
 		scrollPane = new JScrollPane();
 

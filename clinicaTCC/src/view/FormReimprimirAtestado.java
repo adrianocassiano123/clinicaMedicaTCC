@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -63,10 +64,11 @@ public class FormReimprimirAtestado extends JFrame {
 			conexao.rs.first(); // Seta o primeiro registro
 
 			do {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				dados.add(new Object[] {  conexao.rs.getInt("id")
 										, conexao.rs.getString("paciente")
 										, conexao.rs.getString("medico")
-										, conexao.rs.getString("data") 
+										, sdf.format(conexao.rs.getDate("data")) 
 									 });
 				
 			} while (conexao.rs.next());
@@ -215,6 +217,8 @@ public class FormReimprimirAtestado extends JFrame {
 		textFieldIdMarcacao = new JTextField();
 		textFieldIdMarcacao.setEnabled(false);
 		textFieldIdMarcacao.setColumns(10);
+		textFieldIdMarcacao.setVisible(false);
+		lblCodigo.setVisible(false);
 
 		scrollPane = new JScrollPane();
 
