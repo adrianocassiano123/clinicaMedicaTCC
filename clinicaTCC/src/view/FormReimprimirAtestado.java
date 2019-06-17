@@ -39,9 +39,6 @@ public class FormReimprimirAtestado extends JFrame {
 	BeanMarcConsulta paciente = new BeanMarcConsulta();
 	DaoMarcConsulta dao = new DaoMarcConsulta();
 	ConexaoBD conexao = new ConexaoBD();
-	private JTextField textFieldPesquisa;
-	JButton btnPesquisar = new JButton("Pesquisar");
-	JButton btnImprimir = new JButton("Imprimir");
 	JButton btnCancelar = new JButton("Cancelar");
 	private JLabel lblCodigo;
 	private JTextField textFieldIdMarcacao;
@@ -49,7 +46,9 @@ public class FormReimprimirAtestado extends JFrame {
 	JScrollPane scrollPane = new JScrollPane();
 	BeanMarcConsulta marcacao = new BeanMarcConsulta();
 	Relatorio relatorio = new Relatorio();
+	private final JTextField textFieldIdAtestado = new JTextField();
 	
+
 	
 	
 
@@ -92,26 +91,33 @@ public class FormReimprimirAtestado extends JFrame {
 				
 				
 				conexao.conexao();
-				conexao.executarSQL("SELECT tab_marcacao.id_marcacao as id," + 
-						"               tab_paciente.nome_paciente as paciente," + 
-						"    	        tabmedico.nomemedico as medico," + 
-						"	            tab_marcacao.data_marcacao as data" + 
-						
-								" FROM  tab_marcacao," + 
-								"	    tab_paciente," + 
-								"	    tabmedico" + 
-						
-								" WHERE tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente " + 
-								"	AND tab_marcacao.cod_medico_marcacao = tabmedico.idmedico " + 
-								"	AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente"+
-								"	AND tab_marcacao.status_marcacao LIKE 'Finalizado'"+
-								"	AND nome_paciente like'%" + atestado + "%'");
+				conexao.executarSQL( "SELECT tab_atestado.id_atestado," + 
+						"	tab_marcacao.id_marcacao as id, " + 
+						"	tab_paciente.id_paciente, " + 
+						"	tab_paciente.nome_paciente, " + 
+						"	tab_paciente.nasc_paciente, " + 
+						"	tabmedico.crmmedico, " + 
+						"	tabmedico.nomemedico," + 
+						"	tab_atestado.descricao_atestado " + 
+						"FROM tab_marcacao, " + 
+						"	tab_paciente, " + 
+						"	tabmedico, " + 
+						"	tab_atestado " + 
+						"WHERE   tab_atestado.id_pacientefk = tab_paciente.id_paciente  " + 
+						"	 AND tab_atestado.id_medicofk = tabmedico.idmedico  " + 
+						"	 AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente  " + 
+						"	 AND tab_atestado.id_marcacaofk = tab_marcacao.id_marcacao "+  
+						"	 AND tab_marcacao.status_marcacao LIKE 'Finalizado' " + 
+						"	 AND nome_paciente like'%" + atestado + "%'"						
+		
+		);
 				
 				try {
 					conexao.rs.first();
 					textFieldIdMarcacao.setText(String.valueOf(conexao.rs.getInt("id")));
+					textFieldIdAtestado.setText(String.valueOf(conexao.rs.getInt("id_atestado")));
 					
-					relatorio.SolicitarAtestado(Integer.parseInt(textFieldIdMarcacao.getText()));
+					relatorio.SolicitarAtestado(Integer.parseInt(textFieldIdMarcacao.getText()), Integer.parseInt(textFieldIdAtestado.getText()));
 					
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, "Não existe Solicitação de Atestado para esse Paciente");
@@ -163,6 +169,12 @@ public class FormReimprimirAtestado extends JFrame {
 	}
 
 	public FormReimprimirAtestado() {
+		
+		textFieldIdAtestado.setVisible(false);
+		
+		
+		textFieldIdAtestado.setEnabled(false);
+		textFieldIdAtestado.setColumns(10);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 688, 436);
 		contentPane = new JPanel();
@@ -170,6 +182,7 @@ public class FormReimprimirAtestado extends JFrame {
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		
 		preencherTabela("SELECT tab_marcacao.id_marcacao as id," + 
 				"               tab_paciente.nome_paciente as paciente," + 
 				"    	        tabmedico.nomemedico as medico," + 
@@ -184,29 +197,10 @@ public class FormReimprimirAtestado extends JFrame {
 						"	AND tab_marcacao.status_marcacao LIKE 'Finalizado'"+
 						"	AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente");
 
-		btnImprimir.setEnabled(false);
-		btnImprimir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				} 
-				
-			
-		});
-
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
 				dispose();
-
-			}
-		});
-
-		textFieldPesquisa = new JTextField();
-		textFieldPesquisa.setColumns(10);
-		btnPesquisar.setFont(new Font("Tahoma", Font.BOLD, 12));
-
-		btnPesquisar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
 
 			}
 		});
@@ -231,24 +225,20 @@ public class FormReimprimirAtestado extends JFrame {
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 							.addComponent(lblCodigo)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(btnImprimir, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-							.addGap(39)
-							.addComponent(btnCancelar)
-							.addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-							.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(btnPesquisar))
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
-						.addComponent(scrollPane))
+							.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(textFieldIdAtestado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(343)
+							.addComponent(btnCancelar)))
 					.addGap(22))
 		);
 		gl_contentPane.setVerticalGroup(
@@ -256,19 +246,19 @@ public class FormReimprimirAtestado extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-					.addGap(2)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCodigo)
-						.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnPesquisar)
-						.addComponent(btnImprimir, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-					.addGap(8)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(96, Short.MAX_VALUE))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(2)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblCodigo)
+								.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldIdAtestado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		scrollPane.setViewportView(tableReimprimirAtestado);
 		contentPane.setLayout(gl_contentPane);

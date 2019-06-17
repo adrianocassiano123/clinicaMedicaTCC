@@ -613,6 +613,7 @@ public class TelaPrincipal extends JFrame {
 		btnPep.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		JButton btnExame = new JButton("Exame");
+		btnExame.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/imagem/medical-report (1).png")));
 		btnExame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -639,6 +640,7 @@ public class TelaPrincipal extends JFrame {
 		btnExame.setFont(new Font("Tahoma", Font.BOLD, 10));
 
 		JButton btnDeclarao = new JButton("Declara\u00E7\u00E3o");
+		btnDeclarao.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/imagem/notepad.png")));
 		btnDeclarao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 

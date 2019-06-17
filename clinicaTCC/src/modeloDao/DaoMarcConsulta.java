@@ -102,6 +102,7 @@ public class DaoMarcConsulta {
 			marcConsulta.setNomeMedico(conexao.rs.getString("nomemedico"));
 			marcConsulta.setMotivo(conexao.rs.getString("motivo_marcacao"));
 			marcConsulta.setNascimento(conexao.rs.getString("nasc_paciente"));
+			
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao Buscar No banco" + e);

@@ -20,18 +20,19 @@ public class DaoAtestado {
 	int idPaciente;
 	
 
-	public void finalizarAtestado(BeanAtestado finalizar) {
+	public void finalizarAtestado(BeanAtestado finalizar, int idMarcacao) {
 		pesquisarMedico(finalizar.getNomeMedico());
 		pesquisarPaciente(finalizar.getNomePaciente());
 		conexao.conexao();
 
 		try {
-			PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO tab_atestado( descricao_atestado, id_pacientefk, id_medicofk) VALUES (?, ?, ?);");
+			PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO tab_atestado( descricao_atestado, id_pacientefk, id_medicofk, id_marcacaofk) VALUES (?, ?, ?, ?);");
 			
 			
 			pst.setString(1, finalizar.getDescricao());
 			pst.setInt(2, idPaciente);
-			pst.setInt(3, idMedico);				
+			pst.setInt(3, idMedico);	
+			pst.setInt(4, idMarcacao);
 			pst.execute();
 			JOptionPane.showMessageDialog(null, "Imprima o Atestado");
 
@@ -72,6 +73,25 @@ public class DaoAtestado {
 			JOptionPane.showMessageDialog(null, "Erro ao encontrar Paciente" + e);
 
 		}
+
+	}
+	
+	public int pegarIdAtestado(int idMarcacao) {
+		int idAtestado = 0 ;
+		conexao.conexao();
+		conexao.executarSQL(
+				" SELECT id_atestado FROM tab_atestado  where id_marcacaofk='" + idMarcacao + "'");
+
+		try {
+			conexao.rs.first();
+			idAtestado=(conexao.rs.getInt("id_atestado"));
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erro ao Buscar No banco" + e);
+
+		}
+		
+		return idAtestado;
 
 	}
 	

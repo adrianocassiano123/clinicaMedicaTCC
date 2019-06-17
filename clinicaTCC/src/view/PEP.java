@@ -262,8 +262,10 @@ public class PEP extends JFrame {
 		buttonExame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				String cod_agendamento =codigoAtendimento;
-				FormExame exame = new FormExame(cod_agendamento);
+				String cod_agendamento = codigoAtendimento;
+				String medico = textFieldMedico.getText();
+				String nasc = formattedTextFieldNascimento.getText();				
+				FormExame exame = new FormExame(cod_agendamento,medico,nasc);
 				exame.setVisible(true);
 				
 				

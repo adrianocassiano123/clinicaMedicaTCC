@@ -82,6 +82,7 @@ public class FormAtestado extends JFrame {
 		textFieldMedico.setEnabled(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 884, 730);
+		setLocationRelativeTo(null);
 		
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -156,9 +157,15 @@ public class FormAtestado extends JFrame {
 				beanAtestado.setDescricao(editorPaneDescricao.getText());
 				beanAtestado.setNomeMedico(textFieldMedico.getText());
 				beanAtestado.setNomePaciente(textFieldNome.getText());
-				daoAtestado.finalizarAtestado(beanAtestado);
+				daoAtestado.finalizarAtestado(beanAtestado,Integer.parseInt(textFieldIdMarcacao.getText()));
 				
-				atestado.SolicitarAtestado(Integer.parseInt(textFieldIdMarcacao.getText()));
+				int idAtestado = daoAtestado.pegarIdAtestado(Integer.parseInt(textFieldIdMarcacao.getText()));
+				
+				System.out.println(idAtestado);
+				System.out.println(textFieldIdMarcacao.getText());
+				//System.out.println(textFieldTeste.toString());
+				
+				atestado.SolicitarAtestado(Integer.parseInt(textFieldIdMarcacao.getText()),idAtestado);
 							
 				
 				dispose();

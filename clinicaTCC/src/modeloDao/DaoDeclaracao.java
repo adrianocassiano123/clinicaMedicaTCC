@@ -19,23 +19,25 @@ public class DaoDeclaracao {
 	int idPaciente;
 	
 
-	public void finalizarDeclaracao(BeanDeclaracao finalizar) {
+	public void finalizarDeclaracao(BeanDeclaracao finalizar, int idMarcacao) {
 		pesquisarMedico(finalizar.getNomeMedico());
 		pesquisarPaciente(finalizar.getNomePaciente());
 		conexao.conexao();
 
 		try {
-			PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO tab_declaracao(descricao_declaracao, id_pacientefk, id_medicofk) VALUES (?, ?, ?);");
+			PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO tab_declaracao(descricao_declaracao, id_pacientefk, id_medicofk , id_marcacaofk) VALUES ( ?, ?, ?, ?);");
 			
 			
 			pst.setString(1, finalizar.getDescricao());
 			pst.setInt(2, idPaciente);
-			pst.setInt(3, idMedico);				
+			pst.setInt(3, idMedico);
+			pst.setInt(4, idMarcacao);
 			pst.execute();
-			JOptionPane.showMessageDialog(null, "Imprima o Atestado");
+			JOptionPane.showMessageDialog(null, "Imprima a Declaração");
 
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Erro ao Solicitar Atestado" + e);
+			JOptionPane.showMessageDialog(null, "Erro ao Solicitar Declaração");
+			System.out.println(e);
 		}
 
 		conexao.desconectar();
@@ -73,8 +75,25 @@ public class DaoDeclaracao {
 		}
 
 	}
-	
-	
+	public int pegarIdDeclaracao(int idMarcacao) {
+		int idDeclaracao = 0 ;
+		conexao.conexao();
+		conexao.executarSQL(
+				" SELECT id_declaracao FROM tab_declaracao  where id_marcacaofk='" + idMarcacao + "'");
+
+		try {
+			conexao.rs.first();
+			idDeclaracao=(conexao.rs.getInt("id_declaracao"));
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erro ao Buscar No banco");
+			System.out.println(e);
+
+		}
+		
+		return idDeclaracao;
+
+	}
 	
 
 

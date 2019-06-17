@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dclaracao" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1131b6aa-4b56-4a29-91e0-439045eb82c6">
-	<property name="com.jaspersoft.studio.data.sql.tables">
-		<![CDATA[dGFibWVkaWNvIEFTICw3MDQsNzksNzBiZTJiMGYtMmQ0Yy00NTA3LThiMTgtMGNhZGUxZWRiMzYx
-O3RhYl9wYWNpZW50ZSBBUyAsMTc5LDExMiwzYWY1ODAzZS04NTdmLTQ4NmQtYWQ2MS05YjliN2E5
-ZTc3MDY7dGFiX2RlY2xhcmFjYW8gQVMgLDYwOSw0MDMsZDk4MWNkMDQtZmE0Mi00Y2QzLTljODgt
-NzJiMjYwNjI3ZmIxO3RhYl9tYXJjYWNhbyBBUyAsNDAxLDE1Miw4OTUyNTY3NC1jYzkyLTQyZmEt
-YTFlZS0yMmI5NWRjOTVhYzg7]]>
-	</property>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="300"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="688"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgreSQL"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="751"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="235"/>
 	<parameter name="CODMARCACAO" class="java.lang.Integer"/>
+	<parameter name="Parameter1" class="java.lang.String"/>
+	<parameter name="CODDECLARACAO" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT tab_declaracao.id_declaracao,
 	tab_marcacao.id_marcacao,
@@ -23,12 +19,16 @@ YTFlZS0yMmI5NWRjOTVhYzg7]]>
 	tabmedico.crmmedico,
 	tabmedico.nomemedico,
 	tab_declaracao.descricao_declaracao
-FROM tab_marcacao, tab_paciente, tabmedico, tab_declaracao
-where 
-	 tab_declaracao.id_pacientefk = tab_paciente.id_paciente  
-	 AND tab_declaracao.id_medicofk = tabmedico.idmedico
-	 and  tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente 
-	 and tab_marcacao.id_marcacao =  $P{CODMARCACAO}]]>
+FROM tab_marcacao,
+	tab_paciente,
+	tabmedico,
+	tab_declaracao
+WHERE 
+	 tab_declaracao.id_pacientefk = tab_paciente.id_paciente 
+	 AND tab_declaracao.id_medicofk = tabmedico.idmedico 
+	 AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente 
+	 AND tab_marcacao.id_marcacao =  $P{CODMARCACAO} 
+	 AND tab_declaracao.id_declaracao =   $P{CODDECLARACAO} ]]>
 	</queryString>
 	<field name="descricao_declaracao" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="descricao_declaracao"/>

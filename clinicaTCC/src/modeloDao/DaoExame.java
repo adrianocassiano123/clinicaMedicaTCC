@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import ModeloConexao.ConexaoBD;
 import modelo.BeanExame;
+import modelo.BeanMarcConsulta;
 
 public class DaoExame {
 	
@@ -19,24 +20,31 @@ public class DaoExame {
 	int idPaciente;
 	
 
-	public void finalizarExame(BeanExame finalizar) {
+	public void finalizarExame(BeanExame finalizar,int idMarcacao) {
 		pesquisarMedico(finalizar.getNomeMedico());
 		pesquisarPaciente(finalizar.getNomePaciente());
 		conexao.conexao();
 
 		try {
-			PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO tab_exame( descricao_exame, id_pacientefk, id_medicofk) VALUES (?, ?, ?);");
+			PreparedStatement pst = conexao.conex.prepareStatement("INSERT INTO tab_exame( descricao_exame, id_pacientefk, id_medicofk, id_marcacaofk) VALUES (?, ?, ?, ?);");
 			
 			
 			pst.setString(1, finalizar.getDescricao());
 			pst.setInt(2, idPaciente);
-			pst.setInt(3, idMedico);				
+			pst.setInt(3, idMedico);
+			pst.setInt(4, idMarcacao);
 			pst.execute();
-			JOptionPane.showMessageDialog(null, "Imprima o Atestado");
+			JOptionPane.showMessageDialog(null, "Imprima o Exame");
 
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Erro ao Solicitar Atestado" + e);
+			JOptionPane.showMessageDialog(null, "Erro ao Solicitar Exame" + e);
 		}
+		
+		
+		
+		
+		
+		
 
 		conexao.desconectar();
 
@@ -71,6 +79,26 @@ public class DaoExame {
 			JOptionPane.showMessageDialog(null, "Erro ao encontrar Paciente" + e);
 
 		}
+
+	}
+	
+	
+	public int pegarIdExame(int idMarcacao) {
+		int idExame = 0 ;
+		conexao.conexao();
+		conexao.executarSQL(
+				" SELECT id_exame FROM tab_exame  where id_marcacaofk='" + idMarcacao + "'");
+
+		try {
+			conexao.rs.first();
+			idExame=(conexao.rs.getInt("id_atestado"));
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erro ao Buscar No banco" + e);
+
+		}
+		
+		return idExame;
 
 	}
 	

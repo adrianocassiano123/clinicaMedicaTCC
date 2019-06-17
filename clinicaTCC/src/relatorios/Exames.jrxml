@@ -9,6 +9,7 @@
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="353"/>
 	<parameter name="logo_medical" class="java.lang.Object"/>
 	<parameter name="CODMARCEXAME" class="java.lang.Integer"/>
+	<parameter name="CODEXAME" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT tab_exame.id_exame,
 	tab_marcacao.id_marcacao,
@@ -26,7 +27,8 @@ WHERE
 	 tab_exame.id_pacientefk = tab_paciente.id_paciente 
 	 AND tab_exame.id_medicofk = tabmedico.idmedico 
 	 AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente 
-	 AND tab_marcacao.id_marcacao = $P{CODMARCEXAME}]]>
+	 AND tab_marcacao.id_marcacao = $P{CODMARCEXAME}
+	 AND tab_exame.id_exame =   $P{CODEXAME} ]]>
 	</queryString>
 	<field name="descricao_exame" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="descricao_exame"/>

@@ -98,7 +98,6 @@ public class TelaLogin extends JFrame {
 		contentPane.setBorder(new LineBorder(SystemColor.activeCaption));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
-		//setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setUndecorated(true);
 		
 		Fundo tela = new Fundo();

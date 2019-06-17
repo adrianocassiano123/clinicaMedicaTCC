@@ -31,7 +31,7 @@ public class Relatorio {
 		JasperViewer view = new JasperViewer(jasperPrint, false);
 		view.setVisible(true);
 	}
-	
+
 	public void relatAtendido() {
 
 		ConexaoBD conexao = new ConexaoBD();
@@ -51,7 +51,7 @@ public class Relatorio {
 		JasperViewer view = new JasperViewer(jasperPrint, false);
 		view.setVisible(true);
 	}
-	
+
 	public void relatCancelados() {
 
 		ConexaoBD conexao = new ConexaoBD();
@@ -65,18 +65,14 @@ public class Relatorio {
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Não foi possivel gerar relatório!" + e);
-			
 
 		}
 
 		JasperViewer view = new JasperViewer(jasperPrint, false);
 		view.setVisible(true);
 	}
-	
-	
-	
-	
-	public void SolicitarDeclaracao(int codigoMarcacao) {
+
+	public void SolicitarDeclaracao(int codigoMarcacao, int codigoDeclaracao) {
 
 		ConexaoBD conexao = new ConexaoBD();
 
@@ -85,12 +81,13 @@ public class Relatorio {
 		String src = "C:/ClinicalMEDS/clinicaTCC/src/relatorios/Declaracao.jasper";
 
 		codigo.put("CODMARCACAO", codigoMarcacao);
+		codigo.put("CODDECLARACAO", codigoDeclaracao);
 
-		JasperPrint jasperPrint = null;
+//		 jasperPrint = null;
 
 		try {
 
-			jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
+			JasperPrint jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
 			JasperViewer view = new JasperViewer(jasperPrint, false);
 			view.setVisible(true);
 
@@ -100,11 +97,9 @@ public class Relatorio {
 
 		}
 
-		
 	}
-	
-	
-	public void SolicitarExame(int codigoMarcacao) {
+
+	public void SolicitarExame(int codigoMarcacao, int codigoExame) {
 
 		ConexaoBD conexao = new ConexaoBD();
 
@@ -113,25 +108,26 @@ public class Relatorio {
 		String src = "C:/ClinicalMEDS/clinicaTCC/src/relatorios/Exames.jasper";
 
 		codigo.put("CODMARCEXAME", codigoMarcacao);
+		codigo.put("CODEXAME", codigoExame);
 
-		JasperPrint jasperPrint = null;
+		// JasperPrint jasperPrint = null;
 
 		try {
 
-			jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
+			JasperPrint jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
 			JasperViewer view = new JasperViewer(jasperPrint, false);
 			view.setVisible(true);
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Não Existe Exame para esse paciente!");
-			System.out.println( e);
+			System.out.println(e);
 
 		}
 
-		
 	}
-	
-	public void SolicitarAtestado(int codigoMarcacao) {
+
+
+	public void SolicitarAtestado(int codigoMarcacao ,int codigoAtestado) {
 
 		ConexaoBD conexao = new ConexaoBD();
 
@@ -140,12 +136,13 @@ public class Relatorio {
 		String src = "C:/ClinicalMEDS/clinicaTCC/src/relatorios/Atestado.jasper";
 
 		codigo.put("CODMARCACAO", codigoMarcacao);
+		codigo.put("CODATESTADO", codigoAtestado);
 
-		JasperPrint jasperPrint = null;
+		// jasperPrint = null;
 
 		try {
 
-			jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
+			JasperPrint jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
 			JasperViewer view = new JasperViewer(jasperPrint, false);
 			view.setVisible(true);
 
@@ -155,7 +152,36 @@ public class Relatorio {
 
 		}
 
-		
 	}
 
 }
+
+//	public void Solicitar2(String codigoMarcacao, String descricaoMarcacao, String nomeMedico, int crmMedico,
+//			String nomePaciente, String nascimento) {
+//
+//		ConexaoBD conexao = new ConexaoBD();
+//
+//		Map<String, Object> codigo = new HashMap<>();
+//
+//		String src = "C:/ClinicalMEDS/clinicaTCC/src/relatorios/Exames.jasper";
+//
+//		codigo.put("CODMARCEXAME", codigoMarcacao);
+//		codigo.put("DESCRICAOMARCACAO", descricaoMarcacao);
+//		codigo.put("NOMEMEDICO", nomeMedico);
+//		codigo.put("CRMMEDICO", crmMedico);
+//		codigo.put("NOMEPACIENTE", nomePaciente);
+//		codigo.put("NASCIMENTO", nascimento);
+//
+//		try {
+//
+//			JasperPrint jasperPrint = JasperFillManager.fillReport(src, codigo, conexao.getConnection());
+//			JasperViewer view = new JasperViewer(jasperPrint, false);
+//			view.setVisible(true);
+//
+//		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(null, "Não Existe Exame para esse paciente!");
+//			System.out.println(e);
+//
+//		}
+//
+//	}

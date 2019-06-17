@@ -201,6 +201,8 @@ public class FormAgenda extends JFrame {
 
 				btnConfirmarMarcao.setEnabled(false);
 				btnCancelarMarcao.setEnabled(false);
+				buttonRemarcar.setEnabled(false);
+			
 
 			}
 
@@ -243,7 +245,7 @@ public class FormAgenda extends JFrame {
 					remarcar.setVisible(true);
 
 				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao Cancelar");
+					JOptionPane.showMessageDialog(null, "Erro ao Remarcar");
 					e.printStackTrace();
 				}
 

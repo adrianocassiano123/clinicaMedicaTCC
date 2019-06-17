@@ -31,6 +31,7 @@ import ModeloConexao.ConexaoBD;
 import modelo.BeanMarcConsulta;
 import modelo.BeanPaciente;
 import modelo.ModeloTabela;
+import modeloDao.DaoExame;
 import modeloDao.DaoMarcConsulta;
 import relatorios.Relatorio;
 
@@ -41,9 +42,6 @@ public class FormReimprimirExame extends JFrame {
 	BeanMarcConsulta paciente = new BeanMarcConsulta();
 	DaoMarcConsulta dao = new DaoMarcConsulta();
 	ConexaoBD conexao = new ConexaoBD();
-	private JTextField textFieldPesquisa;
-	JButton btnPesquisar = new JButton("Pesquisar");
-	JButton btnImprimir = new JButton("Imprimir");
 	JButton btnCancelar = new JButton("Cancelar");
 	private JLabel lblCodigo;
 	private JTextField textFieldIdMarcacao;
@@ -52,6 +50,9 @@ public class FormReimprimirExame extends JFrame {
 	BeanMarcConsulta marcacao = new BeanMarcConsulta();
 	Relatorio relatorio = new Relatorio();
 	String data;
+	
+	DaoExame daoExame = new DaoExame();
+	private JTextField textFieldExame;
 	
 	
 	
@@ -101,32 +102,45 @@ public class FormReimprimirExame extends JFrame {
 				
 				String exame = "" + tableReimprimirExame.getValueAt(tableReimprimirExame.getSelectedRow(), 1);
 				
-				System.out.println(exame);
+			//	System.out.println(exame);
+			
 				
 				
 				conexao.conexao();
-				conexao.executarSQL("SELECT tab_marcacao.id_marcacao as id," + 
-						"               tab_paciente.nome_paciente as paciente," + 
-						"    	        tabmedico.nomemedico as medico," + 
-						"	            tab_marcacao.data_marcacao as data" + 
+				conexao.executarSQL(	"SELECT tab_exame.id_exame," + 
+										"	tab_marcacao.id_marcacao as id, " + 
+										"	tab_paciente.id_paciente, " + 
+										"	tab_paciente.nome_paciente, " + 
+										"	tab_paciente.nasc_paciente, " + 
+										"	tabmedico.crmmedico, " + 
+										"	tabmedico.nomemedico," + 
+										"	tab_exame.descricao_exame " + 
+										"FROM tab_marcacao, " + 
+										"	tab_paciente, " + 
+										"	tabmedico, " + 
+										"	tab_exame " + 
+										"WHERE   tab_exame.id_pacientefk = tab_paciente.id_paciente  " + 
+										"	 AND tab_exame.id_medicofk = tabmedico.idmedico  " + 
+										"	 AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente  " + 
+										"	 AND tab_exame.id_marcacaofk = tab_marcacao.id_marcacao "+  
+										"	 AND tab_marcacao.status_marcacao LIKE 'Finalizado' " + 
+										"	 AND nome_paciente like'%" + exame + "%'"						
 						
-								" FROM  tab_marcacao," + 
-								"	    tab_paciente," + 
-								"	    tabmedico" + 
-						
-								" WHERE tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente " + 
-								"	AND tab_marcacao.cod_medico_marcacao = tabmedico.idmedico " + 
-								"	AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente"+
-								"	AND tab_marcacao.status_marcacao LIKE 'Finalizado'"+
-								"	AND nome_paciente like'%" + exame + "%'");
+						);
+				
+				
 				
 				try {
+					
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 					conexao.rs.first();
 					
 					textFieldIdMarcacao.setText(String.valueOf(conexao.rs.getInt("id")));
-			
-					relatorio.SolicitarExame(Integer.parseInt(textFieldIdMarcacao.getText()));
+					textFieldExame.setText(String.valueOf(conexao.rs.getInt("id_exame")));
+				//	int idExame = daoExame.pegarIdExame(Integer.parseInt(textFieldIdMarcacao.getText()));
+					//System.out.println(idExame);
+					
+					relatorio.SolicitarExame(Integer.parseInt(textFieldIdMarcacao.getText()),Integer.parseInt(textFieldExame.getText()));
 					
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, "Não existe Solicitação de Exame para esse Paciente");
@@ -178,6 +192,9 @@ public class FormReimprimirExame extends JFrame {
 	}
 
 	public FormReimprimirExame() {
+		
+		textFieldExame.setVisible(false);
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 688, 436);
 		contentPane = new JPanel();
@@ -199,44 +216,10 @@ public class FormReimprimirExame extends JFrame {
 						"	AND tab_marcacao.status_marcacao LIKE 'Finalizado'"+
 						"	AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente");
 
-		btnImprimir.setEnabled(false);
-		btnImprimir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				} 
-				
-			
-		});
-
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
 				dispose();
-
-			}
-		});
-
-		textFieldPesquisa = new JTextField();
-		textFieldPesquisa.setColumns(10);
-		btnPesquisar.setFont(new Font("Tahoma", Font.BOLD, 12));
-
-		btnPesquisar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-//				paciente.setPesquisa(textFieldPesquisa.getText());
-//				BeanMarcConsulta model = dao.pesquisarReimpressao(paciente);
-//				textFieldIdMarcacao.setText(String.valueOf(model.getIdMarcConsulta()));
-//								
-//				textFieldPesquisa.setText("");
-//				preencherTabela("select *from tab_paciente where nome_nome like'%" + especialidade.getPesquisa() + "%'"); // Mostra
-//																													// todos
-//																													// os
-//																													// médicos
-//																													// de
-//																													// acordo
-//																													// com
-//																													// a
-//																													// letra
-//																													// pesquisada
 
 			}
 		});
@@ -258,27 +241,27 @@ public class FormReimprimirExame extends JFrame {
 		JLabel lblCadastrarEspecialidade = new JLabel("Reimprimir Exame");
 		lblCadastrarEspecialidade.setFont(new Font("Tahoma", Font.BOLD, 21));
 		panel.add(lblCadastrarEspecialidade);
+		
+		textFieldExame = new JTextField();
+		textFieldExame.setEnabled(false);
+		textFieldExame.setColumns(10);
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 							.addComponent(lblCodigo)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(btnImprimir, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-							.addGap(39)
-							.addComponent(btnCancelar)
-							.addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-							.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(btnPesquisar))
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
-						.addComponent(scrollPane))
+							.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(37)
+							.addComponent(textFieldExame, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
+							.addComponent(btnCancelar))
+						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE))
 					.addGap(22))
 		);
 		gl_contentPane.setVerticalGroup(
@@ -286,19 +269,19 @@ public class FormReimprimirExame extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-					.addGap(2)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCodigo)
-						.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textFieldPesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnPesquisar)
-						.addComponent(btnImprimir, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-					.addGap(8)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(96, Short.MAX_VALUE))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(2)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblCodigo)
+								.addComponent(textFieldIdMarcacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldExame, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		scrollPane.setViewportView(tableReimprimirExame);
 		contentPane.setLayout(gl_contentPane);

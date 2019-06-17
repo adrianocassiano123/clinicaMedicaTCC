@@ -5,6 +5,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgreSQL"/>
 	<parameter name="LogoClinica" class="java.lang.Object"/>
 	<parameter name="CODMARCACAO" class="java.lang.Integer"/>
+	<parameter name="CODATESTADO" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT tab_atestado.id_atestado,
 	tab_marcacao.id_marcacao,
@@ -22,7 +23,8 @@ WHERE
 	 tab_atestado.id_pacientefk = tab_paciente.id_paciente 
 	 AND tab_atestado.id_medicofk = tabmedico.idmedico 
 	 AND tab_marcacao.cod_paciente_marcacao = tab_paciente.id_paciente 
-	 AND tab_marcacao.id_marcacao =  $P{CODMARCACAO}]]>
+	 AND tab_marcacao.id_marcacao =   $P{CODMARCACAO} 
+	 AND tab_atestado.id_atestado =  $P{CODATESTADO} ]]>
 	</queryString>
 	<field name="nomemedico" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nomemedico"/>
